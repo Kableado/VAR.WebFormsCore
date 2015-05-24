@@ -18,24 +18,31 @@ namespace Scrummer.Code.Pages
 
         void FrmError_Init(object sender, EventArgs e)
         {
-            Title = "Error";
+            Title = "Application Error";
 
-            CLabel lblErrorTitle = new CLabel { Text = "Error", Tag = "h2" };
+            CLabel lblErrorTitle = new CLabel { Text = Title, Tag = "h2" };
             Controls.Add(lblErrorTitle);
+            
+            Exception exAux = _ex;
+            if (exAux is HttpUnhandledException && exAux.InnerException != null) { exAux = exAux.InnerException; }
+            while (exAux != null)
+            {
+                CLabel lblMessage = new CLabel { Tag = "P" };
+                lblMessage.Text = String.Format("<b>{0}:</b> {1}", "Message", HttpUtility.HtmlEncode(exAux.Message));
+                Controls.Add(lblMessage);
 
-            CLabel lblMessage = new CLabel { Tag = "P" };
-            lblMessage.Text = String.Format("<b>{0}:</b> {1}", "Message",HttpUtility.HtmlEncode(_ex.Message));
-            Controls.Add(lblMessage);
+                CLabel lblStacktraceTitle = new CLabel { Tag = "p" };
+                lblStacktraceTitle.Text = String.Format("<b>{0}:</b>", "Stacktrace");
+                Controls.Add(lblStacktraceTitle);
+                Panel pnlStacktrace = new Panel();
+                pnlStacktrace.CssClass = "divCode";
+                Controls.Add(pnlStacktrace);
+                LiteralControl litStackTrace = new LiteralControl(
+                    String.Format("<pre><code>{0}</code></pre>", HttpUtility.HtmlEncode(exAux.StackTrace)));
+                pnlStacktrace.Controls.Add(litStackTrace);
 
-            CLabel lblStacktraceTitle = new CLabel { Tag = "p" };
-            lblStacktraceTitle.Text = String.Format("<b>{0}:</b>", "Stacktrace");
-            Controls.Add(lblStacktraceTitle);
-            Panel pnlStacktrace = new Panel();
-            pnlStacktrace.CssClass = "divCode";
-            Controls.Add(pnlStacktrace);
-            LiteralControl litStackTrace = new LiteralControl(
-                String.Format("<pre><code>{0}</code></pre>", HttpUtility.HtmlEncode(_ex.StackTrace)));
-            pnlStacktrace.Controls.Add(litStackTrace);
+                exAux = exAux.InnerException;
+            }
         }
     }
 }
