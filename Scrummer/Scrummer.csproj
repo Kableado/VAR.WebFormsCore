@@ -86,6 +86,7 @@
     <Compile Include="Code\Pages\FrmError.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>

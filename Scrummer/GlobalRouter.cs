@@ -92,7 +92,7 @@ namespace Scrummer
                 string file = Path.GetFileName(context.Request.FilePath);
                 if (string.IsNullOrEmpty(file))
                 {
-                    // TODO: Default Handler
+                    file = Globals.DefaultHandler;
                 }
                 IHttpHandler handler = GetHandler(file);
                 if (handler == null)
