@@ -1,4 +1,7 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
+using Scrummer.Code;
+using Scrummer.Code.JSON;
 
 namespace Scrummer
 {
@@ -11,7 +14,14 @@ namespace Scrummer
 
         public void ProcessRequest(HttpContext context)
         {
-            context.Response.Write("Hello world!");
+            try
+            {
+                context.Response.Write("Hello world!");
+            }
+            catch (Exception ex)
+            {
+                GlobalErrorHandler.HandleError(context, ex);
+            }
         }
     }
 }
