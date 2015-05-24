@@ -4,10 +4,9 @@ namespace Scrummer.Code
 {
     public class StylesBundler : IHttpHandler
     {
-        public bool IsReusable
-        {
-            get { return false; }
-        }
+        #region IHttpHandler
+
+        public bool IsReusable { get { return false; } }
 
         public void ProcessRequest(HttpContext context)
         {
@@ -15,5 +14,7 @@ namespace Scrummer.Code
             context.Response.ContentType = "text/css";
             bundler.WriteResponse(context.Response.OutputStream);
         }
+
+        #endregion
     }
 }
