@@ -71,6 +71,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Controls\CLabel.cs" />
     <Compile Include="Code\JSON\ParserContext.cs" />
     <Compile Include="GlobalRouter.cs" />
     <Compile Include="Code\JSON\JSONParser.cs" />
