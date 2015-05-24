@@ -78,6 +78,9 @@
     <Compile Include="Code\GlobalErrorHandler.cs" />
     <Compile Include="Code\JSON\ParserContext.cs" />
     <Compile Include="Code\Pages\FrmEcho.cs" />
+    <Compile Include="Code\Pages\PageCommon.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Code\ScriptsBundler.cs" />
     <Compile Include="Code\StylesBundler.cs" />
     <Compile Include="GlobalRouter.cs" />
@@ -89,6 +92,7 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

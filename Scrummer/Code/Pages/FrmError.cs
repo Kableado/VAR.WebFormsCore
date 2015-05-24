@@ -6,7 +6,7 @@ using Scrummer.Code.Controls;
 
 namespace Scrummer.Code.Pages
 {
-    public class FrmError : Page
+    public class FrmError : PageCommon
     {
         Exception _ex = null;
 
@@ -18,11 +18,24 @@ namespace Scrummer.Code.Pages
 
         void FrmError_Init(object sender, EventArgs e)
         {
-            CLabel lblMessage = new CLabel { ID = "lblMessage", Text = _ex.Message, Tag = "P" };
+            Title = "Error";
+
+            CLabel lblErrorTitle = new CLabel { Text = "Error", Tag = "h2" };
+            Controls.Add(lblErrorTitle);
+
+            CLabel lblMessage = new CLabel { Tag = "P" };
+            lblMessage.Text = String.Format("<b>{0}:</b> {1}", "Message",HttpUtility.HtmlEncode(_ex.Message));
             Controls.Add(lblMessage);
 
-            CLabel lblStackTrace = new CLabel { ID = "lblStackTrace", Text = _ex.StackTrace, Tag = "P" };
-            Controls.Add(lblStackTrace);
+            CLabel lblStacktraceTitle = new CLabel { Tag = "p" };
+            lblStacktraceTitle.Text = String.Format("<b>{0}:</b>", "Stacktrace");
+            Controls.Add(lblStacktraceTitle);
+            Panel pnlStacktrace = new Panel();
+            pnlStacktrace.CssClass = "divCode";
+            Controls.Add(pnlStacktrace);
+            LiteralControl litStackTrace = new LiteralControl(
+                String.Format("<pre><code>{0}</code></pre>", HttpUtility.HtmlEncode(_ex.StackTrace)));
+            pnlStacktrace.Controls.Add(litStackTrace);
         }
     }
 }
