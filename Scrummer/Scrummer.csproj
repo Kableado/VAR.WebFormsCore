@@ -77,6 +77,7 @@
     <Compile Include="Code\Controls\CLabel.cs" />
     <Compile Include="Code\GlobalErrorHandler.cs" />
     <Compile Include="Code\JSON\ParserContext.cs" />
+    <Compile Include="Code\Pages\FrmEcho.cs" />
     <Compile Include="Code\ScriptsBundler.cs" />
     <Compile Include="Code\StylesBundler.cs" />
     <Compile Include="GlobalRouter.cs" />
