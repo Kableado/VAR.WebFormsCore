@@ -58,6 +58,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\01. Base.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -68,12 +69,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Styles\01. base.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Bundler.cs" />
     <Compile Include="Code\Controls\CLabel.cs" />
     <Compile Include="Code\GlobalErrorHandler.cs" />
     <Compile Include="Code\JSON\ParserContext.cs" />
+    <Compile Include="Code\ScriptsBundler.cs" />
+    <Compile Include="Code\StylesBundler.cs" />
     <Compile Include="GlobalRouter.cs" />
     <Compile Include="Code\JSON\JSONParser.cs" />
     <Compile Include="Code\JSON\JSONWriter.cs" />
