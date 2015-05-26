@@ -70,11 +70,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\02. Ajax.js" />
+    <Content Include="Scripts\10. Chat.js" />
     <Content Include="Styles\01. base.css" />
+    <Content Include="Styles\10. Chat.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Bundler.cs" />
+    <Compile Include="Code\Controls\ChatControl.cs" />
+    <Compile Include="Code\Controls\ChatHandler.cs" />
     <Compile Include="Code\Controls\CLabel.cs" />
     <Compile Include="Code\GlobalErrorHandler.cs" />
     <Compile Include="Code\JSON\ParserContext.cs" />
