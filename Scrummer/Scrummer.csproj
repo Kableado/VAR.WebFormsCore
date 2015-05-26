@@ -69,6 +69,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\02. Ajax.js" />
     <Content Include="Styles\01. base.css" />
     <Content Include="Web.config" />
   </ItemGroup>
