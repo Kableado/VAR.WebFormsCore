@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -99,16 +100,6 @@ namespace Scrummer.Code.JSON
                 // NULL
                 sbOutput.Append("null");
             }
-            else if (obj is List<object>)
-            {
-                // Array (List)
-                WriteList(sbOutput, obj, level);
-            }
-            else if (obj is Array)
-            {
-                // Array (Array)
-                WriteArray(sbOutput, obj, level);
-            }
             else if ((obj is float) || (obj is double) ||
               (obj is System.Int16) || (obj is System.Int32) || (obj is System.Int64))
             {
@@ -125,10 +116,15 @@ namespace Scrummer.Code.JSON
                 // Booleans
                 sbOutput.Append(((Boolean)obj) ? "true" : "false");
             }
-            else if (obj is Dictionary<string, object>)
+            else if (obj is IDictionary)
             {
                 // Objects
                 WriteObject(sbOutput, obj, level);
+            }
+            else if (obj is IEnumerable)
+            {
+                // Array/List
+                WriteList(sbOutput, obj, level);
             }
             else
             {
@@ -146,15 +142,8 @@ namespace Scrummer.Code.JSON
 
         private void WriteList(StringBuilder sbOutput, Object obj, int level)
         {
-            List<object> list = (List<object>)obj;
-            int n = list.Count;
-
-            // Empty
-            if (n == 0)
-            {
-                sbOutput.Append("[ ]");
-                return;
-            }
+            IEnumerable list = (IEnumerable)obj;
+            int n = 0;
 
             // Check if it is a leaf object
             bool isLeaf = true;
@@ -163,8 +152,15 @@ namespace Scrummer.Code.JSON
                 if (!IsValue(childObj))
                 {
                     isLeaf = false;
-                    break;
                 }
+                n++;
+            }
+
+            // Empty
+            if (n == 0)
+            {
+                sbOutput.Append("[ ]");
+                return;
             }
 
             // Write array
@@ -185,57 +181,7 @@ namespace Scrummer.Code.JSON
                     }
                 }
                 first = false;
-                WriteValue(sbOutput, childObj, level + 1, false);
-            }
-            if (!isLeaf || n > indentThresold)
-            {
-                WriteIndent(sbOutput, level);
-            }
-            sbOutput.Append(" ]");
-        }
-
-        private void WriteArray(StringBuilder sbOutput, Object obj, int level)
-        {
-            object[] list = (object[])obj;
-            int n = list.Length;
-
-            // Empty
-            if (n == 0)
-            {
-                sbOutput.Append("[ ]");
-                return;
-            }
-
-            // Check if it is a leaf object
-            bool isLeaf = true;
-            foreach (object childObj in list)
-            {
-                if (!IsValue(childObj))
-                {
-                    isLeaf = false;
-                    break;
-                }
-            }
-
-            // Write array
-            bool first = true;
-            sbOutput.Append("[ ");
-            if (!isLeaf || n > indentThresold)
-            {
-                WriteIndent(sbOutput, level + 1);
-            }
-            foreach (object childObj in list)
-            {
-                if (!first)
-                {
-                    sbOutput.Append(", ");
-                    if (!isLeaf || n > indentThresold)
-                    {
-                        WriteIndent(sbOutput, level + 1);
-                    }
-                }
-                first = false;
-                WriteValue(sbOutput, childObj, level + 1, false);
+                WriteValue(sbOutput, childObj, level + 1, true);
             }
             if (!isLeaf || n > indentThresold)
             {
@@ -246,7 +192,7 @@ namespace Scrummer.Code.JSON
 
         private void WriteObject(StringBuilder sbOutput, Object obj, int level)
         {
-            Dictionary<string, object> map = (Dictionary<string, object>)obj;
+            IDictionary map = (IDictionary)obj;
             int n = map.Count;
 
             // Empty
@@ -258,9 +204,9 @@ namespace Scrummer.Code.JSON
 
             // Check if it is a leaf object
             bool isLeaf = true;
-            foreach (KeyValuePair<string, object> entry in map)
+            foreach (object value in map.Values)
             {
-                if (!IsValue(entry.Value))
+                if (!IsValue(value))
                 {
                     isLeaf = false;
                     break;
@@ -274,8 +220,9 @@ namespace Scrummer.Code.JSON
             {
                 WriteIndent(sbOutput, level + 1);
             }
-            foreach (KeyValuePair<string, object> entry in map)
+            foreach (object key in map.Keys)
             {
+                object value = map[key];
                 if (!first)
                 {
                     sbOutput.Append(", ");
@@ -285,9 +232,9 @@ namespace Scrummer.Code.JSON
                     }
                 }
                 first = false;
-                WriteString(sbOutput, (String)entry.Key);
+                WriteString(sbOutput, Convert.ToString(key));
                 sbOutput.Append(": ");
-                WriteValue(sbOutput, entry.Value, level + 1, false);
+                WriteValue(sbOutput, value, level + 1, true);
             }
             if (!isLeaf || n > indentThresold)
             {
