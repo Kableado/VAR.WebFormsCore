@@ -32,15 +32,17 @@
             recvMsgs = JSON.parse(responseText);
             if (recvMsgs) {
                 var idMessage = parseInt(hidIDMessage.value);
+                var frag = document.createDocumentFragment();
                 for (var i = 0, n = recvMsgs.length; i < n; i++) {
                     var msg = recvMsgs[i];
                     if (idMessage < msg.IDMessage) {
                         hidIDMessage.value = msg.IDMessage;
                         idMessage = msg.IDMessage;
                         var elemMessage = CreateMessageDOM(msg);
-                        divContainer.appendChild(elemMessage);
+                        frag.appendChild(elemMessage);
                     }
                 }
+                divContainer.appendChild(frag);
                 divContainer.scrollTop = divContainer.scrollHeight;
             }
 
