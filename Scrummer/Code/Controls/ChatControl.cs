@@ -28,6 +28,9 @@ namespace Scrummer.Code.Controls
             var divChat = new Panel { ID = "divChat", CssClass = "divChat" };
             Controls.Add(divChat);
 
+            var hidUserName = new HiddenField { ID = "hidUserName", Value = "VAR" };
+            Controls.Add(hidUserName);
+
             var hidIDMessage = new HiddenField { ID = "hidIDMessage", Value = "0" };
             Controls.Add(hidIDMessage);
 
@@ -36,12 +39,13 @@ namespace Scrummer.Code.Controls
 
             var btnSend = new Button { ID = "btnSend", Text = "Send", CssClass = "chatButton" };
             Controls.Add(btnSend);
-            btnSend.Attributes.Add("onclick", String.Format("SendChat('{0}',{1}); return false;", txtText.ClientID, _idBoard));
+            btnSend.Attributes.Add("onclick", String.Format("SendChat('{0}',{1}, '{2}'); return false;",
+                txtText.ClientID, _idBoard, hidUserName.ClientID));
 
 
             LiteralControl litScript = new LiteralControl();
-            litScript.Text = String.Format("<script>RunChat('{0}',{1},'{2}');</script>",
-                divChat.ClientID, _idBoard, hidIDMessage.ClientID);
+            litScript.Text = String.Format("<script>RunChat('{0}',{1},'{2}','{3}');</script>",
+                divChat.ClientID, _idBoard, hidIDMessage.ClientID, hidUserName.ClientID);
             Controls.Add(litScript);
         }
     }

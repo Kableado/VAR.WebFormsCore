@@ -2,3 +2,39 @@
     overflow: auto;
     height: 300px;
 }
+
+.messageRow,
+.selfMessageRow{
+	vertical-align:top;
+	display:block;
+}
+.messageRow {
+    text-align: left;
+}
+.selfMessageRow {
+    text-align: right;
+}
+.message{
+	display:inline-block;
+	vertical-align:top;
+	border: solid 1px rgb(32,32,32);
+	background-color:rgb(220,220,220);
+	border-radius:5px;
+	box-shadow: 0 0 10px rgb(0,0,0),
+				inset 0 2px 5px rgb(255,255,255),
+				inset 0 -2px 5px rgb(128,128,128);
+	margin:5px;
+	padding:5px;
+	font-family: Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif;
+}
+.message .user{
+	color:rgb(64,64,64);
+	text-shadow: 0 0 1px rgba(0,0,0,0.3);
+	font-size:10px;
+	font-weight:bold;
+}
+.message .text{
+	color:rgb(32,32,32);
+	text-shadow: 0 0 1px rgba(0,0,0,0.3);
+	font-size:12px;
+}

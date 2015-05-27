@@ -1,10 +1,15 @@
-﻿function RunChat(divContainer, idBoard, hidIDMessage) {
+﻿function RunChat(divContainer, idBoard, hidIDMessage, hidUserName) {
     divContainer = GetElement(divContainer);
     hidIDMessage = GetElement(hidIDMessage);
+    hidUserName = GetElement(hidUserName);
 
-    var CreateMessageDOM = function (message) {
+    var CreateMessageDOM = function (message, selfMessage) {
         var divMessageRow = document.createElement("DIV");
-        divMessageRow.className = "messageRow";
+        if (selfMessage) {
+            divMessageRow.className = "selfMessageRow";
+        } else {
+            divMessageRow.className = "messageRow";
+        }
 
         var divMessage = document.createElement("DIV");
         divMessage.className = "message";
@@ -38,7 +43,7 @@
                     if (idMessage < msg.IDMessage) {
                         hidIDMessage.value = msg.IDMessage;
                         idMessage = msg.IDMessage;
-                        var elemMessage = CreateMessageDOM(msg);
+                        var elemMessage = CreateMessageDOM(msg, (msg.UserName == hidUserName.value));
                         frag.appendChild(elemMessage);
                     }
                 }
@@ -65,12 +70,13 @@
     RequestChatData();
 }
 
-function SendChat(txtText, idBoard) {
+function SendChat(txtText, idBoard, hidUserName) {
     txtText = GetElement(txtText);
+    hidUserName = GetElement(hidUserName);
     var data = {
         "text": txtText.value,
         "idBoard": idBoard,
-        "userName": "VAR"
+        "userName": hidUserName.value
     };
     txtText.value = "";
     SendData("ChatHandler", data, null, null);
