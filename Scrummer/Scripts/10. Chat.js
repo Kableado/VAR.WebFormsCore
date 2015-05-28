@@ -1,9 +1,10 @@
-﻿function RunChat(divContainer, idBoard, hidIDMessage, hidUserName) {
+﻿function RunChat(serviceUrl, divContainer, idBoard, hidIDMessage, hidUserName, hidLastUser) {
     divContainer = GetElement(divContainer);
     hidIDMessage = GetElement(hidIDMessage);
     hidUserName = GetElement(hidUserName);
+    hidLastUser = GetElement(hidLastUser);
 
-    var CreateMessageDOM = function (message, selfMessage) {
+    var CreateMessageDOM = function (message, selfMessage, hidLastUser) {
         var divMessageRow = document.createElement("DIV");
         if (selfMessage) {
             divMessageRow.className = "selfMessageRow";
@@ -15,10 +16,13 @@
         divMessage.className = "message";
         divMessageRow.appendChild(divMessage);
 
-        var divUser = document.createElement("DIV");
-        divUser.className = "user";
-        divUser.innerHTML = escapeHTML(message.UserName);
-        divMessage.appendChild(divUser);
+        if (hidLastUser.value !== message.UserName) {
+            var divUser = document.createElement("DIV");
+            divUser.className = "user";
+            divUser.innerHTML = escapeHTML(message.UserName);
+            divMessage.appendChild(divUser);
+            hidLastUser.value = message.UserName;
+        }
 
         var text = message.Text;
 
@@ -31,7 +35,7 @@
     };
 
     var RequestChatData = function () {
-        var requestUrl = "ChatHandler?idBoard=" + idBoard + "&idMessage=" + hidIDMessage.value;
+        var requestUrl = serviceUrl + "?idBoard=" + idBoard + "&idMessage=" + hidIDMessage.value;
         var ReciveChatData = function (responseText) {
 
             recvMsgs = JSON.parse(responseText);
@@ -43,7 +47,7 @@
                     if (idMessage < msg.IDMessage) {
                         hidIDMessage.value = msg.IDMessage;
                         idMessage = msg.IDMessage;
-                        var elemMessage = CreateMessageDOM(msg, (msg.UserName == hidUserName.value));
+                        var elemMessage = CreateMessageDOM(msg, (msg.UserName == hidUserName.value), hidLastUser);
                         frag.appendChild(elemMessage);
                     }
                 }
@@ -70,14 +74,20 @@
     RequestChatData();
 }
 
-function SendChat(txtText, idBoard, hidUserName) {
+function SendChat(serviceUrl, txtText, idBoard, hidUserName) {
     txtText = GetElement(txtText);
     hidUserName = GetElement(hidUserName);
+
+    if (txtText.value.trim() == "") {
+        return;
+    }
+
     var data = {
         "text": txtText.value,
         "idBoard": idBoard,
         "userName": hidUserName.value
     };
     txtText.value = "";
-    SendData("ChatHandler", data, null, null);
+    SendData(serviceUrl, data, null, null);
+    txtText.focus();
 }
