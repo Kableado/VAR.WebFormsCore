@@ -8,7 +8,13 @@ namespace Scrummer.Code.Pages
 {
     public class FrmError : PageCommon
     {
+        #region Declarations
+
         Exception _ex = null;
+
+        #endregion
+
+        #region Page life cycle
 
         public FrmError(Exception ex)
         {
@@ -18,11 +24,20 @@ namespace Scrummer.Code.Pages
 
         void FrmError_Init(object sender, EventArgs e)
         {
+            InitializeControls();
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void InitializeControls()
+        {
             Title = "Application Error";
 
             CLabel lblErrorTitle = new CLabel { Text = Title, Tag = "h2" };
             Controls.Add(lblErrorTitle);
-            
+
             Exception exAux = _ex;
             if (exAux is HttpUnhandledException && exAux.InnerException != null) { exAux = exAux.InnerException; }
             while (exAux != null)
@@ -44,5 +59,7 @@ namespace Scrummer.Code.Pages
                 exAux = exAux.InnerException;
             }
         }
+
+        #endregion
     }
 }

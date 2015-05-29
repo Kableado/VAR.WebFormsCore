@@ -1,4 +1,8 @@
-﻿* { margin: 0; padding: 0; box-sizing: border-box; }
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -7,32 +11,32 @@ body {
     color: black;
 }
 
-p{
-    margin-bottom: 0.5em; 
+p {
+    margin-bottom: 0.5em;
     text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
 h1 {
     font-size: 1.7em;
     text-align: center;
-    margin-top: 1.0em; 
-    margin-bottom: 0.5em; 
+    margin-top: 1.0em;
+    margin-bottom: 0.5em;
     text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
 h2 {
     font-size: 1.5em;
     text-align: center;
-    margin-top: 1.0em; 
-    margin-bottom: 0.5em; 
+    margin-top: 1.0em;
+    margin-bottom: 0.5em;
     text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
 h3 {
     font-size: 1.2em;
     text-align: left;
-    margin-top: 1.0em; 
-    margin-bottom: 0.5em; 
+    margin-top: 1.0em;
+    margin-bottom: 0.5em;
     text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
@@ -40,26 +44,26 @@ h3 {
     display: block;
     background-color: black;
 }
-.divHeader h1{
+
+.divHeader h1 {
     font-size: 30px;
     color: yellow;
     margin: 0;
     text-shadow: none;
 }
 
-.divContent{
-    padding-left:10px;
-    padding-right:10px;
+.divContent {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-.divCode{
+.divCode {
     background-color: black;
     color: green;
     font-family: Courier New, Courier, monospace;
     text-shadow: none;
-    overflow:auto;
+    overflow: auto;
     margin: 5px;
     padding: 2px;
-    box-shadow: 0 0 10px rgb(0,0,0);  
+    box-shadow: 0 0 10px rgb(0,0,0);
 }
-

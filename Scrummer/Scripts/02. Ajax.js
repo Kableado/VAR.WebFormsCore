@@ -25,7 +25,7 @@ function GetDataQueryString(data) {
             var value = data[property];
             queryString += (queryString.length > 0 ? "&" : "")
                 + fixedEncodeURIComponent(property) + "="
-                + fixedEncodeURIComponent(value ? value : "");
+                + fixedEncodeURIComponent(String(value));
         }
     }
     return queryString;

@@ -5,6 +5,8 @@ namespace Scrummer.Code.Pages
 {
     public class FrmEcho : IHttpHandler
     {
+        #region IHttpHandler
+
         public bool IsReusable
         {
             get { return false; }
@@ -17,5 +19,7 @@ namespace Scrummer.Code.Pages
             context.Response.Write(jsonWritter.Write(context.Request));
             context.Response.Write("</code></pre>");
         }
+
+        #endregion
     }
 }

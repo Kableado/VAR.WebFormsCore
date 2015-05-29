@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace Scrummer.Code.Controls
@@ -121,7 +117,7 @@ namespace Scrummer.Code.Controls
                 _serviceUrl, txtText.ClientID, _idBoard, hidUserName.ClientID));
 
             LiteralControl litScript = new LiteralControl();
-            litScript.Text = String.Format("<script>RunChat('{0}', '{1}', {2}, '{3}', '{4}', '{5}');</script>",
+            litScript.Text = String.Format("<script>RunChat('{0}', '{1}', '{2}', '{3}', '{4}', '{5}');</script>",
                 _serviceUrl, divChat.ClientID, _idBoard, hidIDMessage.ClientID, hidUserName.ClientID, hidLastUser.ClientID);
             Controls.Add(litScript);
         }

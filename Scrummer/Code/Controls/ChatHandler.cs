@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Web;
 using Scrummer.Code.JSON;
@@ -12,6 +11,7 @@ namespace Scrummer.Code
         public int IDMessage { get; set; }
         public string UserName { get; set; }
         public string Text { get; set; }
+        public DateTime Date { get; set; }
     };
 
     public class MessageBoard
@@ -44,6 +44,7 @@ namespace Scrummer.Code
             msg.IDMessage = lastIDMessage;
             msg.UserName = userName;
             msg.Text = text;
+            msg.Date = DateTime.UtcNow;
             _messages.Insert(0, msg);
         }
     }

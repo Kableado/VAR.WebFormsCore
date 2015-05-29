@@ -89,27 +89,36 @@ namespace Scrummer
         {
             try
             {
-                string file = Path.GetFileName(context.Request.FilePath);
-                if (string.IsNullOrEmpty(file))
-                {
-                    file = Globals.DefaultHandler;
-                }
-                IHttpHandler handler = GetHandler(file);
-                if (handler == null)
-                {
-                    // TODO: FrmNotFound
-                    throw new Exception("NotFound");
-                }
-
-                // Use handler
-                context.Response.Clear();
-                context.Handler = handler;
-                handler.ProcessRequest(context);
+                RouteRequest(context);
             }
             catch (Exception ex)
             {
                 GlobalErrorHandler.HandleError(context, ex);
             }
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void RouteRequest(HttpContext context)
+        {
+            string file = Path.GetFileName(context.Request.FilePath);
+            if (string.IsNullOrEmpty(file))
+            {
+                file = Globals.DefaultHandler;
+            }
+            IHttpHandler handler = GetHandler(file);
+            if (handler == null)
+            {
+                // TODO: FrmNotFound
+                throw new Exception("NotFound");
+            }
+
+            // Use handler
+            context.Response.Clear();
+            context.Handler = handler;
+            handler.ProcessRequest(context);
         }
 
         #endregion

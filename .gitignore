@@ -1,5 +1,7 @@
 *.suo
+*.user
 */bin/*
 */obj/*
 
 Dotfuscated/*
+Published/*

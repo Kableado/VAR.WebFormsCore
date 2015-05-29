@@ -285,9 +285,9 @@ namespace Scrummer.Code.JSON
             }
             foreach (PropertyInfo property in properties)
             {
-                object value=null;
-                MethodInfo getMethod = property.GetMethod;
-                ParameterInfo[] parameters =getMethod.GetParameters();
+                object value = null;
+                MethodInfo getMethod = property.GetGetMethod();
+                ParameterInfo[] parameters = getMethod.GetParameters();
                 if (parameters.Length == 0)
                 {
                     value = property.GetValue(obj, null);
