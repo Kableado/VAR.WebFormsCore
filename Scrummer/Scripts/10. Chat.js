@@ -3,6 +3,35 @@
     cfg.hidIDMessage = GetElement(cfg.hidIDMessage);
     cfg.hidUserName = GetElement(cfg.hidUserName);
     cfg.hidLastUser = GetElement(cfg.hidLastUser);
+    cfg.divChatContainer = GetElement(cfg.divChatContainer);
+    cfg.lblTitle = GetElement(cfg.lblTitle);
+    cfg.txtText = GetElement(cfg.txtText);
+    cfg.btnSend = GetElement(cfg.btnSend);
+
+    cfg.lblTitle.innerHTML = cfg.Texts.Chat;
+    cfg.lblTitle.className = "titleChatNormal";
+    cfg.divChatContainer.style.display = "none";
+    cfg.Minimized = true;
+    cfg.Connected = null;
+    cfg.FirstMessages = true;
+
+    cfg.lblTitle.onclick = function () {
+        if (cfg.Minimized) {
+            cfg.divChatContainer.style.display = "";
+            if (cfg.Connected) {
+                cfg.lblTitle.innerHTML = cfg.Texts.Close;
+                cfg.lblTitle.className = "titleChatNormal";
+            }
+            cfg.Minimized = false;
+        } else {
+            cfg.divChatContainer.style.display = "none";
+            if (cfg.Connected) {
+                cfg.lblTitle.innerHTML = cfg.Texts.Chat;
+                cfg.lblTitle.className = "titleChatNormal";
+            }
+            cfg.Minimized = true;
+        }
+    };
 
     var CreateMessageDOM = function (message, selfMessage, showUserName) {
         var divMessageRow = document.createElement("DIV");
@@ -36,8 +65,24 @@
     };
 
     var RequestChatData = function () {
-        var requestUrl = cfg.ServiceUrl + "?idBoard=" + cfg.IDBoard + "&idMessage=" + cfg.hidIDMessage.value;
+        var requestUrl = cfg.ServiceUrl +
+            "?idBoard=" + cfg.IDBoard +
+            "&idMessage=" + cfg.hidIDMessage.value +
+            "&PoolData=" + ((cfg.FirstMessages) ? "0" : "1");
         var ReciveChatData = function (responseText) {
+
+            // Mark as connected
+            if (cfg.Connected == false) {
+                if (cfg.Minimized) {
+                    cfg.lblTitle.innerHTML = cfg.Texts.Chat;
+                } else {
+                    cfg.lblTitle.innerHTML = cfg.Texts.Close;
+                }
+                cfg.lblTitle.className = "titleChatNormal";
+                cfg.txtText.disabled = false;
+                cfg.btnSend.disabled = false;
+            }
+            cfg.Connected = true;
 
             recvMsgs = JSON.parse(responseText);
             if (recvMsgs) {
@@ -57,7 +102,13 @@
                 }
                 cfg.divChat.appendChild(frag);
                 cfg.divChat.scrollTop = cfg.divChat.scrollHeight;
+                if (cfg.Minimized && cfg.FirstMessages == false) {
+                    cfg.lblTitle.innerHTML = cfg.Texts.NewMessages;
+                    cfg.lblTitle.className = "titleChatAlert";
+                }
             }
+
+            cfg.FirstMessages = false;
 
             // Reset pool
             window.setTimeout(function () {
@@ -65,6 +116,15 @@
             }, 20);
         };
         var ErrorChatData = function () {
+
+            // Mark as disconnected
+            cfg.lblTitle.innerHTML = cfg.Texts.Disconnected;
+            cfg.lblTitle.className = "titleChatDisconnected";
+            cfg.txtText.disabled = true;
+            cfg.btnSend.disabled = true;
+            cfg.Connected = false;
+
+            cfg.FirstMessages = false;
 
             // Retry
             window.setTimeout(function () {

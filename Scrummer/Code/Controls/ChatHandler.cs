@@ -75,8 +75,9 @@ namespace Scrummer.Code
         {
             int idBoard = Convert.ToInt32(context.Request.Params["idBoard"]);
             int idMessage = Convert.ToInt32(context.Request.Params["idMessage"]);
+            int poolData = Convert.ToInt32(context.Request.Params["PoolData"]);
             MessageBoard messageBoard;
-            bool mustWait = true;
+            bool mustWait = (poolData == 1);
             do
             {
                 if (_chatBoards.ContainsKey(idBoard))
@@ -87,6 +88,7 @@ namespace Scrummer.Code
                     {
                         mustWait = false;
                         ResponseObject(context, listMessages);
+                        return;
                     }
                 }
                 if (mustWait)
@@ -94,6 +96,7 @@ namespace Scrummer.Code
                     lock (_monitor) { Monitor.Wait(_monitor, 10000); }
                 }
             } while (mustWait);
+            ResponseObject(context, new List<Message>());
         }
 
         private void ProcessSender(HttpContext context)

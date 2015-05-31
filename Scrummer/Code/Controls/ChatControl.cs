@@ -20,6 +20,7 @@ namespace Scrummer.Code.Controls
 
         private Panel _divChatWindow = null;
         private Panel _divChatContainer = null;
+        private Panel _divChatTitleBar = null;
 
         #endregion
 
@@ -94,6 +95,13 @@ namespace Scrummer.Code.Controls
             _divChatWindow = new Panel { ID = "divChatWindow", CssClass = "divChatWindow" };
             Controls.Add(_divChatWindow);
 
+            _divChatTitleBar = new Panel { ID = "divChatTitleBar", CssClass = "divChatTitleBar" };
+            _divChatWindow.Controls.Add(_divChatTitleBar);
+
+            CLabel lblTitle = new CLabel();
+            lblTitle.ID = "lblTitle";
+            _divChatTitleBar.Controls.Add(lblTitle);
+
             _divChatContainer = new Panel { ID = "divChatContainer", CssClass = "divChatContainer" };
             _divChatWindow.Controls.Add(_divChatContainer);
             _divChatContainer.Width = _width;
@@ -133,11 +141,16 @@ namespace Scrummer.Code.Controls
             sbCfg.AppendFormat("  hidUserName: \"{0}\",\n", hidUserName.ClientID);
             sbCfg.AppendFormat("  hidIDMessage: \"{0}\",\n", hidIDMessage.ClientID);
             sbCfg.AppendFormat("  hidLastUser: \"{0}\",\n", hidLastUser.ClientID);
-            sbCfg.AppendFormat("  hidStatus: \"{0}\",\n", hidStatus.ClientID);
             sbCfg.AppendFormat("  txtText: \"{0}\",\n", txtText.ClientID);
             sbCfg.AppendFormat("  btnSend: \"{0}\",\n", btnSend.ClientID);
             sbCfg.AppendFormat("  IDBoard: {0},\n", _idBoard);
-            sbCfg.AppendFormat("  ServiceUrl: \"{0}\"\n", _serviceUrl);
+            sbCfg.AppendFormat("  ServiceUrl: \"{0}\",\n", _serviceUrl);
+            sbCfg.AppendFormat("  Texts: {{\n", _serviceUrl);
+            sbCfg.AppendFormat("    Chat: \"{0}\",\n", "Chat");
+            sbCfg.AppendFormat("    Close: \"{0}\",\n", "Close X");
+            sbCfg.AppendFormat("    NewMessages: \"{0}\",\n", "New messages");
+            sbCfg.AppendFormat("    Disconnected: \"{0}\",\n", "Disconnected");
+            sbCfg.AppendFormat("  }}\n");
             sbCfg.AppendFormat("}};\n");
             sbCfg.AppendFormat("RunChat({0});\n", strCfgName);
             sbCfg.AppendFormat("</script>\n");
