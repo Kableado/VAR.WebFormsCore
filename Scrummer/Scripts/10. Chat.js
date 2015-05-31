@@ -1,8 +1,8 @@
-﻿function RunChat(serviceUrl, divContainer, idBoard, hidIDMessage, hidUserName, hidLastUser) {
-    divContainer = GetElement(divContainer);
-    hidIDMessage = GetElement(hidIDMessage);
-    hidUserName = GetElement(hidUserName);
-    hidLastUser = GetElement(hidLastUser);
+﻿function RunChat(cfg) {
+    cfg.divChat = GetElement(cfg.divChat);
+    cfg.hidIDMessage = GetElement(cfg.hidIDMessage);
+    cfg.hidUserName = GetElement(cfg.hidUserName);
+    cfg.hidLastUser = GetElement(cfg.hidLastUser);
 
     var CreateMessageDOM = function (message, selfMessage, showUserName) {
         var divMessageRow = document.createElement("DIV");
@@ -36,27 +36,27 @@
     };
 
     var RequestChatData = function () {
-        var requestUrl = serviceUrl + "?idBoard=" + idBoard + "&idMessage=" + hidIDMessage.value;
+        var requestUrl = cfg.ServiceUrl + "?idBoard=" + cfg.IDBoard + "&idMessage=" + cfg.hidIDMessage.value;
         var ReciveChatData = function (responseText) {
 
             recvMsgs = JSON.parse(responseText);
             if (recvMsgs) {
-                var idMessage = parseInt(hidIDMessage.value);
+                var idMessage = parseInt(cfg.hidIDMessage.value);
                 var frag = document.createDocumentFragment();
                 for (var i = 0, n = recvMsgs.length; i < n; i++) {
                     var msg = recvMsgs[i];
                     if (idMessage < msg.IDMessage) {
-                        hidIDMessage.value = msg.IDMessage;
+                        cfg.hidIDMessage.value = msg.IDMessage;
                         idMessage = msg.IDMessage;
                         var elemMessage = CreateMessageDOM(msg,
-                            (msg.UserName == hidUserName.value),
-                            (hidLastUser.value !== msg.UserName));
-                        hidLastUser.value = msg.UserName;
+                            (msg.UserName == cfg.hidUserName.value),
+                            (cfg.hidLastUser.value !== msg.UserName));
+                        cfg.hidLastUser.value = msg.UserName;
                         frag.appendChild(elemMessage);
                     }
                 }
-                divContainer.appendChild(frag);
-                divContainer.scrollTop = divContainer.scrollHeight;
+                cfg.divChat.appendChild(frag);
+                cfg.divChat.scrollTop = cfg.divChat.scrollHeight;
             }
 
             // Reset pool
@@ -78,20 +78,20 @@
     RequestChatData();
 }
 
-function SendChat(serviceUrl, txtText, idBoard, hidUserName) {
-    txtText = GetElement(txtText);
-    hidUserName = GetElement(hidUserName);
+function SendChat(cfg) {
+    cfg.txtText = GetElement(cfg.txtText);
+    cfg.hidUserName = GetElement(cfg.hidUserName);
 
-    if (txtText.value.trim() == "") {
+    if (cfg.txtText.value.trim() == "") {
         return;
     }
 
     var data = {
-        "text": txtText.value,
-        "idBoard": idBoard,
-        "userName": hidUserName.value
+        "text": cfg.txtText.value,
+        "idBoard": cfg.IDBoard,
+        "userName": cfg.hidUserName.value
     };
-    txtText.value = "";
-    SendData(serviceUrl, data, null, null);
-    txtText.focus();
+    cfg.txtText.value = "";
+    SendData(cfg.ServiceUrl, data, null, null);
+    cfg.txtText.focus();
 }

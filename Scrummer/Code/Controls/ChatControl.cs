@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace Scrummer.Code.Controls
 {
-    public class ChatControl : Control
+    public class ChatControl : Control, INamingContainer
     {
         #region Declarations
 
@@ -18,6 +19,7 @@ namespace Scrummer.Code.Controls
         private Unit _height = new Unit(300, UnitType.Pixel);
 
         private Panel _divChatWindow = null;
+        private Panel _divChatContainer = null;
 
         #endregion
 
@@ -47,9 +49,9 @@ namespace Scrummer.Code.Controls
             set
             {
                 _width = value;
-                if (_divChatWindow != null)
+                if (_divChatContainer != null)
                 {
-                    _divChatWindow.Width = value;
+                    _divChatContainer.Width = value;
                 }
             }
         }
@@ -60,9 +62,9 @@ namespace Scrummer.Code.Controls
             set
             {
                 _height = value;
-                if (_divChatWindow != null)
+                if (_divChatContainer != null)
                 {
-                    _divChatWindow.Height = value;
+                    _divChatContainer.Height = value;
                 }
             }
         }
@@ -87,16 +89,21 @@ namespace Scrummer.Code.Controls
 
         private void InitializeControls()
         {
+            string strCfgName = string.Format("{0}_cfg", this.ClientID);
+
             _divChatWindow = new Panel { ID = "divChatWindow", CssClass = "divChatWindow" };
             Controls.Add(_divChatWindow);
-            _divChatWindow.Width = _width;
-            _divChatWindow.Height = _height;
+
+            _divChatContainer = new Panel { ID = "divChatContainer", CssClass = "divChatContainer" };
+            _divChatWindow.Controls.Add(_divChatContainer);
+            _divChatContainer.Width = _width;
+            _divChatContainer.Height = _height;
 
             var divChat = new Panel { ID = "divChat", CssClass = "divChat" };
-            _divChatWindow.Controls.Add(divChat);
+            _divChatContainer.Controls.Add(divChat);
 
             var divChatControls = new Panel { ID = "divChatControls", CssClass = "divChatControls" };
-            _divChatWindow.Controls.Add(divChatControls);
+            _divChatContainer.Controls.Add(divChatControls);
 
             var hidUserName = new HiddenField { ID = "hidUserName", Value = _userName };
             divChatControls.Controls.Add(hidUserName);
@@ -113,13 +120,29 @@ namespace Scrummer.Code.Controls
 
             var btnSend = new Button { ID = "btnSend", Text = "Send", CssClass = "chatButton" };
             divChatControls.Controls.Add(btnSend);
-            btnSend.Attributes.Add("onclick", String.Format("SendChat('{0}', '{1}', {2}, '{3}'); return false;",
-                _serviceUrl, txtText.ClientID, _idBoard, hidUserName.ClientID));
+            btnSend.Attributes.Add("onclick", String.Format("SendChat({0}); return false;", strCfgName));
 
-            LiteralControl litScript = new LiteralControl();
-            litScript.Text = String.Format("<script>RunChat('{0}', '{1}', '{2}', '{3}', '{4}', '{5}');</script>",
-                _serviceUrl, divChat.ClientID, _idBoard, hidIDMessage.ClientID, hidUserName.ClientID, hidLastUser.ClientID);
-            Controls.Add(litScript);
+            StringBuilder sbCfg = new StringBuilder();
+            sbCfg.AppendFormat("<script>\n");
+            sbCfg.AppendFormat("var {0} = {{\n", strCfgName);
+            sbCfg.AppendFormat("  divChatWindow: \"{0}\",\n", _divChatWindow.ClientID);
+            sbCfg.AppendFormat("  divChatTitleBar: \"{0}\",\n", _divChatTitleBar.ClientID);
+            sbCfg.AppendFormat("  lblTitle: \"{0}\",\n", lblTitle.ClientID);
+            sbCfg.AppendFormat("  divChatContainer: \"{0}\",\n", _divChatContainer.ClientID);
+            sbCfg.AppendFormat("  divChat: \"{0}\",\n", divChat.ClientID);
+            sbCfg.AppendFormat("  hidUserName: \"{0}\",\n", hidUserName.ClientID);
+            sbCfg.AppendFormat("  hidIDMessage: \"{0}\",\n", hidIDMessage.ClientID);
+            sbCfg.AppendFormat("  hidLastUser: \"{0}\",\n", hidLastUser.ClientID);
+            sbCfg.AppendFormat("  hidStatus: \"{0}\",\n", hidStatus.ClientID);
+            sbCfg.AppendFormat("  txtText: \"{0}\",\n", txtText.ClientID);
+            sbCfg.AppendFormat("  btnSend: \"{0}\",\n", btnSend.ClientID);
+            sbCfg.AppendFormat("  IDBoard: {0},\n", _idBoard);
+            sbCfg.AppendFormat("  ServiceUrl: \"{0}\"\n", _serviceUrl);
+            sbCfg.AppendFormat("}};\n");
+            sbCfg.AppendFormat("RunChat({0});\n", strCfgName);
+            sbCfg.AppendFormat("</script>\n");
+            LiteralControl liScript = new LiteralControl(sbCfg.ToString());
+            Controls.Add(liScript);
         }
 
         #endregion

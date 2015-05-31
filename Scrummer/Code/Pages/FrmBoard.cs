@@ -19,6 +19,7 @@ namespace Scrummer.Code.Pages
             Controls.Add(lblTest);
 
             ChatControl chatControl = new ChatControl();
+            chatControl.ID = "ctrChat";
             chatControl.IDBoard = _idBoard;
             chatControl.UserName = Convert.ToString(new Random().Next());
             Controls.Add(chatControl);
