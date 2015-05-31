@@ -95,7 +95,7 @@ namespace Scrummer.Code.JSON
 
         private void WriteValue(StringBuilder sbOutput, Object obj, int level, bool useReflection)
         {
-            if (obj == null)
+            if (obj == null || obj is DBNull)
             {
                 // NULL
                 sbOutput.Append("null");
@@ -115,6 +115,13 @@ namespace Scrummer.Code.JSON
             {
                 // Booleans
                 sbOutput.Append(((Boolean)obj) ? "true" : "false");
+            }
+            else if (obj is DateTime)
+            {
+                // DateTime
+                sbOutput.Append('"');
+                sbOutput.Append(((DateTime)obj).ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                sbOutput.Append('"');
             }
             else if (obj is IDictionary)
             {

@@ -4,7 +4,7 @@
     hidUserName = GetElement(hidUserName);
     hidLastUser = GetElement(hidLastUser);
 
-    var CreateMessageDOM = function (message, selfMessage, hidLastUser) {
+    var CreateMessageDOM = function (message, selfMessage, showUserName) {
         var divMessageRow = document.createElement("DIV");
         if (selfMessage) {
             divMessageRow.className = "selfMessageRow";
@@ -16,12 +16,11 @@
         divMessage.className = "message";
         divMessageRow.appendChild(divMessage);
 
-        if (hidLastUser.value !== message.UserName) {
+        if (showUserName) {
             var divUser = document.createElement("DIV");
             divUser.className = "user";
             divUser.innerHTML = escapeHTML(message.UserName);
             divMessage.appendChild(divUser);
-            hidLastUser.value = message.UserName;
         }
 
         var text = message.Text;
@@ -30,6 +29,8 @@
         divText.className = "text";
         divText.innerHTML = escapeHTML(text);
         divMessage.appendChild(divText);
+
+        divMessage.title = new Date(message.Date);
 
         return divMessageRow;
     };
@@ -47,7 +48,10 @@
                     if (idMessage < msg.IDMessage) {
                         hidIDMessage.value = msg.IDMessage;
                         idMessage = msg.IDMessage;
-                        var elemMessage = CreateMessageDOM(msg, (msg.UserName == hidUserName.value), hidLastUser);
+                        var elemMessage = CreateMessageDOM(msg,
+                            (msg.UserName == hidUserName.value),
+                            (hidLastUser.value !== msg.UserName));
+                        hidLastUser.value = msg.UserName;
                         frag.appendChild(elemMessage);
                     }
                 }
