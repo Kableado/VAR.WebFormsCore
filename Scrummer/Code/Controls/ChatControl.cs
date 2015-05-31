@@ -150,6 +150,7 @@ namespace Scrummer.Code.Controls
             sbCfg.AppendFormat("    Close: \"{0}\",\n", "Close X");
             sbCfg.AppendFormat("    NewMessages: \"{0}\",\n", "New messages");
             sbCfg.AppendFormat("    Disconnected: \"{0}\",\n", "Disconnected");
+            sbCfg.AppendFormat("    StringEmpty: \"\"\n");
             sbCfg.AppendFormat("  }}\n");
             sbCfg.AppendFormat("}};\n");
             sbCfg.AppendFormat("RunChat({0});\n", strCfgName);

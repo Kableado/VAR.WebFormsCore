@@ -1,6 +1,9 @@
 ﻿
-function SendRequest(url, onData, onError) {
+function SendRequest(url, data, onData, onError) {
     var xhr = new XMLHttpRequest();
+    if (data) {
+        url += "?" + GetDataQueryString(data);
+    }
     xhr.open("GET", url, true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {

@@ -14,6 +14,8 @@
     cfg.Minimized = true;
     cfg.Connected = null;
     cfg.FirstMessages = true;
+    cfg.ScrollOnRestore = true;
+    cfg.ScrollPosition = 0;
 
     cfg.lblTitle.onclick = function () {
         if (cfg.Minimized) {
@@ -22,8 +24,15 @@
                 cfg.lblTitle.innerHTML = cfg.Texts.Close;
                 cfg.lblTitle.className = "titleChatNormal";
             }
+            if (cfg.ScrollOnRestore) {
+                cfg.divChat.scrollTop = cfg.divChat.scrollHeight;
+            } else {
+                cfg.divChat.scrollTop = cfg.ScrollPosition;
+            }
             cfg.Minimized = false;
         } else {
+            cfg.ScrollPosition = cfg.divChat.scrollTop;
+            cfg.ScrollOnRestore = (cfg.divChat.scrollTop > (cfg.divChat.scrollHeight - cfg.divChat.offsetHeight));
             cfg.divChatContainer.style.display = "none";
             if (cfg.Connected) {
                 cfg.lblTitle.innerHTML = cfg.Texts.Chat;
@@ -65,10 +74,6 @@
     };
 
     var RequestChatData = function () {
-        var requestUrl = cfg.ServiceUrl +
-            "?idBoard=" + cfg.IDBoard +
-            "&idMessage=" + cfg.hidIDMessage.value +
-            "&PoolData=" + ((cfg.FirstMessages) ? "0" : "1");
         var ReciveChatData = function (responseText) {
 
             // Mark as connected
@@ -86,6 +91,12 @@
 
             recvMsgs = JSON.parse(responseText);
             if (recvMsgs) {
+                var msgCount = 0;
+                var scrollChat = false;
+                if (cfg.Minimized == false && cfg.divChat.scrollTop > (cfg.divChat.scrollHeight - cfg.divChat.offsetHeight)) {
+                    scrollChat = true;
+                }
+
                 var idMessage = parseInt(cfg.hidIDMessage.value);
                 var frag = document.createDocumentFragment();
                 for (var i = 0, n = recvMsgs.length; i < n; i++) {
@@ -98,11 +109,14 @@
                             (cfg.hidLastUser.value !== msg.UserName));
                         cfg.hidLastUser.value = msg.UserName;
                         frag.appendChild(elemMessage);
+                        msgCount++;
                     }
                 }
                 cfg.divChat.appendChild(frag);
-                cfg.divChat.scrollTop = cfg.divChat.scrollHeight;
-                if (cfg.Minimized && cfg.FirstMessages == false) {
+                if (scrollChat) {
+                    cfg.divChat.scrollTop = cfg.divChat.scrollHeight;
+                }
+                if (cfg.Minimized && cfg.FirstMessages == false && msgCount > 0) {
                     cfg.lblTitle.innerHTML = cfg.Texts.NewMessages;
                     cfg.lblTitle.className = "titleChatAlert";
                 }
@@ -133,7 +147,12 @@
         };
 
         // Pool data
-        SendRequest(requestUrl, ReciveChatData, ErrorChatData);
+        var data = {
+            "idBoard": cfg.IDBoard,
+            "idMessage": cfg.hidIDMessage.value,
+            "PoolData": ((cfg.FirstMessages || cfg.Connected == false) ? "0" : "1")
+        };
+        SendRequest(cfg.ServiceUrl, data, ReciveChatData, ErrorChatData);
     };
     RequestChatData();
 }
@@ -146,12 +165,14 @@ function SendChat(cfg) {
         return;
     }
 
+    // Send data
     var data = {
         "text": cfg.txtText.value,
         "idBoard": cfg.IDBoard,
         "userName": cfg.hidUserName.value
     };
-    cfg.txtText.value = "";
     SendData(cfg.ServiceUrl, data, null, null);
+
+    cfg.txtText.value = "";
     cfg.txtText.focus();
 }
