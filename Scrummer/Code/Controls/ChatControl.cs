@@ -113,15 +113,6 @@ namespace Scrummer.Code.Controls
             var divChatControls = new Panel { ID = "divChatControls", CssClass = "divChatControls" };
             _divChatContainer.Controls.Add(divChatControls);
 
-            var hidUserName = new HiddenField { ID = "hidUserName", Value = _userName };
-            divChatControls.Controls.Add(hidUserName);
-
-            var hidIDMessage = new HiddenField { ID = "hidIDMessage", Value = "0" };
-            divChatControls.Controls.Add(hidIDMessage);
-
-            var hidLastUser = new HiddenField { ID = "hidLastUser", Value = "" };
-            divChatControls.Controls.Add(hidLastUser);
-
             var txtText = new TextBox { ID = "txtText", CssClass = "chatTextBox" };
             txtText.Attributes.Add("autocomplete", "off");
             divChatControls.Controls.Add(txtText);
@@ -138,12 +129,11 @@ namespace Scrummer.Code.Controls
             sbCfg.AppendFormat("  lblTitle: \"{0}\",\n", lblTitle.ClientID);
             sbCfg.AppendFormat("  divChatContainer: \"{0}\",\n", _divChatContainer.ClientID);
             sbCfg.AppendFormat("  divChat: \"{0}\",\n", divChat.ClientID);
-            sbCfg.AppendFormat("  hidUserName: \"{0}\",\n", hidUserName.ClientID);
-            sbCfg.AppendFormat("  hidIDMessage: \"{0}\",\n", hidIDMessage.ClientID);
-            sbCfg.AppendFormat("  hidLastUser: \"{0}\",\n", hidLastUser.ClientID);
             sbCfg.AppendFormat("  txtText: \"{0}\",\n", txtText.ClientID);
             sbCfg.AppendFormat("  btnSend: \"{0}\",\n", btnSend.ClientID);
             sbCfg.AppendFormat("  IDBoard: {0},\n", _idBoard);
+            sbCfg.AppendFormat("  UserName: \"{0}\",\n", _userName);
+            sbCfg.AppendFormat("  IDMessage: {0},\n", 0);
             sbCfg.AppendFormat("  ServiceUrl: \"{0}\",\n", _serviceUrl);
             sbCfg.AppendFormat("  Texts: {{\n", _serviceUrl);
             sbCfg.AppendFormat("    Chat: \"{0}\",\n", "Chat");

@@ -1,16 +1,16 @@
 ﻿function RunChat(cfg) {
     cfg.divChat = GetElement(cfg.divChat);
-    cfg.hidIDMessage = GetElement(cfg.hidIDMessage);
-    cfg.hidUserName = GetElement(cfg.hidUserName);
-    cfg.hidLastUser = GetElement(cfg.hidLastUser);
     cfg.divChatContainer = GetElement(cfg.divChatContainer);
     cfg.lblTitle = GetElement(cfg.lblTitle);
     cfg.txtText = GetElement(cfg.txtText);
     cfg.btnSend = GetElement(cfg.btnSend);
 
+    cfg.LastUser = null;
+
     cfg.lblTitle.innerHTML = cfg.Texts.Chat;
     cfg.lblTitle.className = "titleChatNormal";
     cfg.divChatContainer.style.display = "none";
+
     cfg.Minimized = true;
     cfg.Connected = null;
     cfg.FirstMessages = true;
@@ -97,17 +97,15 @@
                     scrollChat = true;
                 }
 
-                var idMessage = parseInt(cfg.hidIDMessage.value);
                 var frag = document.createDocumentFragment();
                 for (var i = 0, n = recvMsgs.length; i < n; i++) {
                     var msg = recvMsgs[i];
-                    if (idMessage < msg.IDMessage) {
-                        cfg.hidIDMessage.value = msg.IDMessage;
-                        idMessage = msg.IDMessage;
+                    if (cfg.IDMessage < msg.IDMessage) {
+                        cfg.IDMessage = msg.IDMessage;
                         var elemMessage = CreateMessageDOM(msg,
-                            (msg.UserName == cfg.hidUserName.value),
-                            (cfg.hidLastUser.value !== msg.UserName));
-                        cfg.hidLastUser.value = msg.UserName;
+                            (msg.UserName == cfg.UserName),
+                            (cfg.LastUser !== msg.UserName));
+                        cfg.LastUser = msg.UserName;
                         frag.appendChild(elemMessage);
                         msgCount++;
                     }
@@ -149,8 +147,9 @@
         // Pool data
         var data = {
             "idBoard": cfg.IDBoard,
-            "idMessage": cfg.hidIDMessage.value,
-            "PoolData": ((cfg.FirstMessages || cfg.Connected == false) ? "0" : "1")
+            "idMessage": cfg.IDMessage,
+            "PoolData": ((cfg.FirstMessages || cfg.Connected == false) ? "0" : "1"),
+            "TimeStamp": new Date().getTime()
         };
         SendRequest(cfg.ServiceUrl, data, ReciveChatData, ErrorChatData);
     };
@@ -159,7 +158,6 @@
 
 function SendChat(cfg) {
     cfg.txtText = GetElement(cfg.txtText);
-    cfg.hidUserName = GetElement(cfg.hidUserName);
 
     if (cfg.txtText.value.trim() == "") {
         return;
@@ -169,7 +167,8 @@ function SendChat(cfg) {
     var data = {
         "text": cfg.txtText.value,
         "idBoard": cfg.IDBoard,
-        "userName": cfg.hidUserName.value
+        "userName": cfg.UserName,
+        "TimeStamp": new Date().getTime()
     };
     SendData(cfg.ServiceUrl, data, null, null);
 
