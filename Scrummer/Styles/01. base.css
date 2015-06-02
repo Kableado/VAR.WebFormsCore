@@ -69,3 +69,75 @@ h3 {
     padding: 2px;
     box-shadow: 0 0 10px rgb(0,0,0);
 }
+
+
+.formColumn {
+    display: inline-block;
+    font-size: 0;
+}
+.formRow{
+    display: block;
+    font-size: 0;
+    margin: 10px;
+}
+.formLabel{
+    display: inline-block;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+}
+.formLabel span:last-child::after{
+    content: ':';
+}
+.formField{
+    display: inline-block;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+}
+
+.textbox {
+    background: white;
+    border: solid 1px rgb(64,64,64);
+    border-radius: 5px;
+    line-height: 13px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11px;
+    padding: 3px;
+    box-shadow: inset 0px -2px 5px rgba(255,255,255,1), inset 0px 2px 5px rgba(128,128,128,1);
+}
+.textbox:focus{
+    border: solid 1px black;
+    box-shadow: 0px 0px 10px rgba(255,255,255,0.5), inset 0px -2px 5px rgba(255,255,255,1), inset 0px 2px 5px rgba(0,0,0,0.5);
+}
+
+.button{
+    padding: 5px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5), inset 0px 2px 5px rgba(255,255,255,1), inset 0px -2px 5px rgba(128,128,128,1);
+    vertical-align: top;
+    border-radius: 5px;
+    border: solid 1px black;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11px;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+    text-align: center;
+    cursor: pointer;
+    background-color: rgb(192,192,192);
+}
+.button:hover{
+    background-color: rgb(220,220,220);
+}
+.button:active{
+    background-color: rgb(220,220,220);
+    box-shadow: inset 0px 2px 5px rgba(255,255,255,1), inset 0px -2px 5px rgba(128,128,128,1);
+}
+
+.width25pc{ width: 25%; }
+.width50pc{ width: 50%; }
+.width75pc{ width: 75%; }
+.width100pc{ width: 100%; }
+
+.width70px {width: 70px; max-width: 100%; }
+.width100px {width: 100px; max-width: 100%; }
+.width150px {width: 150px; max-width: 100%; }
+.width200px {width: 200px; max-width: 100%; }
+.width300px {width: 300px; max-width: 100%; }

@@ -72,6 +72,7 @@
     <Compile Include="Code\Entities\Message.cs" />
     <Compile Include="Code\GlobalErrorHandler.cs" />
     <Compile Include="Code\JSON\ParserContext.cs" />
+    <Compile Include="Code\Pages\FormUtils.cs" />
     <Compile Include="Code\Pages\FrmBoard.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -102,7 +103,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51559</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
