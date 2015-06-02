@@ -69,6 +69,7 @@
     <Compile Include="Code\Controls\ChatControl.cs" />
     <Compile Include="Code\Controls\ChatHandler.cs" />
     <Compile Include="Code\Controls\CLabel.cs" />
+    <Compile Include="Code\Controls\CTextBox.cs" />
     <Compile Include="Code\Entities\Message.cs" />
     <Compile Include="Code\GlobalErrorHandler.cs" />
     <Compile Include="Code\JSON\ParserContext.cs" />

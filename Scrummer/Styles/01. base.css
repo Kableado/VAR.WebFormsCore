@@ -109,6 +109,15 @@ h3 {
     border: solid 1px black;
     box-shadow: 0px 0px 10px rgba(255,255,255,0.5), inset 0px -2px 5px rgba(255,255,255,1), inset 0px 2px 5px rgba(0,0,0,0.5);
 }
+.textboxEmpty{
+    box-shadow: 0px 0px 10px rgba(255,0,0,0.5), inset 0px -2px 5px rgba(255,255,255,1), inset 0px 2px 5px rgba(0,0,0,0.5);
+    border: solid 1px rgb(255,0,0);
+}
+.textboxEmpty:focus{
+    box-shadow: 0px 0px 10px rgba(255,0,0,0.5), inset 0px -2px 5px rgba(255,255,255,1), inset 0px 2px 5px rgba(0,0,0,0.5);
+    border: solid 1px black;
+}
+
 
 .button{
     padding: 5px;
