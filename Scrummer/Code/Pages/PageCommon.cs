@@ -80,8 +80,12 @@ namespace Scrummer.Code.Pages
             var pnlHeader = new Panel { CssClass = "divHeader" };
             _form.Controls.Add(pnlHeader);
 
+            HyperLink lnkTitle = new HyperLink();
+            lnkTitle.NavigateUrl = ".";
+            pnlHeader.Controls.Add(lnkTitle);
+
             var lblTitle = new CLabel { Text = Globals.Title, Tag = "h1" };
-            pnlHeader.Controls.Add(lblTitle);
+            lnkTitle.Controls.Add(lblTitle);
 
             _pnlContainer.CssClass = "divContent";
             _form.Controls.Add(_pnlContainer);
