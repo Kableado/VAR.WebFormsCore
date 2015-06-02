@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace Scrummer.Code.Controls
 {
-    public class CTextBox: TextBox
+    public class CTextBox : TextBox, IValidableControl
     {
         #region Declarations
 
@@ -46,12 +46,7 @@ namespace Scrummer.Code.Controls
 
         public CTextBox()
         {
-            Init += CTextbox_Init;
             PreRender += CTextbox_PreRender;
-        }
-
-        void CTextbox_Init(object sender, EventArgs e)
-        {
         }
 
         void CTextbox_PreRender(object sender, EventArgs e)
@@ -79,11 +74,6 @@ namespace Scrummer.Code.Controls
             }
         }
 
-        public override void RenderEndTag(HtmlTextWriter writer)
-        {
-            base.RenderEndTag(writer);
-        }
-
         #endregion
 
         #region Public methods
@@ -91,6 +81,11 @@ namespace Scrummer.Code.Controls
         public bool IsEmpty()
         {
             return string.IsNullOrEmpty(Text);
+        }
+
+        public bool IsValid()
+        {
+            return _allowEmpty || (string.IsNullOrEmpty(Text) == false);
         }
 
         #endregion

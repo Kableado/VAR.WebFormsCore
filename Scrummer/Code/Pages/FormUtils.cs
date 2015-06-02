@@ -35,5 +35,37 @@ namespace Scrummer.Code.Pages
             return pnlRow;
         }
 
+        public static bool Control_IsValid(Control control)
+        {
+            if (control is IValidableControl)
+            {
+                if (((IValidableControl)control).IsValid() == false)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool Controls_AreValid(ControlCollection controls) {
+            bool valid = true;
+            foreach (Control control in controls)
+            {
+                if (Control_IsValid(control))
+                {
+                    if (Controls_AreValid(control.Controls) == false)
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+                else
+                {
+                    valid = false;
+                    break;
+                }
+            }
+            return valid;
+        }
     }
 }
