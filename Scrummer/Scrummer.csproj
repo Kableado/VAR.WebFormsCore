@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Code\Bundler.cs" />
     <Compile Include="Code\BusinessLogic\MessageBoard.cs" />
+    <Compile Include="Code\Controls\CButton.cs" />
     <Compile Include="Code\Controls\ChatControl.cs" />
     <Compile Include="Code\Controls\ChatHandler.cs" />
     <Compile Include="Code\Controls\CLabel.cs" />
