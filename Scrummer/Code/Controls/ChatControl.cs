@@ -15,6 +15,8 @@ namespace Scrummer.Code.Controls
 
         private string _userName = string.Empty;
 
+        private int _timePoolData = 10000;
+
         private Unit _width = new Unit(500, UnitType.Pixel);
         private Unit _height = new Unit(300, UnitType.Pixel);
 
@@ -42,6 +44,12 @@ namespace Scrummer.Code.Controls
         {
             get { return _userName; }
             set { _userName = value; }
+        }
+
+        public int TimePoolData
+        {
+            get { return _timePoolData; }
+            set { _timePoolData = value; }
         }
 
         public Unit Width
@@ -135,6 +143,7 @@ namespace Scrummer.Code.Controls
             sbCfg.AppendFormat("  UserName: \"{0}\",\n", _userName);
             sbCfg.AppendFormat("  IDMessage: {0},\n", 0);
             sbCfg.AppendFormat("  ServiceUrl: \"{0}\",\n", _serviceUrl);
+            sbCfg.AppendFormat("  TimePoolData: {0},\n", _timePoolData);
             sbCfg.AppendFormat("  Texts: {{\n", _serviceUrl);
             sbCfg.AppendFormat("    Chat: \"{0}\",\n", "Chat");
             sbCfg.AppendFormat("    Close: \"{0}\",\n", "Close X");

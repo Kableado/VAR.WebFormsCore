@@ -2,57 +2,22 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Web;
+using Scrummer.Code.BusinessLogic;
+using Scrummer.Code.Entities;
 using Scrummer.Code.JSON;
 
 namespace Scrummer.Code
 {
-    public class Message
-    {
-        public int IDMessage { get; set; }
-        public string UserName { get; set; }
-        public string Text { get; set; }
-        public DateTime Date { get; set; }
-    };
-
-    public class MessageBoard
-    {
-        private List<Message> _messages = new List<Message>();
-        private int lastIDMessage = 0;
-
-        public List<Message> Messages_GetList(int idMessage)
-        {
-            List<Message> listMessages = new List<Message>();
-            for (int i = 0, n = _messages.Count; i < n; i++)
-            {
-                Message msg = _messages[i];
-                if (msg.IDMessage > idMessage)
-                {
-                    listMessages.Insert(0, msg);
-                }
-                else
-                {
-                    break;
-                }
-            }
-            return listMessages;
-        }
-
-        public void Message_Add(string userName, string text)
-        {
-            lastIDMessage++;
-            Message msg = new Message();
-            msg.IDMessage = lastIDMessage;
-            msg.UserName = userName;
-            msg.Text = text;
-            msg.Date = DateTime.UtcNow;
-            _messages.Insert(0, msg);
-        }
-    }
-
     public class ChatHandler : IHttpHandler
     {
+        #region Declarations
+
         private static object _monitor = new object();
         private static Dictionary<int, MessageBoard> _chatBoards = new Dictionary<int, MessageBoard>();
+
+        #endregion
+
+        #region IHttpHandler
 
         public bool IsReusable
         {
@@ -71,13 +36,19 @@ namespace Scrummer.Code
             }
         }
 
+        #endregion
+
+        #region Private methods
+
         private void ProcessRevicer(HttpContext context)
         {
-            int idBoard = Convert.ToInt32(context.Request.Params["idBoard"]);
-            int idMessage = Convert.ToInt32(context.Request.Params["idMessage"]);
-            int poolData = Convert.ToInt32(context.Request.Params["PoolData"]);
+            int idBoard = Convert.ToInt32(GetRequestParm(context, "IDBoard"));
+            int idMessage = Convert.ToInt32(GetRequestParm(context, "IDMessage"));
+            string strTimePoolData = GetRequestParm(context, "TimePoolData");
+            int timePoolData = Convert.ToInt32(string.IsNullOrEmpty(strTimePoolData) ? "0" : strTimePoolData);
+
             MessageBoard messageBoard;
-            bool mustWait = (poolData == 1);
+            bool mustWait = (timePoolData > 0);
             do
             {
                 if (_chatBoards.ContainsKey(idBoard))
@@ -93,7 +64,7 @@ namespace Scrummer.Code
                 }
                 if (mustWait)
                 {
-                    lock (_monitor) { Monitor.Wait(_monitor, 10000); }
+                    lock (_monitor) { Monitor.Wait(_monitor, timePoolData); }
                 }
             } while (mustWait);
             ResponseObject(context, new List<Message>());
@@ -101,10 +72,10 @@ namespace Scrummer.Code
 
         private void ProcessSender(HttpContext context)
         {
-            string strIDBoard = GetRequestParm(context, "idBoard");
+            string text = Convert.ToString(GetRequestParm(context, "Text"));
+            string strIDBoard = GetRequestParm(context, "IDBoard");
             int idBoard = Convert.ToInt32(string.IsNullOrEmpty(strIDBoard) ? "0" : strIDBoard);
-            string userName = Convert.ToString(GetRequestParm(context, "userName"));
-            string text = Convert.ToString(GetRequestParm(context, "text"));
+            string userName = Convert.ToString(GetRequestParm(context, "UserName"));
 
             lock (_chatBoards)
             {
@@ -141,5 +112,7 @@ namespace Scrummer.Code
             context.Response.ContentType = "text/json";
             context.Response.Write(jsonWritter.Write(obj));
         }
+
+        #endregion
     }
 }

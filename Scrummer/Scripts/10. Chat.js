@@ -146,9 +146,9 @@
 
         // Pool data
         var data = {
-            "idBoard": cfg.IDBoard,
-            "idMessage": cfg.IDMessage,
-            "PoolData": ((cfg.FirstMessages || cfg.Connected == false) ? "0" : "1"),
+            "IDBoard": cfg.IDBoard,
+            "IDMessage": cfg.IDMessage,
+            "TimePoolData": ((cfg.FirstMessages || cfg.Connected == false) ? "0" : String(cfg.TimePoolData)),
             "TimeStamp": new Date().getTime()
         };
         SendRequest(cfg.ServiceUrl, data, ReciveChatData, ErrorChatData);
@@ -165,9 +165,9 @@ function SendChat(cfg) {
 
     // Send data
     var data = {
-        "text": cfg.txtText.value,
-        "idBoard": cfg.IDBoard,
-        "userName": cfg.UserName,
+        "Text": cfg.txtText.value,
+        "IDBoard": cfg.IDBoard,
+        "UserName": cfg.UserName,
         "TimeStamp": new Date().getTime()
     };
     SendData(cfg.ServiceUrl, data, null, null);
