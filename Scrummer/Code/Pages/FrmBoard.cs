@@ -21,7 +21,7 @@ namespace Scrummer.Code.Pages
             ChatControl chatControl = new ChatControl();
             chatControl.ID = "ctrChat";
             chatControl.IDBoard = _idBoard;
-            chatControl.UserName = Convert.ToString(new Random().Next());
+            chatControl.UserName = CurrentUser.Name;
             Controls.Add(chatControl);
         }
     }

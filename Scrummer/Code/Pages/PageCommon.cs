@@ -4,7 +4,9 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Scrummer.Code.BusinessLogic;
 using Scrummer.Code.Controls;
+using Scrummer.Code.Entities;
 
 namespace Scrummer.Code.Pages
 {
@@ -17,6 +19,9 @@ namespace Scrummer.Code.Pages
         private HtmlForm _form;
         private Panel _pnlContainer = new Panel();
 
+        private bool _mustBeAutenticated = true;
+        private User _currentUser = null;
+
         #endregion
 
         #region Properties
@@ -26,14 +31,43 @@ namespace Scrummer.Code.Pages
             get { return _pnlContainer.Controls; }
         }
 
+        public bool MustBeAutenticated
+        {
+            get { return _mustBeAutenticated; }
+            set { _mustBeAutenticated = value; }
+        }
+
+        public User CurrentUser
+        {
+            get { return _currentUser; }
+        }
+
         #endregion
 
         #region Life cycle
 
         public PageCommon()
         {
+            PreInit += PageCommon_PreInit;
             Init += PageCommon_Init;
             PreRender += PageCommon_PreRender;
+        }
+
+        void PageCommon_PreInit(object sender, EventArgs e)
+        {
+            Session session = Sessions.Current.Session_GetCurrent(Context);
+            if (session != null)
+            {
+                _currentUser = Users.Current.User_GetByName(session.UserName);
+                if (_mustBeAutenticated)
+                {
+                    Sessions.Current.Session_SetCookie(Context, session);
+                }
+            }
+            if (_currentUser == null && _mustBeAutenticated)
+            {
+                Response.Redirect("FrmLogin");
+            }
         }
 
         void PageCommon_Init(object sender, EventArgs e)

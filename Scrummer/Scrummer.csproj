@@ -66,6 +66,8 @@
   <ItemGroup>
     <Compile Include="Code\Bundler.cs" />
     <Compile Include="Code\BusinessLogic\MessageBoard.cs" />
+    <Compile Include="Code\BusinessLogic\Sessions.cs" />
+    <Compile Include="Code\BusinessLogic\Users.cs" />
     <Compile Include="Code\Controls\CButton.cs" />
     <Compile Include="Code\Controls\ChatControl.cs" />
     <Compile Include="Code\Controls\ChatHandler.cs" />
@@ -74,6 +76,8 @@
     <Compile Include="Code\Controls\IValidableControl.cs" />
     <Compile Include="Code\CryptoUtils.cs" />
     <Compile Include="Code\Entities\Message.cs" />
+    <Compile Include="Code\Entities\Session.cs" />
+    <Compile Include="Code\Entities\User.cs" />
     <Compile Include="Code\GlobalErrorHandler.cs" />
     <Compile Include="Code\JSON\ParserContext.cs" />
     <Compile Include="Code\Pages\FormUtils.cs" />
@@ -81,6 +85,12 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Code\Pages\FrmEcho.cs" />
+    <Compile Include="Code\Pages\FrmLogin.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Code\Pages\FrmRegister.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Code\Pages\PageCommon.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

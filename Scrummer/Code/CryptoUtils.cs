@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 
 namespace Scrummer.Code
 {
@@ -23,7 +19,7 @@ namespace Scrummer.Code
         public static string GetRandString(int len)
         {
             byte[] bytes = new byte[len];
-            var cryptoRandom = new System.Security.Cryptography.RNGCryptoServiceProvider();
+            var cryptoRandom = new RNGCryptoServiceProvider();
             cryptoRandom.GetBytes(bytes);
 
             UTF8Encoding encoding = new UTF8Encoding();
