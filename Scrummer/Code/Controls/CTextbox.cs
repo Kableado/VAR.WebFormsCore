@@ -18,6 +18,8 @@ namespace Scrummer.Code.Controls
 
         private string _placeHolder = string.Empty;
 
+        private bool _markedInvalid = false;
+
         #endregion
 
         #region Properties
@@ -39,7 +41,13 @@ namespace Scrummer.Code.Controls
             get { return _placeHolder; }
             set { _placeHolder = value; }
         }
-        
+
+        public bool MarkedInvalid
+        {
+            get { return _markedInvalid; }
+            set { _markedInvalid = value; }
+        }
+
         #endregion
 
         #region Control life cycle
@@ -56,11 +64,11 @@ namespace Scrummer.Code.Controls
             {
                 CssClass = String.Format("{0} {1}", CssClassBase, _cssClassExtra);
             }
-            if (Page.IsPostBack && _allowEmpty == false && IsEmpty())
+            if (Page.IsPostBack && (_allowEmpty == false && IsEmpty()) || _markedInvalid)
             {
-                CssClass += " textboxEmpty";
+                CssClass += " textboxInvalid";
             }
-            Attributes.Add("onchange", "ElementRemoveClass(this, 'textboxEmpty');");
+            Attributes.Add("onchange", "ElementRemoveClass(this, 'textboxInvalid');");
 
             if (string.IsNullOrEmpty(_placeHolder) == false)
             {
