@@ -89,7 +89,7 @@ namespace Scrummer.Code.BusinessLogic
                 if (string.IsNullOrEmpty(password) == false)
                 {
                     user.PasswordSalt = CryptoUtils.GetCryptoToken();
-                    user.PasswordHash = CryptoUtils.GetSHA1(String.Format("{1}{0}{1}", password, user.PasswordSalt));
+                    user.PasswordHash = CryptoUtils.GetHashedPassword(password, user.PasswordSalt);
                 }
 
                 if (isNew) { _users.Add(user); }
@@ -102,7 +102,7 @@ namespace Scrummer.Code.BusinessLogic
             User user = User_GetByNameOrEmail(nameOrMail, nameOrMail);
             if (user == null) { return false; }
 
-            string passwordHash = CryptoUtils.GetSHA1(String.Format("{1}{0}{1}", password, user.PasswordSalt));
+            string passwordHash = CryptoUtils.GetHashedPassword(password, user.PasswordSalt);
             if (passwordHash != user.PasswordHash) { return false; }
 
             return true;

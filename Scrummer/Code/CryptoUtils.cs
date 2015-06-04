@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Scrummer.Code
@@ -30,5 +31,11 @@ namespace Scrummer.Code
         {
             return CryptoUtils.GetSHA1(CryptoUtils.GetRandString(10));
         }
+
+        public static string GetHashedPassword(string password, string passwordSalt)
+        {
+            return CryptoUtils.GetSHA1(String.Format("{1}{0}{1}", password, passwordSalt));
+        }
+
     }
 }
