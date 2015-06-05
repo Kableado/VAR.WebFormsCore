@@ -51,6 +51,18 @@ namespace Scrummer.Code
             bool mustWait = (timePoolData > 0);
             do
             {
+                if (_chatBoards.ContainsKey(idBoard) == false)
+                {
+                    lock (_chatBoards)
+                    {
+                        if (_chatBoards.ContainsKey(idBoard) == false)
+                        {
+                            messageBoard = new MessageBoard(idBoard);
+                            _chatBoards[idBoard] = messageBoard;
+                        }
+                    }
+                }
+
                 if (_chatBoards.ContainsKey(idBoard))
                 {
                     messageBoard = _chatBoards[idBoard];
@@ -86,7 +98,7 @@ namespace Scrummer.Code
                 }
                 else
                 {
-                    messageBoard = new MessageBoard();
+                    messageBoard = new MessageBoard(idBoard);
                     _chatBoards[idBoard] = messageBoard;
                 }
                 messageBoard.Message_Add(userName, text);
