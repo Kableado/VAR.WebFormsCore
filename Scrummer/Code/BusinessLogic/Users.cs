@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Scrummer.Code.Entities;
+using Scrummer.Code.JSON;
 
 namespace Scrummer.Code.BusinessLogic
 {
@@ -27,6 +29,15 @@ namespace Scrummer.Code.BusinessLogic
                 return _currentInstance;
             }
             set { _currentInstance = value; }
+        }
+
+        #endregion
+
+        #region Life cycle
+
+        public Users()
+        {
+            LoadData();
         }
 
         #endregion
@@ -93,6 +104,8 @@ namespace Scrummer.Code.BusinessLogic
                 }
 
                 if (isNew) { _users.Add(user); }
+
+                SaveData();
             }
             return user;
         }
@@ -107,6 +120,26 @@ namespace Scrummer.Code.BusinessLogic
 
             return true;
         }
+
+        #endregion
+
+        #region Private methods
+
+        #region Persistence
+
+        private const string PersistenceFile = "priv/users.json";
+
+        private void LoadData()
+        {
+            _users = Persistence.LoadList<User>(PersistenceFile);
+        }
+
+        private void SaveData()
+        {
+            Persistence.SaveList(PersistenceFile, _users);
+        }
+
+        #endregion
 
         #endregion
     }
