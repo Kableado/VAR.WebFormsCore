@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Scrummer.Code.JSON
@@ -11,9 +12,86 @@ namespace Scrummer.Code.JSON
         private ParserContext ctx;
         private bool tainted = false;
 
+        private List<Type> _knownTypes = new List<Type>();
+
+        #endregion
+
+        #region Properties
+
+        public bool Tainted
+        {
+            get { return tainted; }
+        }
+
+        public List<Type> KnownTypes
+        {
+            get { return _knownTypes; }
+        }
+
         #endregion
 
         #region Private methods
+
+        private static Dictionary<Type, PropertyInfo[]> _dictProperties = new Dictionary<Type, PropertyInfo[]>();
+
+        private PropertyInfo[] Type_GetProperties(Type type)
+        {
+            PropertyInfo[] typeProperties = null;
+            if (_dictProperties.ContainsKey(type)) { typeProperties = _dictProperties[type]; }
+            else
+            {
+                lock(_dictProperties){
+
+                    if (_dictProperties.ContainsKey(type)) { typeProperties = _dictProperties[type]; }
+                    else
+                    {
+                        typeProperties = type.GetProperties(BindingFlags.Public | BindingFlags.OptionalParamBinding | BindingFlags.Instance);
+                        _dictProperties.Add(type, typeProperties);
+                    }
+                }
+            }
+            return typeProperties;
+        }
+
+        private bool CompareToType(Dictionary<string, object> obj, Type type)
+        {
+            PropertyInfo[] typeProperties = Type_GetProperties(type);
+            int count = 0;
+            foreach (PropertyInfo prop in typeProperties)
+            {
+                if (obj.ContainsKey(prop.Name))
+                {
+                    count++;
+                }
+            }
+            return (count == typeProperties.Length);
+        }
+
+        private object ConvertToType(Dictionary<string, object> obj, Type type)
+        {
+            PropertyInfo[] typeProperties = Type_GetProperties(type);
+            object newObj = Activator.CreateInstance(type);
+            foreach (PropertyInfo prop in typeProperties)
+            {
+                if (obj.ContainsKey(prop.Name))
+                {
+                    prop.SetValue(newObj, Convert.ChangeType(obj[prop.Name], prop.PropertyType), null);
+                }
+            }
+            return newObj;
+        }
+
+        private object TryConvertToTypes(Dictionary<string, object> obj)
+        {
+            foreach (Type type in _knownTypes)
+            {
+                if (CompareToType(obj, type))
+                {
+                    return ConvertToType(obj, type);
+                }
+            }
+            return obj;
+        }
 
         private int ParseHexShort()
         {
@@ -265,6 +343,7 @@ namespace Scrummer.Code.JSON
             {
                 return null;
             }
+
             return obj;
         }
 
@@ -278,7 +357,8 @@ namespace Scrummer.Code.JSON
                     token = ParseQuotedString();
                     break;
                 case '{':
-                    token = ParseObject();
+                    Dictionary<string, object> obj = ParseObject();
+                    token = TryConvertToTypes(obj);
                     break;
                 case '[':
                     token = ParseArray();
