@@ -46,6 +46,15 @@ namespace Scrummer.Code.BusinessLogic
         }
 
         #endregion
+        
+        #region Life cycle
+
+        public Sessions()
+        {
+            LoadData();
+        }
+
+        #endregion
 
         #region Public methods
 
@@ -67,6 +76,8 @@ namespace Scrummer.Code.BusinessLogic
                 _sessions.Add(session);
 
                 Session_SetCookie(context, session);
+
+                SaveData();
             }
             return true;
         }
@@ -95,6 +106,8 @@ namespace Scrummer.Code.BusinessLogic
                 HttpCookie cookie = new HttpCookie(_cookieName);
                 cookie.Expires = DateTime.Now.AddDays(-1d);
                 context.Response.Cookies.Add(cookie);
+
+                SaveData();
             }
             return true;
         }
@@ -114,6 +127,22 @@ namespace Scrummer.Code.BusinessLogic
             }
             return null;
         }
+
+        #region Persistence
+
+        private const string PersistenceFile = "priv/sessions.json";
+
+        private void LoadData()
+        {
+            _sessions = Persistence.LoadList<Session>(PersistenceFile);
+        }
+
+        private void SaveData()
+        {
+            Persistence.SaveList(PersistenceFile, _sessions);
+        }
+
+        #endregion
 
         #endregion
     }
