@@ -45,6 +45,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="priv\keep.txt" />
     <Content Include="Scripts\01. Base.js" />
     <None Include="Properties\PublishProfiles\Scrummer.pubxml" />
     <None Include="Web.Debug.config">
@@ -66,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Code\Bundler.cs" />
     <Compile Include="Code\BusinessLogic\MessageBoard.cs" />
+    <Compile Include="Code\BusinessLogic\Persistence.cs" />
     <Compile Include="Code\BusinessLogic\Sessions.cs" />
     <Compile Include="Code\BusinessLogic\Users.cs" />
     <Compile Include="Code\Controls\CButton.cs" />
