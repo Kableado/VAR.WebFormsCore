@@ -18,6 +18,8 @@ namespace Scrummer.Code.Pages
         private HtmlGenericControl _body;
         private HtmlForm _form;
         private Panel _pnlContainer = new Panel();
+        private CButton _btnPostback = new CButton();
+        private CButton _btnLogout = new CButton();
 
         private bool _mustBeAutenticated = true;
         private User _currentUser = null;
@@ -78,6 +80,21 @@ namespace Scrummer.Code.Pages
         void PageCommon_PreRender(object sender, EventArgs e)
         {
             _head.Title = string.IsNullOrEmpty(Title) ? Globals.Title : String.Format("{0}{1}{2}", Globals.Title, Globals.TitleSeparator, Title);
+            _btnLogout.Visible = (_currentUser != null);
+        }
+
+        #endregion
+
+        #region UI Events
+
+        void btnLogout_Click(object sender, EventArgs e)
+        {
+            Sessions.Current.Session_FinalizeCurrent(Context);
+            _currentUser = null;
+            if (_mustBeAutenticated)
+            {
+                Response.Redirect("FrmLogin");
+            }
         }
 
         #endregion
@@ -120,6 +137,20 @@ namespace Scrummer.Code.Pages
 
             var lblTitle = new CLabel { Text = Globals.Title, Tag = "h1" };
             lnkTitle.Controls.Add(lblTitle);
+
+            _btnPostback.ID = "btnPostback";
+            _btnPostback.Text = "Postback";
+            pnlHeader.Controls.Add(_btnPostback);
+            _btnPostback.Style.Add("display", "none");
+
+            var pnlUserInfo = new Panel { CssClass = "divUserInfo" };
+            pnlHeader.Controls.Add(pnlUserInfo);
+
+            _btnLogout.ID = "btnLogout";
+            _btnLogout.Text = "Logout";
+            _btnLogout.Click += btnLogout_Click;
+            _btnLogout.Attributes.Add("onclick", String.Format("return confirm('{0}');", "¿Are you sure to exit?"));
+            pnlUserInfo.Controls.Add(_btnLogout);
 
             _pnlContainer.CssClass = "divContent";
             _form.Controls.Add(_pnlContainer);
