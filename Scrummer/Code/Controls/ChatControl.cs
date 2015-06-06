@@ -123,6 +123,7 @@ namespace Scrummer.Code.Controls
 
             var txtText = new TextBox { ID = "txtText", CssClass = "chatTextBox" };
             txtText.Attributes.Add("autocomplete", "off");
+            txtText.Attributes.Add("onkeydown", String.Format("if(event.keyCode==13){{SendChat({0}); return false;}}", strCfgName));
             divChatControls.Controls.Add(txtText);
 
             var btnSend = new Button { ID = "btnSend", Text = "Send", CssClass = "chatButton" };
