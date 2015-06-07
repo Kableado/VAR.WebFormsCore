@@ -28,7 +28,7 @@ namespace Scrummer.Code
         {
             if (context.Request.RequestType == "GET")
             {
-                ProcessRevicer(context);
+                ProcessReciver(context);
             }
             if (context.Request.RequestType == "POST")
             {
@@ -40,7 +40,7 @@ namespace Scrummer.Code
 
         #region Private methods
 
-        private void ProcessRevicer(HttpContext context)
+        private void ProcessReciver(HttpContext context)
         {
             int idBoard = Convert.ToInt32(GetRequestParm(context, "IDBoard"));
             int idMessage = Convert.ToInt32(GetRequestParm(context, "IDMessage"));
@@ -88,6 +88,12 @@ namespace Scrummer.Code
             string strIDBoard = GetRequestParm(context, "IDBoard");
             int idBoard = Convert.ToInt32(string.IsNullOrEmpty(strIDBoard) ? "0" : strIDBoard);
             string userName = Convert.ToString(GetRequestParm(context, "UserName"));
+            Session session = Sessions.Current.Session_GetCurrent(context);
+            if (session.UserName.ToLower() != userName.ToLower())
+            {
+                ResponseObject(context, new OperationStatus { IsOK = false, Message = "User mismatch" });
+                return;
+            }
 
             lock (_chatBoards)
             {
@@ -104,6 +110,7 @@ namespace Scrummer.Code
                 messageBoard.Message_Add(userName, text);
                 lock (_monitor) { Monitor.PulseAll(_monitor); }
             }
+            ResponseObject(context, new OperationStatus { IsOK = true, Message = "Message sent" });
         }
 
         private string GetRequestParm(HttpContext context, string parm)
@@ -122,7 +129,8 @@ namespace Scrummer.Code
         {
             var jsonWritter = new JSONWriter(true);
             context.Response.ContentType = "text/json";
-            context.Response.Write(jsonWritter.Write(obj));
+            string strObject = jsonWritter.Write(obj);
+            context.Response.Write(strObject);
         }
 
         #endregion

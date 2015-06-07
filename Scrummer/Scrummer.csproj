@@ -78,6 +78,7 @@
     <Compile Include="Code\Controls\IValidableControl.cs" />
     <Compile Include="Code\CryptoUtils.cs" />
     <Compile Include="Code\Entities\Message.cs" />
+    <Compile Include="Code\Entities\OperationStatus.cs" />
     <Compile Include="Code\Entities\Session.cs" />
     <Compile Include="Code\Entities\User.cs" />
     <Compile Include="Code\GlobalErrorHandler.cs" />
