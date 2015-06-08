@@ -70,7 +70,6 @@ namespace Scrummer.Code.Pages
 
         #endregion
 
-
         #region Private methods
 
         private void InitializeComponents()
@@ -103,6 +102,15 @@ namespace Scrummer.Code.Pages
             pnlButtons.Controls.Add(_btnRegister);
             pnlButtons.Controls.Add(_btnExit);
             _pnlRegister.Controls.Add(FormUtils.CreateField(String.Empty, pnlButtons));
+
+            _txtName.Attributes.Add("onkeydown", String.Format(
+                "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}", _txtEmail.ClientID));
+            _txtEmail.Attributes.Add("onkeydown", String.Format(
+                "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}", _txtPassword1.ClientID));
+            _txtPassword1.Attributes.Add("onkeydown", String.Format(
+                "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}", _txtPassword2.ClientID));
+            _txtPassword2.Attributes.Add("onkeydown", String.Format(
+                "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}", _btnRegister.ClientID));
 
 
             Controls.Add(_pnlSuccess);
