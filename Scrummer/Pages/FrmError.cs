@@ -2,9 +2,9 @@
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Scrummer.Code.Controls;
+using Scrummer.Controls;
 
-namespace Scrummer.Code.Pages
+namespace Scrummer.Pages
 {
     public class FrmError : PageCommon
     {

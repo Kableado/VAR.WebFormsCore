@@ -6,7 +6,7 @@ using Scrummer.Code.BusinessLogic;
 using Scrummer.Code.Entities;
 using Scrummer.Code.JSON;
 
-namespace Scrummer.Code
+namespace Scrummer.Controls
 {
     public class ChatHandler : IHttpHandler
     {

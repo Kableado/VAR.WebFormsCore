@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Web;
-using Scrummer.Code.Pages;
+using Scrummer.Pages;
 
 namespace Scrummer.Code
 {

@@ -1,7 +1,7 @@
 ﻿using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Scrummer.Code.Controls
+namespace Scrummer.Controls
 {
     public class CLabel : Label
     {

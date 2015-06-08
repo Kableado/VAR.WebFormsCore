@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using Scrummer.Code.JSON;
 
-namespace Scrummer.Code.Pages
+namespace Scrummer.Pages
 {
     public class FrmEcho : IHttpHandler
     {

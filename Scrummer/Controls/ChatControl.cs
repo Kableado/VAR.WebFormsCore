@@ -3,7 +3,7 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Scrummer.Code.Controls
+namespace Scrummer.Controls
 {
     public class ChatControl : Control, INamingContainer
     {

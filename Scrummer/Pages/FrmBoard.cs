@@ -1,7 +1,7 @@
 ﻿using System;
-using Scrummer.Code.Controls;
+using Scrummer.Controls;
 
-namespace Scrummer.Code.Pages
+namespace Scrummer.Pages
 {
     public class FrmBoard : PageCommon
     {

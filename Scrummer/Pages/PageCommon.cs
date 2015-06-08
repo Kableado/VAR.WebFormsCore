@@ -5,10 +5,10 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Scrummer.Code.BusinessLogic;
-using Scrummer.Code.Controls;
 using Scrummer.Code.Entities;
+using Scrummer.Controls;
 
-namespace Scrummer.Code.Pages
+namespace Scrummer.Pages
 {
     public class PageCommon : Page
     {
