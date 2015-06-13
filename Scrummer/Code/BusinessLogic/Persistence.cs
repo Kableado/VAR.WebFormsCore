@@ -24,10 +24,25 @@ namespace Scrummer.Code.BusinessLogic
 
         public static List<T> LoadList<T>(string file)
         {
+            return LoadList<T>(file, null);
+        }
+
+        public static List<T> LoadList<T>(string file, List<Type> types)
+        {
             List<T> listResult = new List<T>();
             JSONParser parser = new JSONParser();
-            parser.KnownTypes.Add(typeof(T));
-
+            Type typeResult = typeof(T);
+            if (typeResult.IsInterface == false)
+            {
+                parser.KnownTypes.Add(typeof(T));
+            }
+            if (types != null)
+            {
+                foreach (Type type in types)
+                {
+                    parser.KnownTypes.Add(type);
+                }
+            }
             string filePath = GetLocalPath(file);
             if (File.Exists(filePath) == false) { return listResult; }
 
