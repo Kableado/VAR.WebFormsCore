@@ -66,10 +66,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Bundler.cs" />
+    <Compile Include="Code\BusinessLogic\CardBoard.cs" />
     <Compile Include="Code\BusinessLogic\MessageBoard.cs" />
     <Compile Include="Code\BusinessLogic\Persistence.cs" />
     <Compile Include="Code\BusinessLogic\Sessions.cs" />
     <Compile Include="Code\BusinessLogic\Users.cs" />
+    <Compile Include="Code\Entities\Card.cs" />
+    <Compile Include="Code\Entities\CardEvents.cs" />
     <Compile Include="Controls\CButton.cs" />
     <Compile Include="Controls\ChatControl.cs" />
     <Compile Include="Controls\ChatHandler.cs" />
