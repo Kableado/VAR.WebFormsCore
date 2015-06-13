@@ -48,7 +48,10 @@ namespace Scrummer.Code
             {
                 string fileContent = File.ReadAllText(fileName);
                 byte[] byteArray = Encoding.UTF8.GetBytes(fileContent);
-                outStream.Write(byteArray, 0, byteArray.Length);
+                if (byteArray.Length > 0)
+                {
+                    outStream.Write(byteArray, 0, byteArray.Length);
+                }
             }
         }
 
