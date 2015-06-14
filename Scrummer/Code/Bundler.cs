@@ -51,6 +51,9 @@ namespace Scrummer.Code
                 if (byteArray.Length > 0)
                 {
                     outStream.Write(byteArray, 0, byteArray.Length);
+
+                    byteArray = Encoding.UTF8.GetBytes("\n\n");
+                    outStream.Write(byteArray, 0, byteArray.Length);
                 }
             }
         }
