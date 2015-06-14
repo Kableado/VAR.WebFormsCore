@@ -15,8 +15,12 @@ namespace Scrummer.Pages
         void FrmBoard_Init(object sender, EventArgs e)
         {
             Title = "Board";
-            var lblTest = new CLabel { Text = "Hello World", Tag = "h2" };
-            Controls.Add(lblTest);
+
+            CardBoardControl cardBoardControl = new CardBoardControl();
+            cardBoardControl.ID = "ctrCardBoard";
+            cardBoardControl.IDBoard = _idBoard;
+            cardBoardControl.UserName = CurrentUser.Name;
+            Controls.Add(cardBoardControl);
 
             ChatControl chatControl = new ChatControl();
             chatControl.ID = "ctrChat";
