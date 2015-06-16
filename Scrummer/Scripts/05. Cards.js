@@ -27,6 +27,18 @@
     this.divCard.appendChild(this.divOverlay);
     this.divOverlay.className = "divOverlay";
 
+    this.btnEdit = document.createElement("button");
+    this.divCard.appendChild(this.btnEdit);
+    this.btnEdit.className = "btnEdit";
+    this.btnEdit.innerHTML = "E";
+    this.btnEdit.addEventListener("click", Card.prototype.btnEdit_Click.bind(this), false);
+
+    this.btnDelete = document.createElement("button");
+    this.divCard.appendChild(this.btnDelete);
+    this.btnDelete.className = "btnDelete";
+    this.btnDelete.innerHTML = "X";
+    this.btnDelete.addEventListener("click", Card.prototype.btnDelete_Click.bind(this), false);
+
     // Bind mouse event handlers
     this.bindedMouseDown = Card.prototype.MouseDown.bind(this);
     this.bindedMouseMove = Card.prototype.MouseMove.bind(this);
@@ -39,13 +51,14 @@
     this.bindedTouchEnd = Card.prototype.TouchEnd.bind(this);
     this.divOverlay.addEventListener("touchstart", this.bindedTouchStart, false);
 
-    // temporal variables for dragging and editing
+    // temporal variables for dragging, editing and deleting
     this.offsetX = 0;
     this.offsetY = 0;
     this.newX = this.X;
     this.newY = this.Y;
     this.newTitle = this.Title;
     this.newBody = this.Body;
+    this.deleteCallback = null;
 };
 Card.prototype = {
     InsertInContainer: function (container) {
@@ -187,6 +200,28 @@ Card.prototype = {
 
         evt.preventDefault();
         return false;
+    },
+    btnEdit_Click: function (evt) {
+        evt.preventDefault();
+
+        return false;
+    },
+    btnDelete_Click: function (evt) {
+        evt.preventDefault();
+        if (this.deleteCallback) {
+            if (confirm(this.cfg.Texts.ConfirmDelete) == false) { return false; }
+            this.deleteCallback(this);
+        }
+        return false;
+    },
+    SetDeleteCallback: function (deleteCallback) {
+        this.deleteCallback = deleteCallback;
+    },
+    Hide: function () {
+        this.divCard.style.display = "none";
+    },
+    Show: function () {
+        this.divCard.style.display = "";
     }
 };
 
@@ -206,9 +241,46 @@ function RunCardBoard(cfg) {
         }
         return null;
     };
+    var RemoveCardByID = function (idCard) {
+        for (var i = 0, n = cfg.Cards.length; i < n; i++) {
+            var card = cfg.Cards[i];
+            if (card.IDCard == idCard) {
+                cfg.Cards.splice(i, 1);
+            }
+        }
+        return false;
+    }
+
+    var CardDelete = function (card) {
+        card.Hide();
+        if (cfg.Connected == false) {
+            card.Show();
+        }
+        var data = {
+            "IDBoard": cfg.IDBoard,
+            "Command": "Delete",
+            "IDCard": card.IDCard,
+            "TimeStamp": new Date().getTime()
+        };
+        SendData(cfg.ServiceUrl, data,
+            function (responseText) {
+                try {
+                    var recvData = JSON.parse(responseText);
+                    if (recvData && recvData instanceof Object && recvData.IsOK == true) {
+                        RemoveCardByID(card.IDCard);
+                    } else {
+                        card.Show();
+                    }
+                } catch (e) { }
+            }, function () {
+                card.Show();
+            });
+    };
+    var bindedCardDelete = CardDelete.bind(this);
 
     var ProcessCardCreateEvent = function(cardEvent){
         var card = new Card(cfg, cardEvent.IDCard, cardEvent.Title, cardEvent.Body, cardEvent.X, cardEvent.Y);
+        card.SetDeleteCallback(bindedCardDelete);
         cfg.Cards.push(card);
         card.InsertInContainer(cfg.divBoard);
     };
@@ -229,7 +301,6 @@ function RunCardBoard(cfg) {
         var card = GetCardByID(cardEvent.IDCard);
         if (card == null) { return; }
         card.RemoveFromContainer(cfg.divBoard);
-
     };
 
     var RequestCardEventData = function () {
