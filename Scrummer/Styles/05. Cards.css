@@ -9,10 +9,16 @@
 }
 
 .divCard .divTitle{
+    padding-bottom: 5px;
+    padding-right: 44px;
+    font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+    font-size: 12px;
     font-weight: bold;
     text-align: center;
-    padding-bottom: 5px;
-    padding-right: 44px
+}
+.divCard .divBody{
+    font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+    font-size: 12px;
 }
 
 .divCard .divOverlay{
@@ -25,23 +31,49 @@
     right: 0;
 }
 
-.divCard .btnEdit,
-.divCard .btnDelete{
-    position:absolute;
+.divCard .btnCard{
+    margin-top: 5px;
+    margin-right: 5px;
+    padding: 2px;
     border:solid 1px black;
-    width:16px;
-    top: 4px;
     color: black;
     background-color: transparent;
+    font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+    font-size: 12px;
 }
-.divCard .btnEdit:hover,
-.divCard .btnDelete:hover{
+.divCard .btnCard:hover{
     color: yellow;
     background-color: black;
 }
 .divCard .btnEdit{
+    margin:0;
+    top: 4px;
+    position:absolute;
+    width:16px;
     right: 24px;
 }
 .divCard .btnDelete {
+    margin:0;
+    top: 4px;
+    position:absolute;
+    width:16px;
     right: 4px
+}
+
+.divCard .txtTitle {
+    width:100%;
+    font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+    font-size: 12px;
+    background-color: transparent;
+    border:solid 1px black;
+    padding: 2px;
+}
+.divCard .txtBody {
+    min-height: 150px;
+    width:100%;
+    font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+    font-size: 12px;
+    background-color: transparent;
+    border:solid 1px black;
+    padding: 2px;
 }

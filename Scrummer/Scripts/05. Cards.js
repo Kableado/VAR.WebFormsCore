@@ -29,15 +29,31 @@
 
     this.btnEdit = document.createElement("button");
     this.divCard.appendChild(this.btnEdit);
-    this.btnEdit.className = "btnEdit";
+    this.btnEdit.className = "btnCard btnEdit";
     this.btnEdit.innerHTML = "E";
     this.btnEdit.addEventListener("click", Card.prototype.btnEdit_Click.bind(this), false);
 
     this.btnDelete = document.createElement("button");
     this.divCard.appendChild(this.btnDelete);
-    this.btnDelete.className = "btnDelete";
+    this.btnDelete.className = "btnCard btnDelete";
     this.btnDelete.innerHTML = "X";
     this.btnDelete.addEventListener("click", Card.prototype.btnDelete_Click.bind(this), false);
+
+    this.txtTitle = document.createElement("input");
+    this.txtTitle.className = "txtTitle";
+
+    this.txtBody = document.createElement("textarea");
+    this.txtBody.className = "txtBody";
+
+    this.btnAcceptEdit = document.createElement("button");
+    this.btnAcceptEdit.className = "btnCard";
+    this.btnAcceptEdit.innerHTML = this.cfg.Texts.Accept;
+    this.btnAcceptEdit.addEventListener("click", Card.prototype.btnAcceptEdit_Click.bind(this), false);
+
+    this.btnCancelEdit = document.createElement("button");
+    this.btnCancelEdit.className = "btnCard";
+    this.btnCancelEdit.innerHTML = this.cfg.Texts.Cancel;
+    this.btnCancelEdit.addEventListener("click", Card.prototype.btnCancelEdit_Click.bind(this), false);
 
     // Bind mouse event handlers
     this.bindedMouseDown = Card.prototype.MouseDown.bind(this);
@@ -59,6 +75,7 @@
     this.newTitle = this.Title;
     this.newBody = this.Body;
     this.deleteCallback = null;
+    this.Editing = false;
 };
 Card.prototype = {
     InsertInContainer: function (container) {
@@ -71,12 +88,19 @@ Card.prototype = {
     Move: function (x, y) {
         this.X = x;
         this.Y = y;
+        this.newX = x;
+        this.newY = y;
         this.divCard.style.left = this.X + "px";
         this.divCard.style.top = this.Y + "px";
     },
     Edit: function (title, body) {
+        if (this.Editing) {
+            this.ExitEditionMode();
+        }
         this.Title = title;
         this.Body = body;
+        this.newTitle = title;
+        this.newBody = body;
         this.divTitle.innerHTML = this.Title;
         this.divBody.innerHTML = this.Body;
     },
@@ -112,6 +136,35 @@ Card.prototype = {
                 "IDCard": this.IDCard,
                 "X": this.newX,
                 "Y": this.newY,
+                "TimeStamp": new Date().getTime()
+            };
+            SendData(this.cfg.ServiceUrl, data,
+                function (responseText) {
+                    try {
+                        var recvData = JSON.parse(responseText);
+                        if (recvData && recvData instanceof Object && recvData.IsOK == true) {
+                            card.SetNew();
+                        } else {
+                            card.Reset();
+                        }
+                    } catch (e) { }
+                }, function () {
+                    card.Reset();
+                });
+        }
+    },
+    OnEdit: function () {
+        if (this.Title != this.newTitle || this.Body != this.newBody) {
+            var card = this;
+            if (this.cfg.Connected == false) {
+                card.Reset();
+            }
+            var data = {
+                "IDBoard": this.cfg.IDBoard,
+                "Command": "Edit",
+                "IDCard": this.IDCard,
+                "Title": this.newTitle,
+                "Body": this.newBody,
                 "TimeStamp": new Date().getTime()
             };
             SendData(this.cfg.ServiceUrl, data,
@@ -201,9 +254,53 @@ Card.prototype = {
         evt.preventDefault();
         return false;
     },
+    EnterEditionMode: function(){
+        this.divTitle.innerHTML = "";
+        this.txtTitle.value = this.Title;
+        this.divTitle.appendChild(this.txtTitle);
+
+        this.divBody.innerHTML = "";
+        this.txtBody.value = this.Body;
+        this.divBody.appendChild(this.txtBody);
+        this.divBody.appendChild(document.createElement("br"));
+        this.divBody.appendChild(this.btnAcceptEdit);
+        this.divBody.appendChild(this.btnCancelEdit);
+
+        this.divOverlay.style.display = "none";
+        this.Editing = true;
+    },
+    ExitEditionMode: function(){
+        this.divTitle.removeChild(this.txtTitle);
+        this.divBody.removeChild(this.txtBody);
+        this.divBody.removeChild(this.btnAcceptEdit);
+        this.divBody.removeChild(this.btnCancelEdit);
+        this.divOverlay.style.display = "";
+        this.Editing = false;
+    },
     btnEdit_Click: function (evt) {
         evt.preventDefault();
-
+        if (this.Editing == false) {
+            this.EnterEditionMode();
+        } else {
+            this.ExitEditionMode();
+            this.Reset();
+        }
+        return false;
+    },
+    btnAcceptEdit_Click: function (evt) {
+        evt.preventDefault();
+        this.newTitle = this.txtTitle.value;
+        this.newBody = this.txtBody.value;
+        this.ExitEditionMode();
+        this.divTitle.innerHTML = this.newTitle;
+        this.divBody.innerHTML = this.newBody;
+        this.OnEdit();
+        return false;
+    },
+    btnCancelEdit_Click: function (evt) {
+        evt.preventDefault();
+        this.ExitEditionMode();
+        this.Reset();
         return false;
     },
     btnDelete_Click: function (evt) {
