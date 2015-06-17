@@ -6,6 +6,7 @@
     this.X = x;
     this.Y = y;
 
+
     // Create DOM
     this.container = null;
     this.divCard = document.createElement("div");
@@ -16,12 +17,12 @@
     this.divTitle = document.createElement("div");
     this.divCard.appendChild(this.divTitle);
     this.divTitle.className = "divTitle";
-    this.divTitle.innerHTML = title;
+    this.divTitle.innerHTML = this.FilterText(title);
 
     this.divBody = document.createElement("div");
     this.divCard.appendChild(this.divBody);
     this.divBody.className = "divBody";
-    this.divBody.innerHTML = body;
+    this.divBody.innerHTML = this.FilterText(body);
 
     this.divOverlay = document.createElement("div");
     this.divCard.appendChild(this.divOverlay);
@@ -78,6 +79,11 @@
     this.Editing = false;
 };
 Card.prototype = {
+    FilterText: function (text) {
+        text = text.split(" ").join("&nbsp;");
+        text = text.split("\n").join("<br />");
+        return text;
+    },
     InsertInContainer: function (container) {
         this.container = container;
         this.container.appendChild(this.divCard);
@@ -101,8 +107,8 @@ Card.prototype = {
         this.Body = body;
         this.newTitle = title;
         this.newBody = body;
-        this.divTitle.innerHTML = this.Title;
-        this.divBody.innerHTML = this.Body;
+        this.divTitle.innerHTML = this.FilterText(this.Title);
+        this.divBody.innerHTML = this.FilterText(this.Body);
     },
     Reset: function () {
         this.newX = this.X;
@@ -111,8 +117,8 @@ Card.prototype = {
         this.newBody = this.Body;
         this.divCard.style.left = this.X + "px";
         this.divCard.style.top = this.Y + "px";
-        this.divTitle.innerHTML = this.Title;
-        this.divBody.innerHTML = this.Body;
+        this.divTitle.innerHTML = this.FilterText(this.Title);
+        this.divBody.innerHTML = this.FilterText(this.Body);
     },
     SetNew: function () {
         this.X = this.newX;
@@ -121,8 +127,8 @@ Card.prototype = {
         this.Body = this.newBody;
         this.divCard.style.left = this.X + "px";
         this.divCard.style.top = this.Y + "px";
-        this.divTitle.innerHTML = this.Title;
-        this.divBody.innerHTML = this.Body;
+        this.divTitle.innerHTML = this.FilterText(this.Title);
+        this.divBody.innerHTML = this.FilterText(this.Body);
     },
     OnMove: function () {
         if (this.X != this.newX || this.Y != this.newY) {
@@ -292,8 +298,8 @@ Card.prototype = {
         this.newTitle = this.txtTitle.value;
         this.newBody = this.txtBody.value;
         this.ExitEditionMode();
-        this.divTitle.innerHTML = this.newTitle;
-        this.divBody.innerHTML = this.newBody;
+        this.divTitle.innerHTML = this.FilterText(this.newTitle);
+        this.divBody.innerHTML = this.FilterText(this.newBody);
         this.OnEdit();
         return false;
     },
