@@ -9,5 +9,6 @@ namespace Scrummer.Code.Entities
     {
         public bool IsOK { get; set; }
         public string Message { get; set; }
+        public string ReturnValue { get; set; }
     }
 }

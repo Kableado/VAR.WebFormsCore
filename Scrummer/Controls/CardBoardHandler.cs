@@ -139,7 +139,7 @@ namespace Scrummer.Controls
             string strIDBoard = GetRequestParm(context, "IDBoard");
             int idBoard = Convert.ToInt32(string.IsNullOrEmpty(strIDBoard) ? "0" : strIDBoard);
             string command = GetRequestParm(context, "Command");
-
+            int idCard = 0;
             bool done = false;
             CardBoard cardBoard = GetCardBoard(idBoard);
             lock (cardBoard)
@@ -150,12 +150,12 @@ namespace Scrummer.Controls
                     string body = GetRequestParm(context, "Body");
                     int x = Convert.ToInt32(GetRequestParm(context, "X"));
                     int y = Convert.ToInt32(GetRequestParm(context, "Y"));
-                    cardBoard.Card_Create(title, body, x, y);
+                    idCard = cardBoard.Card_Create(title, body, x, y);
                     done = true;
                 }
                 if (command == "Move")
                 {
-                    int idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
+                    idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
                     int x = Convert.ToInt32(GetRequestParm(context, "X"));
                     int y = Convert.ToInt32(GetRequestParm(context, "Y"));
                     cardBoard.Card_Move(idCard, x, y);
@@ -163,7 +163,7 @@ namespace Scrummer.Controls
                 }
                 if (command == "Edit")
                 {
-                    int idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
+                    idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
                     string title = GetRequestParm(context, "Title");
                     string body = GetRequestParm(context, "Body");
                     cardBoard.Card_Edit(idCard, title, body);
@@ -171,7 +171,7 @@ namespace Scrummer.Controls
                 }
                 if (command == "Delete")
                 {
-                    int idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
+                    idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
                     cardBoard.Card_Delete(idCard);
                     done = true;
                 }
@@ -179,7 +179,12 @@ namespace Scrummer.Controls
             if (done)
             {
                 NotifyAll();
-                ResponseObject(context, new OperationStatus { IsOK = true, Message = "Update successfully" });
+                ResponseObject(context, new OperationStatus
+                {
+                    IsOK = true,
+                    Message = "Update successfully",
+                    ReturnValue = Convert.ToString(idCard)
+                });
             }
         }
 

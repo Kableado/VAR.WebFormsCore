@@ -1,4 +1,120 @@
-﻿var Card = function (cfg, idCard, title, body, x, y) {
+﻿var Toolbox = function (cfg, container) {
+    this.cfg = cfg;
+    this.X = 0;
+    this.Y = 0;
+    this.container = container;
+
+    // Create DOM
+    this.divToolbox = document.createElement("div");
+    this.divToolbox.className = "divToolbox";
+    this.divToolbox.style.left = this.X + "px";
+    this.divToolbox.style.top = this.Y + "px";
+
+    this.divTitle = document.createElement("div");
+    this.divToolbox.appendChild(this.divTitle);
+    this.divTitle.className = "divTitle";
+    this.divTitle.innerHTML = cfg.Texts.Toolbox;
+
+    this.btnAdd = document.createElement("button");
+    this.divToolbox.appendChild(this.btnAdd);
+    this.btnAdd.className = "btnToolbox";
+    this.btnAdd.innerHTML = cfg.Texts.AddCard;
+    this.btnAdd.addEventListener("click", Toolbox.prototype.btnAdd_Click.bind(this), false);
+
+    this.divOverlay = document.createElement("div");
+    this.divToolbox.appendChild(this.divOverlay);
+    this.divOverlay.className = "divOverlay";
+
+    this.container.appendChild(this.divToolbox);
+
+    // Bind mouse event handlers
+    this.bindedMouseDown = Toolbox.prototype.MouseDown.bind(this);
+    this.bindedMouseMove = Toolbox.prototype.MouseMove.bind(this);
+    this.bindedMouseUp = Toolbox.prototype.MouseUp.bind(this);
+    this.divOverlay.addEventListener("mousedown", this.bindedMouseDown, false);
+
+    // Bind touch event handlers
+    this.bindedTouchStart = Toolbox.prototype.TouchStart.bind(this);
+    this.bindedTouchMove = Toolbox.prototype.TouchMove.bind(this);
+    this.bindedTouchEnd = Toolbox.prototype.TouchEnd.bind(this);
+    this.divOverlay.addEventListener("touchstart", this.bindedTouchStart, false);
+
+    // temporal variables for dragging, editing and deleting
+    this.offsetX = 0;
+    this.offsetY = 0;
+};
+Toolbox.prototype = {
+    GetRelativePosToContainer: function (pos) {
+        var tempElem = this.container;
+        var relPos = { x: pos.x, y: pos.y };
+        while (tempElem) {
+            relPos.x -= tempElem.offsetLeft;
+            relPos.y -= tempElem.offsetTop;
+            tempElem = tempElem.offsetParent;
+        }
+        return relPos;
+    },
+    MouseDown: function (evt) {
+        evt.preventDefault();
+        var pos = this.GetRelativePosToContainer({ x: evt.clientX, y: evt.clientY });
+        this.offsetX = pos.x - this.divToolbox.offsetLeft;
+        this.offsetY = pos.y - this.divToolbox.offsetTop;
+        document.addEventListener("mouseup", this.bindedMouseUp, false);
+        document.addEventListener("mousemove", this.bindedMouseMove, false);
+        return false;
+    },
+    MouseMove: function (evt) {
+        evt.preventDefault();
+        var pos = this.GetRelativePosToContainer({ x: evt.clientX, y: evt.clientY });
+        this.divToolbox.style.left = parseInt(pos.x - this.offsetX) + "px";
+        this.divToolbox.style.top = parseInt(pos.y - this.offsetY) + "px";
+        return false;
+    },
+    MouseUp: function (evt) {
+        evt.preventDefault();
+        document.removeEventListener("mouseup", this.bindedMouseUp, false);
+        document.removeEventListener("mousemove", this.bindedMouseMove, false);
+        return false;
+    },
+    TouchStart: function (evt) {
+        evt.preventDefault();
+        var pos = this.GetRelativePosToContainer({ x: evt.touches[0].clientX, y: evt.touches[0].clientY });
+        this.offsetX = pos.x - this.divToolbox.offsetLeft;
+        this.offsetY = pos.y - this.divToolbox.offsetTop;
+        document.addEventListener("touchend", this.bindedTouchEnd, false);
+        document.addEventListener("touchcancel", this.bindedTouchEnd, false);
+        document.addEventListener("touchmove", this.bindedTouchMove, false);
+        return false;
+    },
+    TouchMove: function (evt) {
+        evt.preventDefault();
+        var pos = this.GetRelativePosToContainer({ x: evt.touches[0].clientX, y: evt.touches[0].clientY });
+        this.divToolbox.style.left = parseInt(pos.x - this.offsetX) + "px";
+        this.divToolbox.style.top = parseInt(pos.y - this.offsetY) + "px";
+        return false;
+    },
+    TouchEnd: function (evt) {
+        evt.preventDefault();
+        document.removeEventListener("touchend", this.bindedTouchEnd, false);
+        document.removeEventListener("touchcancel", this.bindedTouchEnd, false);
+        document.removeEventListener("touchmove", this.bindedTouchMove, false);
+        return false;
+    },
+    btnAdd_Click: function (evt) {
+        evt.preventDefault();
+        var pos = this.GetRelativePosToContainer({ x: 0, y: 0 });
+        pos.x += this.divToolbox.offsetLeft;
+        pos.y += this.divToolbox.offsetTop + this.divToolbox.offsetHeight;
+        var card = new Card(this.cfg, 0, "", "", pos.x, pos.y);
+        //card.SetDeleteCallback(bindedCardDelete);
+        //cfg.Cards.push(card);
+        card.InsertInContainer(this.cfg.divBoard);
+        card.EnterEditionMode();
+        return false;
+    }
+};
+
+var Card = function (cfg, idCard, title, body, x, y) {
     this.cfg = cfg;
     this.IDCard = idCard;
     this.Title = title;
@@ -144,6 +260,7 @@ Card.prototype = {
             var card = this;
             if (this.cfg.Connected == false) {
                 card.Reset();
+                return;
             }
             var data = {
                 "IDBoard": this.cfg.IDBoard,
@@ -173,6 +290,7 @@ Card.prototype = {
             var card = this;
             if (this.cfg.Connected == false) {
                 card.Reset();
+                return;
             }
             var data = {
                 "IDBoard": this.cfg.IDBoard,
@@ -228,6 +346,36 @@ Card.prototype = {
                 } catch (e) { }
             }, function () {
                 card.Show();
+            });
+    },
+    OnCreate: function () {
+        var card = this;
+        if (this.cfg.Connected == false) {
+            card.OnDelete();
+            return;
+        }
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "Create",
+            "X": this.X,
+            "Y": this.Y,
+            "Title": this.Title,
+            "Body": this.Body,
+            "TimeStamp": new Date().getTime()
+        };
+        SendData(this.cfg.ServiceUrl, data,
+            function (responseText) {
+                try {
+                    var recvData = JSON.parse(responseText);
+                    if (recvData && recvData instanceof Object && recvData.IsOK == true) {
+                        //card.IDCard = parseInt(recvData.ReturnValue);
+                        card.OnDelete();
+                    } else {
+                        card.OnDelete();
+                    }
+                } catch (e) { }
+            }, function () {
+                card.OnDelete();
             });
     },
     GetRelativePosToContainer: function (pos) {
@@ -342,18 +490,27 @@ Card.prototype = {
         this.ExitEditionMode();
         this.divTitle.innerHTML = this.FilterText(this.newTitle);
         this.divBody.innerHTML = this.FilterText(this.newBody);
-        this.OnEdit();
+        if (this.IDCard > 0) {
+            this.OnEdit();
+        } else {
+            this.Title = this.newTitle;
+            this.Body = this.newBody;
+            this.OnCreate();
+        }
         return false;
     },
     btnCancelEdit_Click: function (evt) {
         evt.preventDefault();
         this.ExitEditionMode();
         this.Reset();
+        if (this.IDCard == 0) {
+            this.OnDelete();
+        }
         return false;
     },
     btnDelete_Click: function (evt) {
         evt.preventDefault();
-        if (confirm(this.cfg.Texts.ConfirmDelete)) {
+        if (this.IDCard==0 || confirm(this.cfg.Texts.ConfirmDelete)) {
             this.OnDelete();
         }
         return false;
@@ -362,6 +519,8 @@ Card.prototype = {
 
 function RunCardBoard(cfg) {
     cfg.divBoard = GetElement(cfg.divBoard);
+
+    cfg.Toolbox = new Toolbox(cfg, cfg.divBoard);
 
     cfg.Connected = false;
 

@@ -83,6 +83,8 @@ namespace Scrummer.Controls
             sbCfg.AppendFormat("  ServiceUrl: \"{0}\",\n", _serviceUrl);
             sbCfg.AppendFormat("  TimePoolData: {0},\n", _timePoolData);
             sbCfg.AppendFormat("  Texts: {{\n");
+            sbCfg.AppendFormat("    Toolbox: \"Toolbox\",\n");
+            sbCfg.AppendFormat("    AddCard: \"+ Add card\",\n");
             sbCfg.AppendFormat("    Accept: \"Accept\",\n");
             sbCfg.AppendFormat("    Cancel: \"Cancel\",\n");
             sbCfg.AppendFormat("    ConfirmDelete: \"Are you sure to delete?\",\n");
