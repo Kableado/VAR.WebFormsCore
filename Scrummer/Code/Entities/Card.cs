@@ -14,5 +14,9 @@ namespace Scrummer.Code.Entities
 
         public int X { get; set; }
         public int Y { get; set; }
+
+        public bool Active { get; set; }
+        public string CreatedBy { get; set; }
+        public string ModifiedBy { get; set; }
     }
 }

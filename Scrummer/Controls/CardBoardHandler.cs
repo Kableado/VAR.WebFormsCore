@@ -136,6 +136,8 @@ namespace Scrummer.Controls
 
         private void ProcessEventSender(HttpContext context)
         {
+            Session session = Sessions.Current.Session_GetCurrent(context);
+            string currentUserName = session.UserName;
             string strIDBoard = GetRequestParm(context, "IDBoard");
             int idBoard = Convert.ToInt32(string.IsNullOrEmpty(strIDBoard) ? "0" : strIDBoard);
             string command = GetRequestParm(context, "Command");
@@ -150,7 +152,7 @@ namespace Scrummer.Controls
                     string body = GetRequestParm(context, "Body");
                     int x = Convert.ToInt32(GetRequestParm(context, "X"));
                     int y = Convert.ToInt32(GetRequestParm(context, "Y"));
-                    idCard = cardBoard.Card_Create(title, body, x, y);
+                    idCard = cardBoard.Card_Create(title, body, x, y, currentUserName);
                     done = true;
                 }
                 if (command == "Move")
@@ -158,7 +160,7 @@ namespace Scrummer.Controls
                     idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
                     int x = Convert.ToInt32(GetRequestParm(context, "X"));
                     int y = Convert.ToInt32(GetRequestParm(context, "Y"));
-                    cardBoard.Card_Move(idCard, x, y);
+                    cardBoard.Card_Move(idCard, x, y, currentUserName);
                     done = true;
                 }
                 if (command == "Edit")
@@ -166,13 +168,13 @@ namespace Scrummer.Controls
                     idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
                     string title = GetRequestParm(context, "Title");
                     string body = GetRequestParm(context, "Body");
-                    cardBoard.Card_Edit(idCard, title, body);
+                    cardBoard.Card_Edit(idCard, title, body, currentUserName);
                     done = true;
                 }
                 if (command == "Delete")
                 {
                     idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
-                    cardBoard.Card_Delete(idCard);
+                    cardBoard.Card_Delete(idCard, currentUserName);
                     done = true;
                 }
             }

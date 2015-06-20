@@ -34,7 +34,15 @@ namespace Scrummer.Code.BusinessLogic
 
         public List<Card> Cards_Status()
         {
-            return _cards;
+            List<Card> activeCards=new List<Card>();
+            foreach (Card card in _cards)
+            {
+                if (card.Active)
+                {
+                    activeCards.Add(card);
+                }
+            }
+            return activeCards;
         }
 
         public List<ICardEvent> Cards_GetEventList(int idCardEvent)
@@ -62,7 +70,7 @@ namespace Scrummer.Code.BusinessLogic
             return _lastIDCard;
         }
 
-        public int Card_Create(string title, string body, int x, int y)
+        public int Card_Create(string title, string body, int x, int y, string currentUserName)
         {
             Card card;
             lock (_cards)
@@ -76,6 +84,9 @@ namespace Scrummer.Code.BusinessLogic
                     Body = body,
                     X = x,
                     Y = y,
+                    Active = true,
+                    CreatedBy = currentUserName,
+                    ModifiedBy = currentUserName,
                 };
                 _cards.Add(card);
 
@@ -85,6 +96,7 @@ namespace Scrummer.Code.BusinessLogic
                 {
                     IDCardEvent = _lastIDCardEvent,
                     IDCard = card.IDCard,
+                    UserName = currentUserName,
                     Title = card.Title,
                     Body = card.Body,
                     X = card.X,
@@ -97,7 +109,7 @@ namespace Scrummer.Code.BusinessLogic
             return card.IDCard;
         }
 
-        public bool Card_Move(int idCard, int x, int y)
+        public bool Card_Move(int idCard, int x, int y, string currentUserName)
         {
             lock (_cards)
             {
@@ -106,6 +118,7 @@ namespace Scrummer.Code.BusinessLogic
                 if (card == null) { return false; }
                 card.X = x;
                 card.Y = y;
+                card.ModifiedBy = currentUserName;
 
                 // Create event
                 _lastIDCardEvent++;
@@ -113,6 +126,7 @@ namespace Scrummer.Code.BusinessLogic
                 {
                     IDCardEvent = _lastIDCardEvent,
                     IDCard = card.IDCard,
+                    UserName = currentUserName,
                     X = card.X,
                     Y = card.Y,
                 };
@@ -123,7 +137,7 @@ namespace Scrummer.Code.BusinessLogic
             return true;
         }
 
-        public bool Card_Edit(int idCard, string title, string body)
+        public bool Card_Edit(int idCard, string title, string body, string currentUserName)
         {
             lock (_cards)
             {
@@ -132,6 +146,7 @@ namespace Scrummer.Code.BusinessLogic
                 if (card == null) { return false; }
                 card.Title = title;
                 card.Body = body;
+                card.ModifiedBy = currentUserName;
 
                 // Create event
                 _lastIDCardEvent++;
@@ -139,6 +154,7 @@ namespace Scrummer.Code.BusinessLogic
                 {
                     IDCardEvent = _lastIDCardEvent,
                     IDCard = card.IDCard,
+                    UserName = currentUserName,
                     Title = card.Title,
                     Body = card.Body,
                 };
@@ -148,22 +164,24 @@ namespace Scrummer.Code.BusinessLogic
             }
             return true;
         }
-        
-        public bool Card_Delete(int idCard)
+
+        public bool Card_Delete(int idCard, string currentUserName)
         {
             lock (_cards)
             {
                 // Delete card
                 Card card = GetByID(idCard);
                 if (card == null) { return false; }
-                _cards.Remove(card);
-
+                card.Active = false;
+                card.ModifiedBy = currentUserName;
+                
                 // Create event
                 _lastIDCardEvent++;
                 CardDeleteEvent cardDeleteEvent = new CardDeleteEvent()
                 {
                     IDCardEvent = _lastIDCardEvent,
                     IDCard = card.IDCard,
+                    UserName = currentUserName,
                 };
                 _cardEvents.Insert(0, cardDeleteEvent);
 
@@ -181,6 +199,7 @@ namespace Scrummer.Code.BusinessLogic
                 {
                     IDCardEvent = lastIDCardEvent,
                     IDCard = card.IDCard,
+                    UserName = card.ModifiedBy,
                     Title = card.Title,
                     Body = card.Body,
                     X = card.X,
@@ -216,9 +235,12 @@ namespace Scrummer.Code.BusinessLogic
         {
             _cards = Persistence.LoadList<Card>(String.Format(CardsPersistenceFile, _idBoard));
             _lastIDCard = 0;
-            if (_cards.Count > 0)
+            foreach (Card card in _cards)
             {
-                _lastIDCard = _cards[0].IDCard;
+                if (card.IDCard > _lastIDCard)
+                {
+                    _lastIDCard = card.IDCard;
+                }
             }
 
             _cardEvents = Persistence.LoadList<ICardEvent>(String.Format(EventsPersistenceFile, _idBoard), 
