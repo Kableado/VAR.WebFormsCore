@@ -1,4 +1,8 @@
-﻿.divToolbox{
+﻿.divBoard{
+    position:relative;
+    height:100%;
+}
+.divToolbox{
     position: absolute;
     background-color: rgb(127,127,255);
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
@@ -54,7 +58,9 @@
     background-color: rgb(255,255,0);
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     min-width: 150px;
-    min-height: 200px;
+    max-width: 250px;
+    min-height: 150px;
+    max-height: 250px;
     padding: 5px;
     border-radius: 2px;
 }

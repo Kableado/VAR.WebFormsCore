@@ -122,7 +122,6 @@ var Card = function (cfg, idCard, title, body, x, y) {
     this.X = x;
     this.Y = y;
 
-
     // Create DOM
     this.container = null;
     this.divCard = document.createElement("div");
@@ -199,7 +198,8 @@ var Card = function (cfg, idCard, title, body, x, y) {
 };
 Card.prototype = {
     FilterText: function (text) {
-        text = text.split(" ").join("&nbsp;");
+        text = text.split("  ").join(" &nbsp;");
+        text = text.split("&nbsp; &nbsp;").join("&nbsp;&nbsp;&nbsp;");
         text = text.split("\n").join("<br />");
         return text;
     },
