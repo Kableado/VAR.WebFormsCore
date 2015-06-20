@@ -11,6 +11,7 @@ namespace Scrummer.Code.Entities
         string EventType { get; set; }
         int IDCard { get; set; }
         string UserName { get; set; }
+        DateTime Date { get; set; }
     }
 
     public class CardCreateEvent : ICardEvent
@@ -22,6 +23,7 @@ namespace Scrummer.Code.Entities
         public string EventType { get { return _eventType; } set { _eventType = value; } }
         public int IDCard { get; set; }
         public string UserName { get; set; }
+        public DateTime Date { get; set; }
 
         #endregion
 
@@ -41,6 +43,7 @@ namespace Scrummer.Code.Entities
         public string EventType { get { return _eventType; } set { _eventType = value; } }
         public int IDCard { get; set; }
         public string UserName { get; set; }
+        public DateTime Date { get; set; }
 
         #endregion
 
@@ -57,6 +60,7 @@ namespace Scrummer.Code.Entities
         public string EventType { get { return _eventType; } set { _eventType = value; } }
         public int IDCard { get; set; }
         public string UserName { get; set; }
+        public DateTime Date { get; set; }
 
         #endregion
 
@@ -73,6 +77,7 @@ namespace Scrummer.Code.Entities
         public string EventType { get { return _eventType; } set { _eventType = value; } }
         public int IDCard { get; set; }
         public string UserName { get; set; }
+        public DateTime Date { get; set; }
 
         #endregion
     }

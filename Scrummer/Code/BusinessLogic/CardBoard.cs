@@ -72,6 +72,7 @@ namespace Scrummer.Code.BusinessLogic
 
         public int Card_Create(string title, string body, int x, int y, string currentUserName)
         {
+            DateTime currentDate = DateTime.UtcNow;
             Card card;
             lock (_cards)
             {
@@ -86,7 +87,9 @@ namespace Scrummer.Code.BusinessLogic
                     Y = y,
                     Active = true,
                     CreatedBy = currentUserName,
+                    CreatedDate = currentDate,
                     ModifiedBy = currentUserName,
+                    ModifiedDate = currentDate,
                 };
                 _cards.Add(card);
 
@@ -97,6 +100,7 @@ namespace Scrummer.Code.BusinessLogic
                     IDCardEvent = _lastIDCardEvent,
                     IDCard = card.IDCard,
                     UserName = currentUserName,
+                    Date = currentDate,
                     Title = card.Title,
                     Body = card.Body,
                     X = card.X,
@@ -111,6 +115,7 @@ namespace Scrummer.Code.BusinessLogic
 
         public bool Card_Move(int idCard, int x, int y, string currentUserName)
         {
+            DateTime currentDate = DateTime.UtcNow;
             lock (_cards)
             {
                 // Move card
@@ -119,6 +124,7 @@ namespace Scrummer.Code.BusinessLogic
                 card.X = x;
                 card.Y = y;
                 card.ModifiedBy = currentUserName;
+                card.ModifiedDate = currentDate;
 
                 // Create event
                 _lastIDCardEvent++;
@@ -127,6 +133,7 @@ namespace Scrummer.Code.BusinessLogic
                     IDCardEvent = _lastIDCardEvent,
                     IDCard = card.IDCard,
                     UserName = currentUserName,
+                    Date = currentDate,
                     X = card.X,
                     Y = card.Y,
                 };
@@ -139,6 +146,7 @@ namespace Scrummer.Code.BusinessLogic
 
         public bool Card_Edit(int idCard, string title, string body, string currentUserName)
         {
+            DateTime currentDate = DateTime.UtcNow;
             lock (_cards)
             {
                 // Edit card
@@ -147,6 +155,7 @@ namespace Scrummer.Code.BusinessLogic
                 card.Title = title;
                 card.Body = body;
                 card.ModifiedBy = currentUserName;
+                card.ModifiedDate = currentDate;
 
                 // Create event
                 _lastIDCardEvent++;
@@ -155,6 +164,7 @@ namespace Scrummer.Code.BusinessLogic
                     IDCardEvent = _lastIDCardEvent,
                     IDCard = card.IDCard,
                     UserName = currentUserName,
+                    Date = currentDate,
                     Title = card.Title,
                     Body = card.Body,
                 };
@@ -167,6 +177,7 @@ namespace Scrummer.Code.BusinessLogic
 
         public bool Card_Delete(int idCard, string currentUserName)
         {
+            DateTime currentDate = DateTime.UtcNow;
             lock (_cards)
             {
                 // Delete card
@@ -182,6 +193,7 @@ namespace Scrummer.Code.BusinessLogic
                     IDCardEvent = _lastIDCardEvent,
                     IDCard = card.IDCard,
                     UserName = currentUserName,
+                    Date = currentDate,
                 };
                 _cardEvents.Insert(0, cardDeleteEvent);
 
@@ -200,6 +212,7 @@ namespace Scrummer.Code.BusinessLogic
                     IDCardEvent = lastIDCardEvent,
                     IDCard = card.IDCard,
                     UserName = card.ModifiedBy,
+                    Date = card.ModifiedDate,
                     Title = card.Title,
                     Body = card.Body,
                     X = card.X,
