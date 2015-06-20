@@ -53,7 +53,7 @@ namespace Scrummer.Code.JSON
             return typeProperties;
         }
 
-        private bool CompareToType(Dictionary<string, object> obj, Type type)
+        private float CompareToType(Dictionary<string, object> obj, Type type)
         {
             PropertyInfo[] typeProperties = Type_GetProperties(type);
             int count = 0;
@@ -64,7 +64,7 @@ namespace Scrummer.Code.JSON
                     count++;
                 }
             }
-            return (count == typeProperties.Length);
+            return ((float)count / (float)typeProperties.Length);
         }
 
         private object ConvertToType(Dictionary<string, object> obj, Type type)
@@ -83,12 +83,20 @@ namespace Scrummer.Code.JSON
 
         private object TryConvertToTypes(Dictionary<string, object> obj)
         {
+            Type bestMatch = null;
+            float bestMatchFactor = 0.0f;
             foreach (Type type in _knownTypes)
             {
-                if (CompareToType(obj, type))
+                float matchFactor = CompareToType(obj, type);
+                if (matchFactor > bestMatchFactor)
                 {
-                    return ConvertToType(obj, type);
+                    bestMatch = type;
+                    bestMatchFactor = matchFactor;
                 }
+            }
+            if (bestMatch != null)
+            {
+                return ConvertToType(obj, bestMatch);
             }
             return obj;
         }
