@@ -20,6 +20,10 @@ namespace Scrummer.Controls
 
         private int _timePoolData = 10000;
 
+        private int _timeRefresh = 20;
+
+        private int _timeRefreshDisconnected = 5000;
+
         #endregion
 
         #region Properties
@@ -46,6 +50,18 @@ namespace Scrummer.Controls
         {
             get { return _timePoolData; }
             set { _timePoolData = value; }
+        }
+
+        public int TimeRefresh
+        {
+            get { return _timeRefresh; }
+            set { _timeRefresh = value; }
+        }
+
+        public int TimeRefreshDisconnected
+        {
+            get { return _timeRefreshDisconnected; }
+            set { _timeRefreshDisconnected = value; }
         }
 
         #endregion
@@ -82,6 +98,8 @@ namespace Scrummer.Controls
             sbCfg.AppendFormat("  IDCardEvent: \"\",\n");
             sbCfg.AppendFormat("  ServiceUrl: \"{0}\",\n", _serviceUrl);
             sbCfg.AppendFormat("  TimePoolData: {0},\n", _timePoolData);
+            sbCfg.AppendFormat("  TimeRefresh: {0},\n", _timeRefresh);
+            sbCfg.AppendFormat("  TimeRefreshDisconnected: {0},\n", _timeRefreshDisconnected);
             sbCfg.AppendFormat("  Texts: {{\n");
             sbCfg.AppendFormat("    Toolbox: \"Toolbox\",\n");
             sbCfg.AppendFormat("    AddCard: \"+ Add card\",\n");

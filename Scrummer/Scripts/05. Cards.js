@@ -106,8 +106,6 @@ Toolbox.prototype = {
         pos.x += this.divToolbox.offsetLeft;
         pos.y += this.divToolbox.offsetTop + this.divToolbox.offsetHeight;
         var card = new Card(this.cfg, 0, "", "", pos.x, pos.y);
-        //card.SetDeleteCallback(bindedCardDelete);
-        //cfg.Cards.push(card);
         card.InsertInContainer(this.cfg.divBoard);
         card.EnterEditionMode();
         return false;
@@ -596,7 +594,7 @@ function RunCardBoard(cfg) {
             // Reset pool
             window.setTimeout(function () {
                 RequestCardEventData();
-            }, 20);
+            }, cfg.TimeRefresh);
         };
         var ErrorCardEventData = function () {
             cfg.Connected = false;
@@ -604,7 +602,7 @@ function RunCardBoard(cfg) {
             // Retry
             window.setTimeout(function () {
                 RequestCardEventData();
-            }, 5000);
+            }, cfg.TimeRefreshDisconnected);
         };
 
         // Pool data
@@ -618,5 +616,3 @@ function RunCardBoard(cfg) {
     };
     RequestCardEventData();
 }
-
-
