@@ -24,6 +24,8 @@ namespace VAR.Focus.Web.Controls
 
         private int _timeRefreshDisconnected = 5000;
 
+        private int _timeMoveAnimation = 300;
+
         #endregion
 
         #region Properties
@@ -64,6 +66,12 @@ namespace VAR.Focus.Web.Controls
             set { _timeRefreshDisconnected = value; }
         }
 
+        public int TimeMoveAnimation
+        {
+            get { return _timeMoveAnimation; }
+            set { _timeMoveAnimation = value; }
+        }
+
         #endregion
         
         #region Control Life cycle
@@ -100,6 +108,7 @@ namespace VAR.Focus.Web.Controls
             sbCfg.AppendFormat("  TimePoolData: {0},\n", _timePoolData);
             sbCfg.AppendFormat("  TimeRefresh: {0},\n", _timeRefresh);
             sbCfg.AppendFormat("  TimeRefreshDisconnected: {0},\n", _timeRefreshDisconnected);
+            sbCfg.AppendFormat("  TimeMoveAnimation: {0},\n", _timeMoveAnimation);
             sbCfg.AppendFormat("  Texts: {{\n");
             sbCfg.AppendFormat("    Toolbox: \"Toolbox\",\n");
             sbCfg.AppendFormat("    AddCard: \"+ Add card\",\n");

@@ -1,4 +1,9 @@
-﻿var Toolbox = function (cfg, container) {
+﻿
+var CosineInterpolation = function (f) {
+    return 1 - (Math.cos(f * Math.PI) + 1) / 2;
+};
+
+var Toolbox = function (cfg, container) {
     this.cfg = cfg;
     this.X = 0;
     this.Y = 0;
@@ -208,13 +213,39 @@ Card.prototype = {
     RemoveFromContainer: function(){
         this.container.removeChild(this.divCard);
     },
+    MoveFrame: function(){
+        var f = ((+new Date()) - this.animData.startTime) / this.animData.time;
+        if (f < 1.0) {
+            f = CosineInterpolation(f);
+            f = CosineInterpolation(f);
+            var f2 = 1 - f;
+            var x = this.animData.X1 * f + this.animData.X0 * f2;
+            var y = this.animData.Y1 * f + this.animData.Y0 * f2;
+            this.divCard.style.left = x + "px";
+            this.divCard.style.top = y + "px";
+            this.animData.animationID = window.setTimeout(this.bindedMoveFrame, 16);
+        } else {
+            this.divCard.style.left = this.animData.X1 + "px";
+            this.divCard.style.top = this.animData.Y1 + "px";
+            this.animData = null;
+        }
+    },
     Move: function (x, y) {
         this.X = x;
         this.Y = y;
         this.newX = x;
         this.newY = y;
-        this.divCard.style.left = this.X + "px";
-        this.divCard.style.top = this.Y + "px";
+        this.animData = {
+            X0: parseInt(this.divCard.style.left),
+            Y0: parseInt(this.divCard.style.top),
+            X1: x,
+            Y1: y,
+            time: this.cfg.TimeMoveAnimation,
+            startTime: +new Date(),
+            animationID: 0
+        };
+        this.bindedMoveFrame = Card.prototype.MoveFrame.bind(this);
+        this.animData.animationID = window.setTimeout(this.bindedMoveFrame, 16);
     },
     Edit: function (title, body) {
         if (this.Editing) {
@@ -252,6 +283,12 @@ Card.prototype = {
     },
     Show: function () {
         this.divCard.style.display = "";
+    },
+    OnMoveStart: function () {
+        if (this.animData) {
+            window.clearTimeout(this.animData.animationID);
+            this.animData = null;
+        }
     },
     OnMove: function () {
         if (this.X != this.newX || this.Y != this.newY) {
@@ -387,6 +424,10 @@ Card.prototype = {
         return relPos;
     },
     MouseDown: function (evt) {
+        evt.preventDefault();
+
+        this.OnMoveStart();
+
         var pos = this.GetRelativePosToContainer({ x: evt.clientX, y: evt.clientY });
         this.offsetX = pos.x - this.divCard.offsetLeft;
         this.offsetY = pos.y - this.divCard.offsetTop;
@@ -394,29 +435,34 @@ Card.prototype = {
         document.addEventListener("mouseup", this.bindedMouseUp, false);
         document.addEventListener("mousemove", this.bindedMouseMove, false);
 
-        evt.preventDefault();
         return false;
     },
     MouseMove: function (evt) {
+        evt.preventDefault();
+
         var pos = this.GetRelativePosToContainer({ x: evt.clientX, y: evt.clientY });
         this.newX = parseInt(pos.x - this.offsetX);
         this.newY = parseInt(pos.y - this.offsetY);
         this.divCard.style.left = this.newX + "px";
         this.divCard.style.top = this.newY + "px";
 
-        evt.preventDefault();
         return false;
     },
     MouseUp: function (evt) {
+        evt.preventDefault();
+
         document.removeEventListener("mouseup", this.bindedMouseUp, false);
         document.removeEventListener("mousemove", this.bindedMouseMove, false);
 
         this.OnMove();
 
-        evt.preventDefault();
         return false;
     },
     TouchStart: function (evt) {
+        evt.preventDefault();
+
+        this.OnMoveStart();
+
         var pos = this.GetRelativePosToContainer({ x: evt.touches[0].clientX, y: evt.touches[0].clientY });
         this.offsetX = pos.x - this.divCard.offsetLeft;
         this.offsetY = pos.y - this.divCard.offsetTop;
@@ -425,27 +471,28 @@ Card.prototype = {
         document.addEventListener("touchcancel", this.bindedTouchEnd, false);
         document.addEventListener("touchmove", this.bindedTouchMove, false);
 
-        evt.preventDefault();
         return false;
     },
     TouchMove: function (evt) {
+        evt.preventDefault();
+
         var pos = this.GetRelativePosToContainer({ x: evt.touches[0].clientX, y: evt.touches[0].clientY });
         this.newX = parseInt(pos.x - this.offsetX);
         this.newY = parseInt(pos.y - this.offsetY);
         this.divCard.style.left = this.newX + "px";
         this.divCard.style.top = this.newY + "px";
 
-        evt.preventDefault();
         return false;
     },
     TouchEnd: function (evt) {
+        evt.preventDefault();
+
         document.removeEventListener("touchend", this.bindedTouchEnd, false);
         document.removeEventListener("touchcancel", this.bindedTouchEnd, false);
         document.removeEventListener("touchmove", this.bindedTouchMove, false);
 
         this.OnMove(); 
 
-        evt.preventDefault();
         return false;
     },
     EnterEditionMode: function(){
