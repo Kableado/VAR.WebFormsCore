@@ -196,7 +196,9 @@ var Card = function (cfg, idCard, title, body, x, y) {
     this.Editing = false;
 
     // Selfinsert
-    this.cfg.Cards.push(this);
+    if (this.IDCard > 0) {
+        this.cfg.Cards.push(this);
+    }
     this.InsertInContainer(this.cfg.divBoard);
 };
 Card.prototype = {
@@ -374,7 +376,9 @@ Card.prototype = {
                     var recvData = JSON.parse(responseText);
                     if (recvData && recvData instanceof Object && recvData.IsOK == true) {
                         card.RemoveFromContainer();
-                        card.cfg.RemoveCardByID(card.IDCard);
+                        if (card.IDCard > 0) {
+                            card.cfg.RemoveCardByID(card.IDCard);
+                        }
                     } else {
                         card.Show();
                     }
