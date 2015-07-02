@@ -107,7 +107,7 @@ Toolbox.prototype = {
     },
     btnAdd_Click: function (evt) {
         evt.preventDefault();
-        var pos = this.GetRelativePosToContainer({ x: 0, y: 0 });
+        var pos = { x: 0, y: 0 };
         pos.x += this.divToolbox.offsetLeft;
         pos.y += this.divToolbox.offsetTop + this.divToolbox.offsetHeight;
         var card = new Card(this.cfg, 0, "", "", pos.x, pos.y);
