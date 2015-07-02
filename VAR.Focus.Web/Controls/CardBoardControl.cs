@@ -24,7 +24,7 @@ namespace VAR.Focus.Web.Controls
 
         private int _timeRefreshDisconnected = 5000;
 
-        private int _timeMoveAnimation = 300;
+        private int _timeMoveAnimation = 500;
 
         #endregion
 

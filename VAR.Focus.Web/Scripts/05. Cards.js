@@ -1,6 +1,6 @@
 ﻿
 var CosineInterpolation = function (f) {
-    return 1 - (Math.cos(f * Math.PI) + 1) / 2;
+    return 1.0 - (Math.cos(f * Math.PI) + 1.0) / 2.0;
 };
 
 var Toolbox = function (cfg, container) {
@@ -215,22 +215,25 @@ Card.prototype = {
     RemoveFromContainer: function(){
         this.container.removeChild(this.divCard);
     },
-    MoveFrame: function(){
-        var f = ((+new Date()) - this.animData.startTime) / this.animData.time;
-        if (f < 1.0) {
-            f = CosineInterpolation(f);
-            f = CosineInterpolation(f);
-            var f2 = 1 - f;
-            var x = this.animData.X1 * f + this.animData.X0 * f2;
-            var y = this.animData.Y1 * f + this.animData.Y0 * f2;
-            this.divCard.style.left = x + "px";
-            this.divCard.style.top = y + "px";
-            this.animData.animationID = window.setTimeout(this.bindedMoveFrame, 16);
-        } else {
-            this.divCard.style.left = this.animData.X1 + "px";
-            this.divCard.style.top = this.animData.Y1 + "px";
-            this.animData = null;
+    MoveFrame: function () {
+        if (this.animData) {
+            var f = ((+new Date()) - this.animData.startTime) / this.animData.time;
+            if (f < 1.0) {
+                f = CosineInterpolation(f);
+                f = CosineInterpolation(f);
+                f = CosineInterpolation(f);
+                var f2 = 1 - f;
+                var x = this.animData.X1 * f + this.animData.X0 * f2;
+                var y = this.animData.Y1 * f + this.animData.Y0 * f2;
+                this.divCard.style.left = x + "px";
+                this.divCard.style.top = y + "px";
+                this.animData.animationID = window.setTimeout(this.bindedMoveFrame, 16);
+                return;
+            }
         }
+        this.divCard.style.left = this.X + "px";
+        this.divCard.style.top = this.Y + "px";
+        this.animData = null;
     },
     Move: function (x, y) {
         this.X = x;
