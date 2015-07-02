@@ -34,6 +34,8 @@
     left: 0;
     right: 0;
     height:30px;
+    -ms-touch-action: none;
+    touch-action: none;
 }
 
 .divToolbox .btnToolbox{
@@ -87,6 +89,8 @@
     bottom: 0;
     left: 0;
     right: 0;
+    -ms-touch-action: none;
+    touch-action: none;
 }
 
 .divCard .btnCard{
