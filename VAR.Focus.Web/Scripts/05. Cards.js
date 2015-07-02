@@ -49,6 +49,10 @@ var Toolbox = function (cfg, container) {
     this.offsetY = 0;
 };
 Toolbox.prototype = {
+    ReInsertOnContainer: function () {
+        this.container.removeChild(this.divToolbox);
+        this.container.appendChild(this.divToolbox);
+    },
     GetRelativePosToContainer: function (pos) {
         var tempElem = this.container;
         var relPos = { x: pos.x, y: pos.y };
@@ -211,6 +215,7 @@ Card.prototype = {
     InsertInContainer: function (container) {
         this.container = container;
         this.container.appendChild(this.divCard);
+        this.cfg.Toolbox.ReInsertOnContainer();
     },
     RemoveFromContainer: function(){
         this.container.removeChild(this.divCard);
@@ -236,6 +241,7 @@ Card.prototype = {
         this.animData = null;
     },
     Move: function (x, y) {
+        this.OnMoveStart();
         this.X = x;
         this.Y = y;
         this.newX = x;
@@ -262,6 +268,8 @@ Card.prototype = {
         this.newBody = body;
         this.divTitle.innerHTML = this.FilterText(this.Title);
         this.divBody.innerHTML = this.FilterText(this.Body);
+        this.RemoveFromContainer();
+        this.InsertInContainer(this.cfg.divBoard);
     },
     Reset: function () {
         this.newX = this.X;
@@ -294,36 +302,36 @@ Card.prototype = {
             window.clearTimeout(this.animData.animationID);
             this.animData = null;
         }
+        this.RemoveFromContainer();
+        this.InsertInContainer(this.cfg.divBoard);
     },
     OnMove: function () {
-        if (this.X != this.newX || this.Y != this.newY) {
-            var card = this;
-            if (this.cfg.Connected == false) {
-                card.Reset();
-                return;
-            }
-            var data = {
-                "IDBoard": this.cfg.IDBoard,
-                "Command": "Move",
-                "IDCard": this.IDCard,
-                "X": this.newX,
-                "Y": this.newY,
-                "TimeStamp": new Date().getTime()
-            };
-            SendData(this.cfg.ServiceUrl, data,
-                function (responseText) {
-                    try {
-                        var recvData = JSON.parse(responseText);
-                        if (recvData && recvData instanceof Object && recvData.IsOK == true) {
-                            card.SetNew();
-                        } else {
-                            card.Reset();
-                        }
-                    } catch (e) { }
-                }, function () {
-                    card.Reset();
-                });
+        var card = this;
+        if (this.cfg.Connected == false) {
+            card.Reset();
+            return;
         }
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "Move",
+            "IDCard": this.IDCard,
+            "X": this.newX,
+            "Y": this.newY,
+            "TimeStamp": new Date().getTime()
+        };
+        SendData(this.cfg.ServiceUrl, data,
+            function (responseText) {
+                try {
+                    var recvData = JSON.parse(responseText);
+                    if (recvData && recvData instanceof Object && recvData.IsOK == true) {
+                        card.SetNew();
+                    } else {
+                        card.Reset();
+                    }
+                } catch (e) { }
+            }, function () {
+                card.Reset();
+            });
     },
     OnEdit: function () {
         if (this.Title != this.newTitle || this.Body != this.newBody) {

@@ -125,6 +125,8 @@ namespace VAR.Focus.Web.Code.BusinessLogic
                 card.Y = y;
                 card.ModifiedBy = currentUserName;
                 card.ModifiedDate = currentDate;
+                _cards.Remove(card);
+                _cards.Add(card);
 
                 // Create event
                 _lastIDCardEvent++;
@@ -156,6 +158,8 @@ namespace VAR.Focus.Web.Code.BusinessLogic
                 card.Body = body;
                 card.ModifiedBy = currentUserName;
                 card.ModifiedDate = currentDate;
+                _cards.Remove(card);
+                _cards.Add(card);
 
                 // Create event
                 _lastIDCardEvent++;
