@@ -115,7 +115,7 @@ Toolbox.prototype = {
         pos.x += this.divToolbox.offsetLeft;
         pos.y += this.divToolbox.offsetTop + this.divToolbox.offsetHeight;
         var card = new Card(this.cfg, 0, "", "", pos.x, pos.y);
-        card.InsertInContainer(this.cfg.divBoard);
+        card.InsertOnContainer(this.cfg.divBoard);
         card.EnterEditionMode();
         return false;
     }
@@ -203,7 +203,7 @@ var Card = function (cfg, idCard, title, body, x, y) {
     if (this.IDCard > 0) {
         this.cfg.Cards.push(this);
     }
-    this.InsertInContainer(this.cfg.divBoard);
+    this.InsertOnContainer(this.cfg.divBoard);
 };
 Card.prototype = {
     FilterText: function (text) {
@@ -212,7 +212,7 @@ Card.prototype = {
         text = text.split("\n").join("<br />");
         return text;
     },
-    InsertInContainer: function (container) {
+    InsertOnContainer: function (container) {
         this.container = container;
         this.container.appendChild(this.divCard);
         this.cfg.Toolbox.ReInsertOnContainer();
@@ -269,7 +269,7 @@ Card.prototype = {
         this.divTitle.innerHTML = this.FilterText(this.Title);
         this.divBody.innerHTML = this.FilterText(this.Body);
         this.RemoveFromContainer();
-        this.InsertInContainer(this.cfg.divBoard);
+        this.InsertOnContainer(this.cfg.divBoard);
     },
     Reset: function () {
         this.newX = this.X;
@@ -303,7 +303,7 @@ Card.prototype = {
             this.animData = null;
         }
         this.RemoveFromContainer();
-        this.InsertInContainer(this.cfg.divBoard);
+        this.InsertOnContainer(this.cfg.divBoard);
     },
     OnMove: function () {
         var card = this;
