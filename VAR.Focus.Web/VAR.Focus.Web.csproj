@@ -62,17 +62,20 @@
     <Content Include="Scripts\05. Cards.js" />
     <Content Include="Scripts\10. Chat.js" />
     <Content Include="Styles\01. base.css" />
+    <Content Include="Styles\02. Boards.css" />
     <Content Include="Styles\05. Cards.css" />
     <Content Include="Styles\10. Chat.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Bundler.cs" />
+    <Compile Include="Code\BusinessLogic\Boards.cs" />
     <Compile Include="Code\BusinessLogic\CardBoard.cs" />
     <Compile Include="Code\BusinessLogic\MessageBoard.cs" />
     <Compile Include="Code\BusinessLogic\Persistence.cs" />
     <Compile Include="Code\BusinessLogic\Sessions.cs" />
     <Compile Include="Code\BusinessLogic\Users.cs" />
+    <Compile Include="Code\Entities\Board.cs" />
     <Compile Include="Code\Entities\Card.cs" />
     <Compile Include="Code\Entities\CardEvents.cs" />
     <Compile Include="Controls\CardBoardControl.cs" />
@@ -115,7 +118,6 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
