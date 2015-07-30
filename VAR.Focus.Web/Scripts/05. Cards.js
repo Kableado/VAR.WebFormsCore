@@ -9,6 +9,19 @@ var Toolbox = function (cfg, container) {
     this.Y = 0;
     this.container = container;
 
+    // Restore saved position
+    this.StrKeyPosition = "Toolbox_" + cfg.IDBoard + "_Position";
+    try {
+        var pos = window.localStorage.getItem(this.StrKeyPosition);
+        if (pos && (typeof pos === "string")) {
+            pos = JSON.parse(pos);
+            this.X = parseInt(pos.X);
+            this.Y = parseInt(pos.Y);
+        }
+    } catch (e) {
+        window.localStorage.removeItem(this.StrKeyPosition);
+    }
+
     // Create DOM
     this.divToolbox = document.createElement("div");
     this.divToolbox.className = "divToolbox";
@@ -63,6 +76,16 @@ Toolbox.prototype = {
         }
         return relPos;
     },
+    SetPosition: function(x, y){
+        this.X = x;
+        this.Y = y;
+        this.divToolbox.style.left = x + "px";
+        this.divToolbox.style.top = y + "px";
+    },
+    SavePosition: function(){
+        var pos = { X: this.X, Y: this.Y };
+        window.localStorage.setItem(this.StrKeyPosition, JSON.stringify(pos));
+    },
     MouseDown: function (evt) {
         evt.preventDefault();
         var pos = this.GetRelativePosToContainer({ x: evt.clientX, y: evt.clientY });
@@ -75,12 +98,12 @@ Toolbox.prototype = {
     MouseMove: function (evt) {
         evt.preventDefault();
         var pos = this.GetRelativePosToContainer({ x: evt.clientX, y: evt.clientY });
-        this.divToolbox.style.left = parseInt(pos.x - this.offsetX) + "px";
-        this.divToolbox.style.top = parseInt(pos.y - this.offsetY) + "px";
+        this.SetPosition(parseInt(pos.x - this.offsetX), parseInt(pos.y - this.offsetY));
         return false;
     },
     MouseUp: function (evt) {
         evt.preventDefault();
+        this.SavePosition();
         document.removeEventListener("mouseup", this.bindedMouseUp, false);
         document.removeEventListener("mousemove", this.bindedMouseMove, false);
         return false;
@@ -98,12 +121,12 @@ Toolbox.prototype = {
     TouchMove: function (evt) {
         evt.preventDefault();
         var pos = this.GetRelativePosToContainer({ x: evt.touches[0].clientX, y: evt.touches[0].clientY });
-        this.divToolbox.style.left = parseInt(pos.x - this.offsetX) + "px";
-        this.divToolbox.style.top = parseInt(pos.y - this.offsetY) + "px";
+        this.SetPosition(parseInt(pos.x - this.offsetX), parseInt(pos.y - this.offsetY));
         return false;
     },
     TouchEnd: function (evt) {
         evt.preventDefault();
+        this.SavePosition();
         document.removeEventListener("touchend", this.bindedTouchEnd, false);
         document.removeEventListener("touchcancel", this.bindedTouchEnd, false);
         document.removeEventListener("touchmove", this.bindedTouchMove, false);
