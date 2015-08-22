@@ -13,7 +13,7 @@ namespace VAR.Focus.Web.Controls
         #region Declarations
 
         private static object _monitor = new object();
-        private static Dictionary<int, MessageBoard> _chatBoards = new Dictionary<int, MessageBoard>();
+        private static Dictionary<string, MessageBoard> _chatBoards = new Dictionary<string, MessageBoard>();
 
         #endregion
 
@@ -42,7 +42,7 @@ namespace VAR.Focus.Web.Controls
 
         private void ProcessReciver(HttpContext context)
         {
-            int idBoard = Convert.ToInt32(GetRequestParm(context, "IDBoard"));
+            string idMessageBoard = GetRequestParm(context, "IDMessageBoard");
             int idMessage = Convert.ToInt32(GetRequestParm(context, "IDMessage"));
             string strTimePoolData = GetRequestParm(context, "TimePoolData");
             int timePoolData = Convert.ToInt32(string.IsNullOrEmpty(strTimePoolData) ? "0" : strTimePoolData);
@@ -51,21 +51,21 @@ namespace VAR.Focus.Web.Controls
             bool mustWait = (timePoolData > 0);
             do
             {
-                if (_chatBoards.ContainsKey(idBoard) == false)
+                if (_chatBoards.ContainsKey(idMessageBoard) == false)
                 {
                     lock (_chatBoards)
                     {
-                        if (_chatBoards.ContainsKey(idBoard) == false)
+                        if (_chatBoards.ContainsKey(idMessageBoard) == false)
                         {
-                            messageBoard = new MessageBoard(idBoard);
-                            _chatBoards[idBoard] = messageBoard;
+                            messageBoard = new MessageBoard(idMessageBoard);
+                            _chatBoards[idMessageBoard] = messageBoard;
                         }
                     }
                 }
 
-                if (_chatBoards.ContainsKey(idBoard))
+                if (_chatBoards.ContainsKey(idMessageBoard))
                 {
-                    messageBoard = _chatBoards[idBoard];
+                    messageBoard = _chatBoards[idMessageBoard];
                     List<Message> listMessages = messageBoard.Messages_GetList(idMessage);
                     if (listMessages.Count > 0)
                     {
@@ -85,8 +85,8 @@ namespace VAR.Focus.Web.Controls
         private void ProcessSender(HttpContext context)
         {
             string text = Convert.ToString(GetRequestParm(context, "Text"));
-            string strIDBoard = GetRequestParm(context, "IDBoard");
-            int idBoard = Convert.ToInt32(string.IsNullOrEmpty(strIDBoard) ? "0" : strIDBoard);
+            string idMessageBoard = GetRequestParm(context, "IDMessageBoard");
+            if (string.IsNullOrEmpty(idMessageBoard)) { idMessageBoard = "root"; }
             string userName = Convert.ToString(GetRequestParm(context, "UserName"));
             Session session = Sessions.Current.Session_GetCurrent(context);
             if (session.UserName.ToLower() != userName.ToLower())
@@ -98,14 +98,14 @@ namespace VAR.Focus.Web.Controls
             lock (_chatBoards)
             {
                 MessageBoard messageBoard;
-                if (_chatBoards.ContainsKey(idBoard))
+                if (_chatBoards.ContainsKey(idMessageBoard))
                 {
-                    messageBoard = _chatBoards[idBoard];
+                    messageBoard = _chatBoards[idMessageBoard];
                 }
                 else
                 {
-                    messageBoard = new MessageBoard(idBoard);
-                    _chatBoards[idBoard] = messageBoard;
+                    messageBoard = new MessageBoard(idMessageBoard);
+                    _chatBoards[idMessageBoard] = messageBoard;
                 }
                 messageBoard.Message_Add(userName, text);
                 lock (_monitor) { Monitor.PulseAll(_monitor); }

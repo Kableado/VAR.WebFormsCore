@@ -146,7 +146,7 @@
 
         // Pool data
         var data = {
-            "IDBoard": cfg.IDBoard,
+            "IDMessageBoard": cfg.IDMessageBoard,
             "IDMessage": cfg.IDMessage,
             "TimePoolData": ((cfg.FirstMessages || cfg.Connected == false) ? "0" : String(cfg.TimePoolData)),
             "TimeStamp": new Date().getTime()
@@ -166,7 +166,7 @@ function SendChat(cfg) {
     // Send data
     var data = {
         "Text": cfg.txtText.value,
-        "IDBoard": cfg.IDBoard,
+        "IDMessageBoard": cfg.IDMessageBoard,
         "UserName": cfg.UserName,
         "TimeStamp": new Date().getTime()
     };

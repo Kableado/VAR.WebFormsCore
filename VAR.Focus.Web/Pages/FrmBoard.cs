@@ -15,7 +15,7 @@ namespace VAR.Focus.Web.Pages
         private int _idBoard = 0;
 
         private CTextBox _txtTitle = new CTextBox { ID = "txtTitle", CssClassExtra="width100pc" };
-        private CTextBox _txtDescription = new CTextBox { ID = "txtDescription", CssClassExtra = "width100pc" };
+        private CTextBox _txtDescription = new CTextBox { ID = "txtDescription", CssClassExtra = "width100pc", TextMode = TextBoxMode.MultiLine };
 
         #endregion
 
@@ -117,7 +117,7 @@ namespace VAR.Focus.Web.Pages
 
             ChatControl chatControl = new ChatControl();
             chatControl.ID = "ctrChat";
-            chatControl.IDBoard = board.IDBoard;
+            chatControl.IDMessageBoard = string.Format("CardBoard_{0}", board.IDBoard);
             chatControl.UserName = CurrentUser.Name;
             Controls.Add(chatControl);
         }

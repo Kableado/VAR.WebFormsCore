@@ -11,7 +11,7 @@ namespace VAR.Focus.Web.Controls
 
         private string _serviceUrl = "ChatHandler";
 
-        private int _idBoard = 0;
+        private string _idMessageBoard = null;
 
         private string _userName = string.Empty;
 
@@ -34,10 +34,10 @@ namespace VAR.Focus.Web.Controls
             set { _serviceUrl = value; }
         }
 
-        public int IDBoard
+        public string IDMessageBoard
         {
-            get { return _idBoard; }
-            set { _idBoard = value; }
+            get { return _idMessageBoard; }
+            set { _idMessageBoard = value; }
         }
 
         public string UserName
@@ -140,7 +140,7 @@ namespace VAR.Focus.Web.Controls
             sbCfg.AppendFormat("  divChat: \"{0}\",\n", divChat.ClientID);
             sbCfg.AppendFormat("  txtText: \"{0}\",\n", txtText.ClientID);
             sbCfg.AppendFormat("  btnSend: \"{0}\",\n", btnSend.ClientID);
-            sbCfg.AppendFormat("  IDBoard: {0},\n", _idBoard);
+            sbCfg.AppendFormat("  IDMessageBoard:  \"{0}\",\n", _idMessageBoard);
             sbCfg.AppendFormat("  UserName: \"{0}\",\n", _userName);
             sbCfg.AppendFormat("  IDMessage: {0},\n", 0);
             sbCfg.AppendFormat("  ServiceUrl: \"{0}\",\n", _serviceUrl);

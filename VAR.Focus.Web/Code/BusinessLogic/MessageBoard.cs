@@ -11,15 +11,15 @@ namespace VAR.Focus.Web.Code.BusinessLogic
         private List<Message> _messages = new List<Message>();
         private int _lastIDMessage = 0;
 
-        private int _idBoard = 0;
+        private string _idMessageBoard = null;
 
         #endregion
 
         #region Life cycle
 
-        public MessageBoard(int idBoard)
+        public MessageBoard(string idMessageBoard)
         {
-            _idBoard = idBoard;
+            _idMessageBoard = idMessageBoard;
             LoadData();
         }
 
@@ -67,7 +67,7 @@ namespace VAR.Focus.Web.Code.BusinessLogic
 
         private void LoadData()
         {
-            _messages = Persistence.LoadList<Message>(String.Format(PersistenceFile, _idBoard));
+            _messages = Persistence.LoadList<Message>(String.Format(PersistenceFile, _idMessageBoard));
             _lastIDMessage = 0;
             if (_messages.Count > 0)
             {
@@ -77,7 +77,7 @@ namespace VAR.Focus.Web.Code.BusinessLogic
 
         private void SaveData()
         {
-            Persistence.SaveList(String.Format(PersistenceFile, _idBoard), _messages);
+            Persistence.SaveList(String.Format(PersistenceFile, _idMessageBoard), _messages);
         }
 
         #endregion
