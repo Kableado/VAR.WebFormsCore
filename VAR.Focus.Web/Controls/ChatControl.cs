@@ -112,8 +112,8 @@ namespace VAR.Focus.Web.Controls
 
             _divChatContainer = new Panel { ID = "divChatContainer", CssClass = "divChatContainer" };
             _divChatWindow.Controls.Add(_divChatContainer);
-            _divChatContainer.Width = _width;
-            _divChatContainer.Height = _height;
+            _divChatContainer.Width = 0;
+            _divChatContainer.Height = 0;
 
             var divChat = new Panel { ID = "divChat", CssClass = "divChat" };
             _divChatContainer.Controls.Add(divChat);
@@ -137,6 +137,8 @@ namespace VAR.Focus.Web.Controls
             sbCfg.AppendFormat("  divChatTitleBar: \"{0}\",\n", _divChatTitleBar.ClientID);
             sbCfg.AppendFormat("  lblTitle: \"{0}\",\n", lblTitle.ClientID);
             sbCfg.AppendFormat("  divChatContainer: \"{0}\",\n", _divChatContainer.ClientID);
+            sbCfg.AppendFormat("  divChatContainerWidth: \"{0}\",\n", _width);
+            sbCfg.AppendFormat("  divChatContainerHeight: \"{0}\",\n", _height);
             sbCfg.AppendFormat("  divChat: \"{0}\",\n", divChat.ClientID);
             sbCfg.AppendFormat("  txtText: \"{0}\",\n", txtText.ClientID);
             sbCfg.AppendFormat("  btnSend: \"{0}\",\n", btnSend.ClientID);

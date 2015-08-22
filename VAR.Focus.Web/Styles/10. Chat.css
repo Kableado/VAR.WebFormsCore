@@ -57,6 +57,12 @@
     padding: 5px;
 }
 
+.divChatContainer{
+    transition-property: width, height, opacity;
+    transition-duration: 0.3s;
+    overflow: hidden;
+}
+
 .divChat {
     box-sizing: border-box;
     overflow: auto;

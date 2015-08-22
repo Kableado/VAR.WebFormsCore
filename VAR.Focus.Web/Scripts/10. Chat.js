@@ -9,7 +9,9 @@
 
     cfg.lblTitle.innerHTML = cfg.Texts.Chat;
     cfg.lblTitle.className = "titleChatNormal";
-    cfg.divChatContainer.style.display = "none";
+    cfg.divChatContainer.style.width = 0;
+    cfg.divChatContainer.style.height = 0;
+    cfg.divChatContainer.style.opacity = 0;
 
     cfg.Minimized = true;
     cfg.Connected = null;
@@ -19,7 +21,9 @@
 
     cfg.lblTitle.onclick = function () {
         if (cfg.Minimized) {
-            cfg.divChatContainer.style.display = "";
+            cfg.divChatContainer.style.width = cfg.divChatContainerWidth;
+            cfg.divChatContainer.style.height = cfg.divChatContainerHeight;
+            cfg.divChatContainer.style.opacity = 1;
             if (cfg.Connected) {
                 cfg.lblTitle.innerHTML = cfg.Texts.Close;
                 cfg.lblTitle.className = "titleChatNormal";
@@ -33,7 +37,9 @@
         } else {
             cfg.ScrollPosition = cfg.divChat.scrollTop;
             cfg.ScrollOnRestore = (cfg.divChat.scrollTop > (cfg.divChat.scrollHeight - cfg.divChat.offsetHeight));
-            cfg.divChatContainer.style.display = "none";
+            cfg.divChatContainer.style.width = 0;
+            cfg.divChatContainer.style.height = 0;
+            cfg.divChatContainer.style.opacity = 0;
             if (cfg.Connected) {
                 cfg.lblTitle.innerHTML = cfg.Texts.Chat;
                 cfg.lblTitle.className = "titleChatNormal";
