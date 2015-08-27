@@ -65,7 +65,7 @@ namespace VAR.Focus.Web.Pages
 
         void btnExit_Click(object sender, EventArgs e)
         {
-            Response.Redirect(".");
+            Response.Redirect(Globals.DefaultHandler);
         }
 
         #endregion

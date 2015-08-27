@@ -13,7 +13,7 @@ namespace VAR.Focus.Web.Code.BusinessLogic
 
         private List<Session> _sessions = new List<Session>();
 
-        private string _cookieName = "ScrummerSID";
+        private string _cookieName = "FocusSID";
         private int _cookieExpirationDays = 30;
 
         #endregion

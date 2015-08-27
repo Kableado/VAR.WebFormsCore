@@ -43,7 +43,7 @@ namespace VAR.Focus.Web.Pages
             }
 
             Sessions.Current.Session_Init(Context, _txtNameEmail.Text);
-            Response.Redirect(".");
+            Response.Redirect(Globals.DefaultHandler);
         }
 
         #endregion

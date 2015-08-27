@@ -21,7 +21,7 @@ namespace VAR.Focus.Web.Controls
 
         public bool IsReusable
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         public void ProcessRequest(HttpContext context)
