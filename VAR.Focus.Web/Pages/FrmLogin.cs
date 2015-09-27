@@ -57,9 +57,11 @@ namespace VAR.Focus.Web.Pages
             Controls.Add(lblTitle);
 
             Controls.Add(FormUtils.CreateField("Name/Mail", _txtNameEmail));
+            _txtNameEmail.NextFocusOnEnter = _txtPassword;
             _txtNameEmail.PlaceHolder = "Name/Mail";
 
             Controls.Add(FormUtils.CreateField("Password", _txtPassword));
+            _txtPassword.NextFocusOnEnter = _btnLogin;
             _txtPassword.PlaceHolder = "Password";
 
             Controls.Add(FormUtils.CreateField(String.Empty, _btnLogin));
@@ -67,11 +69,6 @@ namespace VAR.Focus.Web.Pages
             _btnLogin.Click += btnLogin_Click;
 
             Controls.Add(FormUtils.CreateField(String.Empty, new HyperLink { Text = "Register user", NavigateUrl = "FrmRegister" }));
-
-            _txtNameEmail.Attributes.Add("onkeydown", String.Format(
-                "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}", _txtPassword.ClientID));
-            _txtPassword.Attributes.Add("onkeydown", String.Format(
-                "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}", _btnLogin.ClientID));
         }
 
         #endregion

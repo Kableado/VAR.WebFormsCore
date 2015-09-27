@@ -17,6 +17,8 @@ namespace VAR.Focus.Web.Controls
 
         private bool _markedInvalid = false;
 
+        private Control _nextFocusOnEnter = null;
+
         #endregion
 
         #region Properties
@@ -45,6 +47,12 @@ namespace VAR.Focus.Web.Controls
             set { _markedInvalid = value; }
         }
 
+        public Control NextFocusOnEnter
+        {
+            get { return _nextFocusOnEnter; }
+            set { _nextFocusOnEnter = value; }
+        }
+
         #endregion
 
         #region Control life cycle
@@ -71,6 +79,14 @@ namespace VAR.Focus.Web.Controls
             {
                 Attributes.Add("placeholder", _placeHolder);
             }
+
+            if (_nextFocusOnEnter!=null)
+            {
+                this.Attributes.Add("onkeydown", String.Format(
+                    "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}",
+                    _nextFocusOnEnter.ClientID));
+            }
+
 
             // FIX: The framework deletes textbox values on password mode
             if (TextMode == TextBoxMode.Password)

@@ -81,15 +81,19 @@ namespace VAR.Focus.Web.Pages
             Controls.Add(_pnlRegister);
 
             _pnlRegister.Controls.Add(FormUtils.CreateField("Name", _txtName));
+            _txtName.NextFocusOnEnter = _txtEmail;
             _txtName.PlaceHolder = "Name";
 
             _pnlRegister.Controls.Add(FormUtils.CreateField("Email", _txtEmail));
+            _txtEmail.NextFocusOnEnter = _txtPassword1;
             _txtEmail.PlaceHolder = "Email";
 
             _pnlRegister.Controls.Add(FormUtils.CreateField("Password", _txtPassword1));
+            _txtPassword1.NextFocusOnEnter = _txtPassword2;
             _txtPassword1.PlaceHolder = "Password";
 
             _pnlRegister.Controls.Add(FormUtils.CreateField(String.Empty, _txtPassword2));
+            _txtPassword2.NextFocusOnEnter = _btnRegister;
             _txtPassword2.PlaceHolder = "Password";
 
             _btnRegister.Text = "Register";
@@ -102,17 +106,7 @@ namespace VAR.Focus.Web.Pages
             pnlButtons.Controls.Add(_btnRegister);
             pnlButtons.Controls.Add(_btnExit);
             _pnlRegister.Controls.Add(FormUtils.CreateField(String.Empty, pnlButtons));
-
-            _txtName.Attributes.Add("onkeydown", String.Format(
-                "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}", _txtEmail.ClientID));
-            _txtEmail.Attributes.Add("onkeydown", String.Format(
-                "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}", _txtPassword1.ClientID));
-            _txtPassword1.Attributes.Add("onkeydown", String.Format(
-                "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}", _txtPassword2.ClientID));
-            _txtPassword2.Attributes.Add("onkeydown", String.Format(
-                "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}", _btnRegister.ClientID));
-
-
+            
             Controls.Add(_pnlSuccess);
             _pnlSuccess.Visible = false;
 

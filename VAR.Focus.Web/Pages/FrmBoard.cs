@@ -28,7 +28,6 @@ namespace VAR.Focus.Web.Pages
 
         void FrmBoard_Init(object sender, EventArgs e)
         {
-
             string strIDBoard = GetRequestParm(Context, "idBoard");
             if (String.IsNullOrEmpty(strIDBoard) == false)
             {
