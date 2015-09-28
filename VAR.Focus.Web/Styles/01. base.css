@@ -76,6 +76,7 @@ h3 {
     padding: 1px;
     box-shadow: 0 0 10px black inset;
     min-height: calc(100% - 40px);
+    overflow: auto;
 }
 
 .divCode {
