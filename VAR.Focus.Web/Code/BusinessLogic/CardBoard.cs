@@ -245,8 +245,8 @@ namespace VAR.Focus.Web.Code.BusinessLogic
 
         #region Persistence
 
-        private const string CardsPersistenceFile = "priv/cardBoard.{0}.json";
-        private const string EventsPersistenceFile = "priv/cardEvents.{0}.json";
+        private const string CardsPersistenceFile = "cardBoard.{0}";
+        private const string EventsPersistenceFile = "cardEvents.{0}";
 
         private void LoadData()
         {

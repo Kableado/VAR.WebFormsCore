@@ -127,7 +127,7 @@ namespace VAR.Focus.Web.Code.BusinessLogic
 
         #region Persistence
 
-        private const string PersistenceFile = "priv/users.json";
+        private const string PersistenceFile = "users";
 
         private void LoadData()
         {

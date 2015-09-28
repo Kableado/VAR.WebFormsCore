@@ -43,7 +43,7 @@ namespace VAR.Focus.Web.Code.BusinessLogic
                     parser.KnownTypes.Add(type);
                 }
             }
-            string filePath = GetLocalPath(file);
+            string filePath = GetLocalPath(string.Format("priv/{0}.json", file));
             if (File.Exists(filePath) == false) { return listResult; }
 
             string strJsonUsers = File.ReadAllText(filePath);
@@ -66,7 +66,8 @@ namespace VAR.Focus.Web.Code.BusinessLogic
         {
             JSONWriter writter = new JSONWriter(true);
             string strJsonUsers = writter.Write(data);
-            File.WriteAllText(GetLocalPath(file), strJsonUsers);
+            string filePath = GetLocalPath(string.Format("priv/{0}.json", file));
+            File.WriteAllText(filePath, strJsonUsers);
             return true;
         }
 

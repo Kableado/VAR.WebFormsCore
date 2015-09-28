@@ -130,7 +130,7 @@ namespace VAR.Focus.Web.Code.BusinessLogic
 
         #region Persistence
 
-        private const string PersistenceFile = "priv/sessions.json";
+        private const string PersistenceFile = "sessions";
 
         private void LoadData()
         {
