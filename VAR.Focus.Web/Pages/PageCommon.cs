@@ -119,6 +119,7 @@ namespace VAR.Focus.Web.Pages
             _head.Controls.Add(new HtmlMeta { Name = "Copyright", Content = Globals.Copyright });
             Assembly asm = Assembly.GetExecutingAssembly();
             string version = asm.GetName().Version.ToString();
+            _head.Controls.Add(new LiteralControl("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\" />\n"));
             _head.Controls.Add(new LiteralControl(String.Format("<script type=\"text/javascript\" src=\"ScriptsBundler?t={0}\"></script>\n", version)));
             _head.Controls.Add(new LiteralControl(String.Format("<link href=\"StylesBundler?t={0}\" type=\"text/css\" rel=\"stylesheet\"/>\n", version)));
 
