@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using VAR.Focus.Web.Code.Entities;
 
 namespace VAR.Focus.Web.Code.BusinessLogic
