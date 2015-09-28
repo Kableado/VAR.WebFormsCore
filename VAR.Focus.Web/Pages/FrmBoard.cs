@@ -14,7 +14,7 @@ namespace VAR.Focus.Web.Pages
 
         private int _idBoard = 0;
 
-        private CTextBox _txtTitle = new CTextBox { ID = "txtTitle", CssClassExtra="width100pc" };
+        private CTextBox _txtTitle = new CTextBox { ID = "txtTitle", CssClassExtra="width100pc", AllowEmpty = false };
         private CTextBox _txtDescription = new CTextBox { ID = "txtDescription", CssClassExtra = "width100pc", TextMode = TextBoxMode.MultiLine };
 
         #endregion
@@ -49,6 +49,8 @@ namespace VAR.Focus.Web.Pages
 
         void btnAddBoard_Click(object sender, EventArgs e)
         {
+            if (FormUtils.Controls_AreValid(Controls) == false) { return; }
+
             Board board = Boards.Current.Boards_SetBoard(0, _txtTitle.Text, _txtDescription.Text, CurrentUser.Name);
             _idBoard = board.IDBoard;
 

@@ -79,7 +79,7 @@ namespace VAR.Focus.Web.Pages
 
         void PageCommon_PreRender(object sender, EventArgs e)
         {
-            _head.Title = string.IsNullOrEmpty(Title) ? Globals.Title : String.Format("{0}{1}{2}", Globals.Title, Globals.TitleSeparator, Title);
+            _head.Title = string.IsNullOrEmpty(Title) ? Globals.Title : String.Format("{0}{1}{2}", Title, Globals.TitleSeparator, Globals.Title);
             _btnLogout.Visible = (_currentUser != null);
         }
 
