@@ -194,7 +194,7 @@ namespace VAR.Focus.Web.Controls
         {
             lock (_monitor) { Monitor.PulseAll(_monitor); }
         }
-        
+
         #endregion
     }
 }

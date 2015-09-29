@@ -26,13 +26,20 @@ namespace VAR.Focus.Web.Controls
 
         public void ProcessRequest(HttpContext context)
         {
-            if (context.Request.RequestType == "GET")
+            try
             {
-                ProcessReciver(context);
+                if (context.Request.RequestType == "GET")
+                {
+                    ProcessReciver(context);
+                }
+                if (context.Request.RequestType == "POST")
+                {
+                    ProcessSender(context);
+                }
             }
-            if (context.Request.RequestType == "POST")
+            catch (Exception ex)
             {
-                ProcessSender(context);
+                context.ResponseObject(new OperationStatus { IsOK = false, Message = ex.Message, });
             }
         }
 
@@ -112,7 +119,7 @@ namespace VAR.Focus.Web.Controls
             }
             context.ResponseObject(new OperationStatus { IsOK = true, Message = "Message sent" });
         }
-        
+
         #endregion
     }
 }
