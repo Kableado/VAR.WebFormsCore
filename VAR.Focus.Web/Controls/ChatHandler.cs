@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Web;
+using VAR.Focus.Web.Code;
 using VAR.Focus.Web.Code.BusinessLogic;
 using VAR.Focus.Web.Code.Entities;
-using VAR.Focus.Web.Code.JSON;
 
 namespace VAR.Focus.Web.Controls
 {
@@ -42,9 +42,9 @@ namespace VAR.Focus.Web.Controls
 
         private void ProcessReciver(HttpContext context)
         {
-            string idMessageBoard = GetRequestParm(context, "IDMessageBoard");
-            int idMessage = Convert.ToInt32(GetRequestParm(context, "IDMessage"));
-            string strTimePoolData = GetRequestParm(context, "TimePoolData");
+            string idMessageBoard = context.GetRequestParm("IDMessageBoard");
+            int idMessage = Convert.ToInt32(context.GetRequestParm("IDMessage"));
+            string strTimePoolData = context.GetRequestParm("TimePoolData");
             int timePoolData = Convert.ToInt32(string.IsNullOrEmpty(strTimePoolData) ? "0" : strTimePoolData);
 
             MessageBoard messageBoard;
@@ -70,7 +70,7 @@ namespace VAR.Focus.Web.Controls
                     if (listMessages.Count > 0)
                     {
                         mustWait = false;
-                        ResponseObject(context, listMessages);
+                        context.ResponseObject(listMessages);
                         return;
                     }
                 }
@@ -79,19 +79,19 @@ namespace VAR.Focus.Web.Controls
                     lock (_monitor) { Monitor.Wait(_monitor, timePoolData); }
                 }
             } while (mustWait);
-            ResponseObject(context, new List<Message>());
+            context.ResponseObject(new List<Message>());
         }
 
         private void ProcessSender(HttpContext context)
         {
-            string text = Convert.ToString(GetRequestParm(context, "Text"));
-            string idMessageBoard = GetRequestParm(context, "IDMessageBoard");
+            string text = Convert.ToString(context.GetRequestParm("Text"));
+            string idMessageBoard = context.GetRequestParm("IDMessageBoard");
             if (string.IsNullOrEmpty(idMessageBoard)) { idMessageBoard = "root"; }
-            string userName = Convert.ToString(GetRequestParm(context, "UserName"));
+            string userName = Convert.ToString(context.GetRequestParm("UserName"));
             Session session = Sessions.Current.Session_GetCurrent(context);
             if (session.UserName.ToLower() != userName.ToLower())
             {
-                ResponseObject(context, new OperationStatus { IsOK = false, Message = "User mismatch" });
+                context.ResponseObject(new OperationStatus { IsOK = false, Message = "User mismatch" });
                 return;
             }
 
@@ -110,29 +110,9 @@ namespace VAR.Focus.Web.Controls
                 messageBoard.Message_Add(userName, text);
                 lock (_monitor) { Monitor.PulseAll(_monitor); }
             }
-            ResponseObject(context, new OperationStatus { IsOK = true, Message = "Message sent" });
+            context.ResponseObject(new OperationStatus { IsOK = true, Message = "Message sent" });
         }
-
-        private string GetRequestParm(HttpContext context, string parm)
-        {
-            foreach (string key in context.Request.Params.AllKeys)
-            {
-                if (string.IsNullOrEmpty(key) == false && key.EndsWith(parm))
-                {
-                    return context.Request.Params[key];
-                }
-            }
-            return string.Empty;
-        }
-
-        private void ResponseObject(HttpContext context, object obj)
-        {
-            var jsonWritter = new JSONWriter(true);
-            context.Response.ContentType = "text/json";
-            string strObject = jsonWritter.Write(obj);
-            context.Response.Write(strObject);
-        }
-
+        
         #endregion
     }
 }

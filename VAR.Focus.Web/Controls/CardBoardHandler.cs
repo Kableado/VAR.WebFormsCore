@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Web;
+using VAR.Focus.Web.Code;
 using VAR.Focus.Web.Code.BusinessLogic;
 using VAR.Focus.Web.Code.Entities;
-using VAR.Focus.Web.Code.JSON;
 
 namespace VAR.Focus.Web.Controls
 {
@@ -30,7 +30,7 @@ namespace VAR.Focus.Web.Controls
             {
                 if (context.Request.RequestType == "GET")
                 {
-                    if (string.IsNullOrEmpty(GetRequestParm(context, "IDCardEvent")))
+                    if (string.IsNullOrEmpty(context.GetRequestParm("IDCardEvent")))
                     {
                         ProcessInitializationReciver(context);
                     }
@@ -46,7 +46,7 @@ namespace VAR.Focus.Web.Controls
             }
             catch (Exception ex)
             {
-                ResponseObject(context, new OperationStatus { IsOK = false, Message = ex.Message, });
+                context.ResponseObject(new OperationStatus { IsOK = false, Message = ex.Message, });
             }
         }
 
@@ -56,7 +56,7 @@ namespace VAR.Focus.Web.Controls
 
         private void ProcessInitializationReciver(HttpContext context)
         {
-            int idBoard = Convert.ToInt32(GetRequestParm(context, "IDBoard"));
+            int idBoard = Convert.ToInt32(context.GetRequestParm("IDBoard"));
             CardBoard cardBoard;
             if (_cardBoards.ContainsKey(idBoard) == false)
             {
@@ -85,7 +85,7 @@ namespace VAR.Focus.Web.Controls
                 {
                     listEvents = new List<ICardEvent>();
                 }
-                ResponseObject(context, listEvents);
+                context.ResponseObject(listEvents);
             }
         }
 
@@ -109,9 +109,9 @@ namespace VAR.Focus.Web.Controls
 
         private void ProcessEventReciver(HttpContext context)
         {
-            int idBoard = Convert.ToInt32(GetRequestParm(context, "IDBoard"));
-            int idCardEvent = Convert.ToInt32(GetRequestParm(context, "IDCardEvent"));
-            string strTimePoolData = GetRequestParm(context, "TimePoolData");
+            int idBoard = Convert.ToInt32(context.GetRequestParm("IDBoard"));
+            int idCardEvent = Convert.ToInt32(context.GetRequestParm("IDCardEvent"));
+            string strTimePoolData = context.GetRequestParm("TimePoolData");
             int timePoolData = Convert.ToInt32(string.IsNullOrEmpty(strTimePoolData) ? "0" : strTimePoolData);
 
             CardBoard cardBoard = GetCardBoard(idBoard);
@@ -122,7 +122,7 @@ namespace VAR.Focus.Web.Controls
                 if (listMessages.Count > 0)
                 {
                     mustWait = false;
-                    ResponseObject(context, listMessages);
+                    context.ResponseObject(listMessages);
                     return;
                 }
 
@@ -131,16 +131,16 @@ namespace VAR.Focus.Web.Controls
                     lock (_monitor) { Monitor.Wait(_monitor, timePoolData); }
                 }
             } while (mustWait);
-            ResponseObject(context, new List<Message>());
+            context.ResponseObject(new List<Message>());
         }
 
         private void ProcessEventSender(HttpContext context)
         {
             Session session = Sessions.Current.Session_GetCurrent(context);
             string currentUserName = session.UserName;
-            string strIDBoard = GetRequestParm(context, "IDBoard");
+            string strIDBoard = context.GetRequestParm("IDBoard");
             int idBoard = Convert.ToInt32(string.IsNullOrEmpty(strIDBoard) ? "0" : strIDBoard);
-            string command = GetRequestParm(context, "Command");
+            string command = context.GetRequestParm("Command");
             int idCard = 0;
             bool done = false;
             CardBoard cardBoard = GetCardBoard(idBoard);
@@ -148,32 +148,32 @@ namespace VAR.Focus.Web.Controls
             {
                 if (command == "Create")
                 {
-                    string title = GetRequestParm(context, "Title");
-                    string body = GetRequestParm(context, "Body");
-                    int x = Convert.ToInt32(GetRequestParm(context, "X"));
-                    int y = Convert.ToInt32(GetRequestParm(context, "Y"));
+                    string title = context.GetRequestParm("Title");
+                    string body = context.GetRequestParm("Body");
+                    int x = Convert.ToInt32(context.GetRequestParm("X"));
+                    int y = Convert.ToInt32(context.GetRequestParm("Y"));
                     idCard = cardBoard.Card_Create(title, body, x, y, currentUserName);
                     done = true;
                 }
                 if (command == "Move")
                 {
-                    idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
-                    int x = Convert.ToInt32(GetRequestParm(context, "X"));
-                    int y = Convert.ToInt32(GetRequestParm(context, "Y"));
+                    idCard = Convert.ToInt32(context.GetRequestParm("IDCard"));
+                    int x = Convert.ToInt32(context.GetRequestParm("X"));
+                    int y = Convert.ToInt32(context.GetRequestParm("Y"));
                     cardBoard.Card_Move(idCard, x, y, currentUserName);
                     done = true;
                 }
                 if (command == "Edit")
                 {
-                    idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
-                    string title = GetRequestParm(context, "Title");
-                    string body = GetRequestParm(context, "Body");
+                    idCard = Convert.ToInt32(context.GetRequestParm("IDCard"));
+                    string title = context.GetRequestParm("Title");
+                    string body = context.GetRequestParm("Body");
                     cardBoard.Card_Edit(idCard, title, body, currentUserName);
                     done = true;
                 }
                 if (command == "Delete")
                 {
-                    idCard = Convert.ToInt32(GetRequestParm(context, "IDCard"));
+                    idCard = Convert.ToInt32(context.GetRequestParm("IDCard"));
                     cardBoard.Card_Delete(idCard, currentUserName);
                     done = true;
                 }
@@ -181,7 +181,7 @@ namespace VAR.Focus.Web.Controls
             if (done)
             {
                 NotifyAll();
-                ResponseObject(context, new OperationStatus
+                context.ResponseObject(new OperationStatus
                 {
                     IsOK = true,
                     Message = "Update successfully",
@@ -194,27 +194,7 @@ namespace VAR.Focus.Web.Controls
         {
             lock (_monitor) { Monitor.PulseAll(_monitor); }
         }
-
-        private string GetRequestParm(HttpContext context, string parm)
-        {
-            foreach (string key in context.Request.Params.AllKeys)
-            {
-                if (string.IsNullOrEmpty(key) == false && key.EndsWith(parm))
-                {
-                    return context.Request.Params[key];
-                }
-            }
-            return string.Empty;
-        }
-
-        private void ResponseObject(HttpContext context, object obj)
-        {
-            var jsonWritter = new JSONWriter(true);
-            context.Response.ContentType = "text/json";
-            string strObject = jsonWritter.Write(obj);
-            context.Response.Write(strObject);
-        }
-
+        
         #endregion
     }
 }

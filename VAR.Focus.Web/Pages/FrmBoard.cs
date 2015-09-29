@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
 using System.Web.UI.WebControls;
+using VAR.Focus.Web.Code;
 using VAR.Focus.Web.Code.BusinessLogic;
 using VAR.Focus.Web.Code.Entities;
 using VAR.Focus.Web.Controls;
@@ -28,7 +28,7 @@ namespace VAR.Focus.Web.Pages
 
         void FrmBoard_Init(object sender, EventArgs e)
         {
-            string strIDBoard = GetRequestParm(Context, "idBoard");
+            string strIDBoard = Context.GetRequestParm("idBoard");
             if (String.IsNullOrEmpty(strIDBoard) == false)
             {
                 _idBoard = Convert.ToInt32(strIDBoard);
@@ -133,19 +133,7 @@ namespace VAR.Focus.Web.Pages
             };
             Controls.Add(chatControl);
         }
-
-        private string GetRequestParm(HttpContext context, string parm)
-        {
-            foreach (string key in context.Request.Params.AllKeys)
-            {
-                if (string.IsNullOrEmpty(key) == false && key.EndsWith(parm))
-                {
-                    return context.Request.Params[key];
-                }
-            }
-            return string.Empty;
-        }
-
+        
         #endregion
     }
 }
