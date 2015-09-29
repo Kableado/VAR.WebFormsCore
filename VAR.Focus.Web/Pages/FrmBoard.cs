@@ -61,37 +61,44 @@ namespace VAR.Focus.Web.Pages
 
         #region Private methods
 
+        private Panel BoardSelector_Create(Board board)
+        {
+            var pnlBoardSelector = new Panel { CssClass = "boardBanner" };
+            var lnkTitle = new HyperLink
+            {
+                NavigateUrl = string.Format("{0}?idBoard={1}", "FrmBoard", board.IDBoard),
+            };
+            var lblTitle = new CLabel
+            {
+                Text = board.Title,
+                CssClass = "title",
+            };
+            lnkTitle.Controls.Add(lblTitle);
+            var pnlDescription = new Panel();
+            var lblDescription = new CLabel
+            {
+                Text = board.Description,
+                CssClass = "description",
+            };
+            pnlDescription.Controls.Add(lblDescription);
+            pnlBoardSelector.Controls.Add(lnkTitle);
+            pnlBoardSelector.Controls.Add(pnlDescription);
+
+            return pnlBoardSelector;
+        }
+
         private void FrmBoard_InitIndex()
         {
             Title = "Boards";
 
             List<Board> boards = Boards.Current.Boards_GetListForUser(CurrentUser.Name);
-
             foreach (Board board in boards)
             {
-                var pnlBoardSelector = new Panel { CssClass = "boardBanner" };
-                var lnkTitle = new HyperLink
-                {
-                    NavigateUrl = string.Format("{0}?idBoard={1}", "FrmBoard", board.IDBoard),
-                };
-                var lblTitle = new CLabel
-                {
-                    Text = board.Title,
-                    CssClass = "title",
-                };
-                lnkTitle.Controls.Add(lblTitle);
-                var pnlDescription = new Panel();
-                var lblDescription = new CLabel
-                {
-                    Text = board.Description,
-                    CssClass = "description",
-                };
-                pnlDescription.Controls.Add(lblDescription);
-                pnlBoardSelector.Controls.Add(lnkTitle);
-                pnlBoardSelector.Controls.Add(pnlDescription);
+                Panel pnlBoardSelector = BoardSelector_Create(board);
                 Controls.Add(pnlBoardSelector);
             }
 
+            // Board creator
             var pnlBoardAdd = new Panel { CssClass = "boardBanner" };
             var btnAddBoard = new CButton { ID = "btnAddBoard", Text = "AddBoard" };
             btnAddBoard.Click += btnAddBoard_Click;
@@ -110,16 +117,20 @@ namespace VAR.Focus.Web.Pages
 
             Title = board.Title;
 
-            CardBoardControl cardBoardControl = new CardBoardControl();
-            cardBoardControl.ID = "ctrCardBoard";
-            cardBoardControl.IDBoard = board.IDBoard;
-            cardBoardControl.UserName = CurrentUser.Name;
+            CardBoardControl cardBoardControl = new CardBoardControl
+            {
+                ID = "ctrCardBoard",
+                IDBoard = board.IDBoard,
+                UserName = CurrentUser.Name,
+            };
             Controls.Add(cardBoardControl);
 
-            ChatControl chatControl = new ChatControl();
-            chatControl.ID = "ctrChat";
-            chatControl.IDMessageBoard = string.Format("CardBoard_{0}", board.IDBoard);
-            chatControl.UserName = CurrentUser.Name;
+            ChatControl chatControl = new ChatControl
+            {
+                ID = "ctrChat",
+                IDMessageBoard = string.Format("CardBoard_{0}", board.IDBoard),
+                UserName = CurrentUser.Name,
+            };
             Controls.Add(chatControl);
         }
 
