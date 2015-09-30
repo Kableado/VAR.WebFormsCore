@@ -67,6 +67,18 @@ namespace VAR.Focus.Web.Pages
                 typeof(FrmBoard).Name));
         }
 
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            CButton btnEdit = (CButton)sender;
+            int idBoard = Convert.ToInt32(btnEdit.CommandArgument);
+
+            if (Boards.Current.Boards_DelBoard(idBoard, CurrentUser.Name))
+            {
+                Controls.Clear();
+                FrmBoard_InitIndex();
+            }
+        }
+
         #endregion
 
         #region Private methods
@@ -103,6 +115,15 @@ namespace VAR.Focus.Web.Pages
             btnEdit.CommandArgument = Convert.ToString(board.IDBoard);
             btnEdit.Click += BtnEdit_Click;
             pnlButtons.Controls.Add(btnEdit);
+            var btnDelete = new CButton
+            {
+                ID = string.Format("btnDelete{0}", board.IDBoard),
+                Text = "Delete",
+            };
+            btnDelete.CommandArgument = Convert.ToString(board.IDBoard);
+            btnDelete.Click += BtnDelete_Click;
+            btnDelete.Attributes.Add("onclick", String.Format("return confirm('{0}');", "¿Are you sure to delete?"));
+            pnlButtons.Controls.Add(btnDelete);
             pnlBoardSelector.Controls.Add(pnlButtons);
 
             return pnlBoardSelector;

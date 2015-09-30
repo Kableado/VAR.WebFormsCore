@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using VAR.Focus.Web.Code.Entities;
 
 namespace VAR.Focus.Web.Code.BusinessLogic
@@ -46,7 +47,7 @@ namespace VAR.Focus.Web.Code.BusinessLogic
         public List<Board> Boards_GetListForUser(string userName)
         {
             // FIXME: filter by permissions
-            return _boards;
+            return _boards.Where(board => board.Active).ToList();
         }
 
         public Board Board_GetByIDBoard(int idBoard)
@@ -72,7 +73,6 @@ namespace VAR.Focus.Web.Code.BusinessLogic
                     _lastIDBoard++;
                     board = new Board();
                     board.IDBoard = _lastIDBoard;
-                    board.Active = true;
                     board.CreatedBy = userName;
                     board.CreatedDate = currentDate;
                     _boards.Add(board);
@@ -85,12 +85,37 @@ namespace VAR.Focus.Web.Code.BusinessLogic
 
             board.Title = title;
             board.Description = description;
+
+            board.Active = true;
             board.ModifiedBy = userName;
             board.ModifiedDate = currentDate;
 
             SaveData();
 
             return board;
+        }
+
+        public bool Boards_DelBoard(int idBoard, string userName)
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            Board board;
+            if (idBoard == 0)
+            {
+                return false;
+            }
+            else
+            {
+                board = Board_GetByIDBoard(idBoard);
+            }
+            if (board == null) { return false; }
+
+            board.Active = false;
+            board.ModifiedBy = userName;
+            board.ModifiedDate = currentDate;
+
+            SaveData();
+
+            return true;
         }
 
         #endregion
