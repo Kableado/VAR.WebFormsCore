@@ -54,7 +54,17 @@ namespace VAR.Focus.Web.Pages
             Board board = Boards.Current.Boards_SetBoard(0, _txtTitle.Text, _txtDescription.Text, CurrentUser.Name);
             _idBoard = board.IDBoard;
 
-            Response.Redirect(string.Format("{0}?idBoard={1}", "FrmBoard", _idBoard));
+            Response.Redirect(string.Format("{0}?idBoard={1}", typeof(FrmBoard).Name, _idBoard));
+        }
+
+        private void BtnEdit_Click(object sender, EventArgs e)
+        {
+            CButton btnEdit = (CButton)sender;
+            int idBoard = Convert.ToInt32(btnEdit.CommandArgument);
+            Response.Redirect(string.Format("{0}?idBoard={1}&returnUrl={2}", 
+                typeof(FrmBoardEdit).Name, 
+                idBoard,
+                typeof(FrmBoard).Name));
         }
 
         #endregion
@@ -64,9 +74,10 @@ namespace VAR.Focus.Web.Pages
         private Panel BoardSelector_Create(Board board)
         {
             var pnlBoardSelector = new Panel { CssClass = "boardBanner" };
+
             var lnkTitle = new HyperLink
             {
-                NavigateUrl = string.Format("{0}?idBoard={1}", "FrmBoard", board.IDBoard),
+                NavigateUrl = string.Format("{0}?idBoard={1}", typeof(FrmBoard).Name, board.IDBoard),
             };
             var lblTitle = new CLabel
             {
@@ -74,15 +85,23 @@ namespace VAR.Focus.Web.Pages
                 CssClass = "title",
             };
             lnkTitle.Controls.Add(lblTitle);
-            var pnlDescription = new Panel();
+            pnlBoardSelector.Controls.Add(lnkTitle);
+
             var lblDescription = new CLabel
             {
-                Text = board.Description,
+                Text = board.Description.Replace(" ", "&nbsp;").Replace("\n", "<br>"),
                 CssClass = "description",
             };
-            pnlDescription.Controls.Add(lblDescription);
-            pnlBoardSelector.Controls.Add(lnkTitle);
-            pnlBoardSelector.Controls.Add(pnlDescription);
+            pnlBoardSelector.Controls.Add(FormUtils.CreatePanel(lblDescription, ""));
+
+            var btnEdit = new CButton
+            {
+                ID = string.Format("btnEdit{0}", board.IDBoard),
+                Text = "Edit",
+            };
+            btnEdit.CommandArgument = Convert.ToString(board.IDBoard);
+            btnEdit.Click += BtnEdit_Click;
+            pnlBoardSelector.Controls.Add(FormUtils.CreatePanel(btnEdit, "formRow"));
 
             return pnlBoardSelector;
         }

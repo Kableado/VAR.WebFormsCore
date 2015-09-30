@@ -101,6 +101,9 @@
     <Compile Include="Pages\FrmBoard.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Pages\FrmBoardEdit.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Pages\FrmEcho.cs" />
     <Compile Include="Pages\FrmLogin.cs">
       <SubType>ASPXCodeBehind</SubType>
