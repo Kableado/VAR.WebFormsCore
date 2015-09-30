@@ -6,10 +6,13 @@ namespace VAR.Focus.Web.Pages
 {
     public class FormUtils
     {
-        public static Control CreatePanel(Control ctrl, string cssClass)
+        public static Control CreatePanel(string cssClass, Control ctrl)
         {
             Panel pnl = new Panel();
-            pnl.Controls.Add(ctrl);
+            if (ctrl != null)
+            {
+                pnl.Controls.Add(ctrl);
+            }
             if (string.IsNullOrEmpty(cssClass) == false)
             {
                 pnl.CssClass = cssClass;
@@ -17,9 +20,9 @@ namespace VAR.Focus.Web.Pages
             return pnl;
         }
 
-        public static Control CreatePanel(Control ctrl)
+        public static Control CreatePanel(string cssClass)
         {
-            return CreatePanel(ctrl, null);
+            return CreatePanel(cssClass, null);
         }
 
         public static Control CreateField(string label, Control fieldControl)

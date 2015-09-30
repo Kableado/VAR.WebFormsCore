@@ -92,8 +92,9 @@ namespace VAR.Focus.Web.Pages
                 Text = board.Description.Replace(" ", "&nbsp;").Replace("\n", "<br>"),
                 CssClass = "description",
             };
-            pnlBoardSelector.Controls.Add(FormUtils.CreatePanel(lblDescription, ""));
+            pnlBoardSelector.Controls.Add(FormUtils.CreatePanel("", lblDescription));
 
+            Panel pnlButtons = (Panel)FormUtils.CreatePanel("formRow");
             var btnEdit = new CButton
             {
                 ID = string.Format("btnEdit{0}", board.IDBoard),
@@ -101,7 +102,8 @@ namespace VAR.Focus.Web.Pages
             };
             btnEdit.CommandArgument = Convert.ToString(board.IDBoard);
             btnEdit.Click += BtnEdit_Click;
-            pnlBoardSelector.Controls.Add(FormUtils.CreatePanel(btnEdit, "formRow"));
+            pnlButtons.Controls.Add(btnEdit);
+            pnlBoardSelector.Controls.Add(pnlButtons);
 
             return pnlBoardSelector;
         }
@@ -121,11 +123,11 @@ namespace VAR.Focus.Web.Pages
             var pnlBoardAdd = new Panel { CssClass = "boardBanner" };
             var btnAddBoard = new CButton { ID = "btnAddBoard", Text = "AddBoard" };
             btnAddBoard.Click += btnAddBoard_Click;
-            pnlBoardAdd.Controls.Add(FormUtils.CreatePanel(_txtTitle, "formRow"));
+            pnlBoardAdd.Controls.Add(FormUtils.CreatePanel("formRow", _txtTitle));
             _txtTitle.PlaceHolder = "Title";
-            pnlBoardAdd.Controls.Add(FormUtils.CreatePanel(_txtDescription, "formRow"));
+            pnlBoardAdd.Controls.Add(FormUtils.CreatePanel("formRow", _txtDescription));
             _txtDescription.PlaceHolder = "Description";
-            pnlBoardAdd.Controls.Add(FormUtils.CreatePanel(btnAddBoard, "formRow"));
+            pnlBoardAdd.Controls.Add(FormUtils.CreatePanel("formRow", btnAddBoard));
             Controls.Add(pnlBoardAdd);
 
         }
