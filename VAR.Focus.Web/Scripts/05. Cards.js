@@ -76,7 +76,9 @@ Toolbox.prototype = {
         }
         return relPos;
     },
-    SetPosition: function(x, y){
+    SetPosition: function (x, y) {
+        if (x < 0) { x = 0; }
+        if (y < 0) { y = 0; }
         this.X = x;
         this.Y = y;
         this.divToolbox.style.left = x + "px";
@@ -264,6 +266,8 @@ Card.prototype = {
         this.animData = null;
     },
     Move: function (x, y) {
+        if (x < 0) { x = 0; }
+        if (y < 0) { y = 0; }
         this.OnMoveStart();
         this.X = x;
         this.Y = y;
@@ -481,6 +485,8 @@ Card.prototype = {
         var pos = this.GetRelativePosToContainer({ x: evt.clientX, y: evt.clientY });
         this.newX = parseInt(pos.x - this.offsetX);
         this.newY = parseInt(pos.y - this.offsetY);
+        if (this.newX < 0) { this.newX = 0; }
+        if (this.newY < 0) { this.newY = 0; }
         this.divCard.style.left = this.newX + "px";
         this.divCard.style.top = this.newY + "px";
 
@@ -517,6 +523,8 @@ Card.prototype = {
         var pos = this.GetRelativePosToContainer({ x: evt.touches[0].clientX, y: evt.touches[0].clientY });
         this.newX = parseInt(pos.x - this.offsetX);
         this.newY = parseInt(pos.y - this.offsetY);
+        if (this.newX < 0) { this.newX = 0; }
+        if (this.newY < 0) { this.newY = 0; }
         this.divCard.style.left = this.newX + "px";
         this.divCard.style.top = this.newY + "px";
 
