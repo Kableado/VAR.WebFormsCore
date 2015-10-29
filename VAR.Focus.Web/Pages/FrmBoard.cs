@@ -54,7 +54,18 @@ namespace VAR.Focus.Web.Pages
             Board board = Boards.Current.Boards_SetBoard(0, _txtTitle.Text, _txtDescription.Text, CurrentUser.Name);
             _idBoard = board.IDBoard;
 
-            Response.Redirect(string.Format("{0}?idBoard={1}", typeof(FrmBoard).Name, _idBoard));
+            Response.Redirect(string.Format("{0}?idBoard={1}", 
+                typeof(FrmBoard).Name, 
+                _idBoard));
+        }
+
+        private void BtnView_Click(object sender, EventArgs e)
+        {
+            CButton btnView = (CButton)sender;
+            int idBoard = Convert.ToInt32(btnView.CommandArgument);
+            Response.Redirect(string.Format("{0}?idBoard={1}",
+                typeof(FrmBoard).Name,
+                idBoard));
         }
 
         private void BtnEdit_Click(object sender, EventArgs e)
@@ -107,6 +118,14 @@ namespace VAR.Focus.Web.Pages
             pnlBoardSelector.Controls.Add(FormUtils.CreatePanel("", lblDescription));
 
             Panel pnlButtons = (Panel)FormUtils.CreatePanel("formRow");
+            var btnView = new CButton
+            {
+                ID = string.Format("btnView{0}", board.IDBoard),
+                Text = "View",
+            };
+            btnView.CommandArgument = Convert.ToString(board.IDBoard);
+            btnView.Click += BtnView_Click;
+            pnlButtons.Controls.Add(btnView);
             var btnEdit = new CButton
             {
                 ID = string.Format("btnEdit{0}", board.IDBoard),
