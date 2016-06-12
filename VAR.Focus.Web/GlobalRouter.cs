@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Web;
 using VAR.Focus.Web.Code;
 
@@ -93,6 +94,10 @@ namespace VAR.Focus.Web
             }
             catch (Exception ex)
             {
+                if(ex is ThreadAbortException)
+                {
+                    return;
+                }
                 GlobalErrorHandler.HandleError(context, ex);
             }
         }
@@ -108,6 +113,23 @@ namespace VAR.Focus.Web
             {
                 file = Globals.DefaultHandler;
             }
+
+            // Pass allowed extensions requests
+            string extension = Path.GetExtension(context.Request.FilePath).ToLower();
+            if(Globals.AllowedExtensions.Contains(extension))
+            {
+                string filePath = context.Server.MapPath(string.Format("~/{0}", context.Request.FilePath));
+                if (File.Exists(filePath))
+                {
+                    context.Response.Buffer = true;
+                    context.Response.WriteFile(filePath);
+                    context.Response.Flush();
+                    context.Response.Close();
+                    context.Response.End();
+                    return;
+                }
+            }
+            
             IHttpHandler handler = GetHandler(file);
             if (handler == null)
             {
