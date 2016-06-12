@@ -9,8 +9,8 @@ namespace VAR.Focus.Web.Code.JSON
     {
         #region Declarations
 
-        private ParserContext ctx;
-        private bool tainted = false;
+        private ParserContext _ctx;
+        private bool _tainted = false;
 
         private List<Type> _knownTypes = new List<Type>();
 
@@ -20,7 +20,7 @@ namespace VAR.Focus.Web.Code.JSON
 
         public bool Tainted
         {
-            get { return tainted; }
+            get { return _tainted; }
         }
 
         public List<Type> KnownTypes
@@ -64,7 +64,7 @@ namespace VAR.Focus.Web.Code.JSON
                     count++;
                 }
             }
-            return ((float)count / (float)typeProperties.Length);
+            return ((float)count / typeProperties.Length);
         }
 
         private object ConvertToType(Dictionary<string, object> obj, Type type)
@@ -106,14 +106,14 @@ namespace VAR.Focus.Web.Code.JSON
             int value = 0;
             for (int i = 0; i < 4; i++)
             {
-                char c = ctx.Next();
-                if (Char.IsDigit(c))
+                char c = _ctx.Next();
+                if (char.IsDigit(c))
                 {
                     value = (value << 4) | (c - '0');
                 }
                 else
                 {
-                    c = Char.ToLower(c);
+                    c = char.ToLower(c);
                     if (c >= 'a' && c <= 'f')
                     {
                         value = (value << 4) | ((c - 'a') + 10);
@@ -123,19 +123,19 @@ namespace VAR.Focus.Web.Code.JSON
             return value;
         }
 
-        private String ParseQuotedString()
+        private string ParseQuotedString()
         {
             StringBuilder scratch = new StringBuilder();
-            char c = ctx.SkipWhite();
+            char c = _ctx.SkipWhite();
             if (c == '"')
             {
-                c = ctx.Next();
+                c = _ctx.Next();
             }
             do
             {
                 if (c == '\\')
                 {
-                    c = ctx.Next();
+                    c = _ctx.Next();
                     if (c == '"')
                     {
                         scratch.Append('"');
@@ -172,7 +172,7 @@ namespace VAR.Focus.Web.Code.JSON
                     {
                         scratch.Append((char)ParseHexShort());
                     }
-                    c = ctx.Next();
+                    c = _ctx.Next();
                 }
                 else if (c == '"')
                 {
@@ -181,55 +181,55 @@ namespace VAR.Focus.Web.Code.JSON
                 else
                 {
                     scratch.Append(c);
-                    c = ctx.Next();
+                    c = _ctx.Next();
                 }
-            } while (!ctx.AtEnd());
+            } while (!_ctx.AtEnd());
             if (c == '"')
             {
-                ctx.Next();
+                _ctx.Next();
             }
             return scratch.ToString();
         }
 
-        private String ParseString()
+        private string ParseString()
         {
-            char c = ctx.SkipWhite();
+            char c = _ctx.SkipWhite();
             if (c == '"')
             {
                 return ParseQuotedString();
             }
             StringBuilder scratch = new StringBuilder();
 
-            while (!ctx.AtEnd()
-                    && (Char.IsLetter(c) || Char.IsDigit(c) || c == '_'))
+            while (!_ctx.AtEnd()
+                    && (char.IsLetter(c) || char.IsDigit(c) || c == '_'))
             {
                 scratch.Append(c);
-                c = ctx.Next();
+                c = _ctx.Next();
             }
 
             return scratch.ToString();
         }
 
-        private Object ParseNumber()
+        private object ParseNumber()
         {
             StringBuilder scratch = new StringBuilder();
             bool isFloat = false;
             int numberLenght = 0;
             char c;
-            c = ctx.SkipWhite();
+            c = _ctx.SkipWhite();
 
             // Sign
             if (c == '-')
             {
                 scratch.Append('-');
-                c = ctx.Next();
+                c = _ctx.Next();
             }
 
             // Integer part
-            while (Char.IsDigit(c))
+            while (char.IsDigit(c))
             {
                 scratch.Append(c);
-                c = ctx.Next();
+                c = _ctx.Next();
                 numberLenght++;
             }
 
@@ -238,18 +238,18 @@ namespace VAR.Focus.Web.Code.JSON
             {
                 isFloat = true;
                 scratch.Append('.');
-                c = ctx.Next();
-                while (Char.IsDigit(c))
+                c = _ctx.Next();
+                while (char.IsDigit(c))
                 {
                     scratch.Append(c);
-                    c = ctx.Next();
+                    c = _ctx.Next();
                     numberLenght++;
                 }
             }
 
             if (numberLenght == 0)
             {
-                tainted = true;
+                _tainted = true;
                 return null;
             }
 
@@ -258,72 +258,72 @@ namespace VAR.Focus.Web.Code.JSON
             {
                 isFloat = true;
                 scratch.Append('E');
-                c = ctx.Next();
+                c = _ctx.Next();
                 if (c == '+' || c == '-')
                 {
                     scratch.Append(c);
                 }
-                while (Char.IsDigit(c))
+                while (char.IsDigit(c))
                 {
                     scratch.Append(c);
-                    c = ctx.Next();
+                    c = _ctx.Next();
                     numberLenght++;
                 }
             }
 
             // Build number object from the parsed string
-            String s = scratch.ToString();
-            return isFloat ? (numberLenght < 17) ? (Object)Double.Parse(s)
-                : Decimal.Parse(s) : (numberLenght < 19) ? (Object)System.Int32.Parse(s)
-                     : (Object)System.Int32.Parse(s);
+            string s = scratch.ToString();
+            return isFloat ? (numberLenght < 17) ? (object)double.Parse(s)
+                : decimal.Parse(s) : (numberLenght < 19) ? int.Parse(s)
+                     : (object)int.Parse(s);
         }
 
         private List<object> ParseArray()
         {
-            char c = ctx.SkipWhite();
+            char c = _ctx.SkipWhite();
             List<object> array = new List<object>();
             if (c == '[')
             {
-                ctx.Next();
+                _ctx.Next();
             }
             do
             {
-                c = ctx.SkipWhite();
+                c = _ctx.SkipWhite();
                 if (c == ']')
                 {
-                    ctx.Next();
+                    _ctx.Next();
                     break;
                 }
                 else if (c == ',')
                 {
-                    ctx.Next();
+                    _ctx.Next();
                 }
                 else
                 {
                     array.Add(ParseValue());
                 }
-            } while (!ctx.AtEnd());
+            } while (!_ctx.AtEnd());
             return array;
         }
 
         private Dictionary<string, object> ParseObject()
         {
-            char c = ctx.SkipWhite();
+            char c = _ctx.SkipWhite();
             Dictionary<string, object> obj = new Dictionary<string, object>();
             if (c == '{')
             {
-                ctx.Next();
-                c = ctx.SkipWhite();
+                _ctx.Next();
+                c = _ctx.SkipWhite();
             }
-            String attributeName;
-            Object attributeValue;
+            string attributeName;
+            object attributeValue;
             do
             {
                 attributeName = ParseString();
-                c = ctx.SkipWhite();
+                c = _ctx.SkipWhite();
                 if (c == ':')
                 {
-                    ctx.Next();
+                    _ctx.Next();
                     attributeValue = ParseValue();
                     if (attributeName.Length > 0)
                     {
@@ -332,21 +332,21 @@ namespace VAR.Focus.Web.Code.JSON
                 }
                 else if (c == ',')
                 {
-                    ctx.Next();
-                    c = ctx.SkipWhite();
+                    _ctx.Next();
+                    c = _ctx.SkipWhite();
                 }
                 else if (c == '}')
                 {
-                    ctx.Next();
+                    _ctx.Next();
                     break;
                 }
                 else
                 {
                     // Unexpected character
-                    tainted = true;
+                    _tainted = true;
                     break;
                 }
-            } while (!ctx.AtEnd());
+            } while (!_ctx.AtEnd());
             if (obj.Count == 0)
             {
                 return null;
@@ -355,10 +355,10 @@ namespace VAR.Focus.Web.Code.JSON
             return obj;
         }
 
-        private Object ParseValue()
+        private object ParseValue()
         {
-            Object token = null;
-            char c = ctx.SkipWhite();
+            object token = null;
+            char c = _ctx.SkipWhite();
             switch (c)
             {
                 case '"':
@@ -372,13 +372,13 @@ namespace VAR.Focus.Web.Code.JSON
                     token = ParseArray();
                     break;
                 default:
-                    if (Char.IsDigit(c) || c == '-')
+                    if (char.IsDigit(c) || c == '-')
                     {
                         token = ParseNumber();
                     }
                     else
                     {
-                        String aux = ParseString();
+                        string aux = ParseString();
                         if (aux.CompareTo("true") == 0)
                         {
                             token = true;
@@ -396,9 +396,9 @@ namespace VAR.Focus.Web.Code.JSON
                             // Unexpected string
                             if (aux.Length == 0)
                             {
-                                ctx.Next();
+                                _ctx.Next();
                             }
-                            tainted = true;
+                            _tainted = true;
                             token = null;
                         }
                     }
@@ -407,7 +407,7 @@ namespace VAR.Focus.Web.Code.JSON
             return token;
         }
 
-        private String CleanIdentifier(String input)
+        private string CleanIdentifier(string input)
         {
             int i;
             char c;
@@ -417,7 +417,7 @@ namespace VAR.Focus.Web.Code.JSON
                 return input;
             }
             c = input[i];
-            while (Char.IsLetter(c) || Char.IsDigit(c) || c == '_')
+            while (char.IsLetter(c) || char.IsDigit(c) || c == '_')
             {
                 i--;
                 if (i < 0)
@@ -433,31 +433,31 @@ namespace VAR.Focus.Web.Code.JSON
 
         #region Public methods
 
-        public Object Parse(String text)
+        public object Parse(string text)
         {
             // Get the first object
-            ctx = new ParserContext(text);
-            tainted = false;
-            ctx.Mark();
-            Object obj = ParseValue();
-            if (ctx.AtEnd())
+            _ctx = new ParserContext(text);
+            _tainted = false;
+            _ctx.Mark();
+            object obj = ParseValue();
+            if (_ctx.AtEnd())
             {
                 return obj;
             }
 
             // "But wait, there is more!"
             int idx = 0;
-            String name = "";
-            String strInvalidPrev = "";
+            string name = "";
+            string strInvalidPrev = "";
             Dictionary<string, object> superObject = new Dictionary<string, object>();
             do
             {
                 // Add the object to the superObject
-                if (!tainted && name.Length > 0 && obj != null)
+                if (!_tainted && name.Length > 0 && obj != null)
                 {
                     if (name.Length == 0)
                     {
-                        name = String.Format("{0:D2}", idx);
+                        name = string.Format("{0:D2}", idx);
                     }
                     superObject.Add(name, obj);
                     idx++;
@@ -465,7 +465,7 @@ namespace VAR.Focus.Web.Code.JSON
                 }
                 else
                 {
-                    String strInvalid = ctx.GetMarked();
+                    string strInvalid = _ctx.GetMarked();
                     strInvalid = strInvalid.Trim();
                     if (strInvalidPrev.Length > 0
                             && "=".CompareTo(strInvalid) == 0)
@@ -480,14 +480,14 @@ namespace VAR.Focus.Web.Code.JSON
                 }
 
                 // Check end
-                if (ctx.AtEnd())
+                if (_ctx.AtEnd())
                 {
                     break;
                 }
 
                 // Get next object
-                tainted = false;
-                ctx.Mark();
+                _tainted = false;
+                _ctx.Mark();
                 obj = ParseValue();
 
             } while (true);

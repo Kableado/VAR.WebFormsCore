@@ -6,7 +6,7 @@ namespace VAR.Focus.Web.Code.JSON
     {
         #region Declarations
 
-        private String text;
+        private string text;
         private int length;
         private int i;
         private int markStart;
@@ -15,12 +15,12 @@ namespace VAR.Focus.Web.Code.JSON
 
         #region Creator
 
-        public ParserContext(String text)
+        public ParserContext(string text)
         {
             this.text = text;
-            this.length = text.Length;
-            this.i = 0;
-            this.markStart = 0;
+            length = text.Length;
+            i = 0;
+            markStart = 0;
         }
 
         #endregion
@@ -29,7 +29,7 @@ namespace VAR.Focus.Web.Code.JSON
 
         public char SkipWhite()
         {
-            while (i < length && Char.IsWhiteSpace(text[i]))
+            while (i < length && char.IsWhiteSpace(text[i]))
             {
                 i++;
             }
@@ -57,10 +57,10 @@ namespace VAR.Focus.Web.Code.JSON
 
         public void Mark()
         {
-            markStart = this.i;
+            markStart = i;
         }
 
-        public String GetMarked()
+        public string GetMarked()
         {
             if (i < length && markStart < length)
             {

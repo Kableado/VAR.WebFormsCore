@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace VAR.Focus.Web.Code
@@ -8,7 +7,7 @@ namespace VAR.Focus.Web.Code
     {
         public static string GetSHA1(string str)
         {
-            SHA1 sha1 = SHA1Managed.Create();
+            SHA1 sha1 = SHA1.Create();
             UTF8Encoding encoding = new UTF8Encoding();
             byte[] stream = null;
             StringBuilder sb = new StringBuilder();
@@ -29,12 +28,12 @@ namespace VAR.Focus.Web.Code
 
         public static string GetCryptoToken()
         {
-            return CryptoUtils.GetSHA1(CryptoUtils.GetRandString(10));
+            return GetSHA1(GetRandString(10));
         }
 
         public static string GetHashedPassword(string password, string passwordSalt)
         {
-            return CryptoUtils.GetSHA1(String.Format("{1}{0}{1}", password, passwordSalt));
+            return GetSHA1(string.Format("{1}{0}{1}", password, passwordSalt));
         }
 
     }

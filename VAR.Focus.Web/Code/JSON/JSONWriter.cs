@@ -10,10 +10,10 @@ namespace VAR.Focus.Web.Code.JSON
     {
         #region Declarations
 
-        private bool indent = false;
-        private bool useTabForIndent = false;
-        private int indentChars = 4;
-        private int indentThresold = 3;
+        private bool _indent = false;
+        private bool _useTabForIndent = false;
+        private int _indentChars = 4;
+        private int _indentThresold = 3;
 
         #endregion
 
@@ -23,30 +23,30 @@ namespace VAR.Focus.Web.Code.JSON
 
         public JSONWriter(int indentChars)
         {
-            this.indent = true;
-            this.indentChars = indentChars;
-            this.useTabForIndent = false;
+            _indent = true;
+            _indentChars = indentChars;
+            _useTabForIndent = false;
         }
 
         public JSONWriter(bool useTabForIndent)
         {
-            this.indent = true;
-            this.useTabForIndent = useTabForIndent;
+            _indent = true;
+            _useTabForIndent = useTabForIndent;
         }
 
         #endregion
 
         #region Private methods
 
-        private bool IsValue(Object obj)
+        private bool IsValue(object obj)
         {
             if (obj == null)
             {
                 return true;
             }
             if ((obj is float) || (obj is double) ||
-                (obj is System.Int16) || (obj is System.Int32) || (obj is System.Int64)
-                    || (obj is String) || (obj is Boolean))
+                (obj is short) || (obj is int) || (obj is long)
+                    || (obj is string) || (obj is bool))
             {
                 return true;
             }
@@ -55,23 +55,23 @@ namespace VAR.Focus.Web.Code.JSON
 
         private void WriteIndent(StringBuilder sbOutput, int level)
         {
-            if (!indent)
+            if (!_indent)
             {
                 return;
             }
             sbOutput.Append('\n');
-            if (useTabForIndent)
+            if (_useTabForIndent)
             {
                 for (int i = 0; i < level; i++) { sbOutput.Append('\t'); }
             }
             else
             {
-                int n = level * indentChars;
+                int n = level * _indentChars;
                 for (int i = 0; i < n; i++) { sbOutput.Append(' '); }
             }
         }
 
-        private void WriteString(StringBuilder sbOutput, String str)
+        private void WriteString(StringBuilder sbOutput, string str)
         {
             sbOutput.Append('"');
             char c;
@@ -101,20 +101,20 @@ namespace VAR.Focus.Web.Code.JSON
                 sbOutput.Append("null");
             }
             else if ((obj is float) || (obj is double) ||
-              (obj is System.Int16) || (obj is System.Int32) || (obj is System.Int64))
+              (obj is short) || (obj is int) || (obj is long))
             {
                 // Numbers
                 sbOutput.Append(obj.ToString());
             }
-            else if (obj is String)
+            else if (obj is string)
             {
                 // Strings
-                WriteString(sbOutput, (String)obj);
+                WriteString(sbOutput, (string)obj);
             }
-            else if (obj is Boolean)
+            else if (obj is bool)
             {
                 // Booleans
-                sbOutput.Append(((Boolean)obj) ? "true" : "false");
+                sbOutput.Append(((bool)obj) ? "true" : "false");
             }
             else if (obj is DateTime)
             {
@@ -147,7 +147,7 @@ namespace VAR.Focus.Web.Code.JSON
             }
         }
 
-        private void WriteList(StringBuilder sbOutput, Object obj, int level)
+        private void WriteList(StringBuilder sbOutput, object obj, int level)
         {
             IEnumerable list = (IEnumerable)obj;
             int n = 0;
@@ -173,7 +173,7 @@ namespace VAR.Focus.Web.Code.JSON
             // Write array
             bool first = true;
             sbOutput.Append("[ ");
-            if (!isLeaf || n > indentThresold)
+            if (!isLeaf || n > _indentThresold)
             {
                 WriteIndent(sbOutput, level + 1);
             }
@@ -182,7 +182,7 @@ namespace VAR.Focus.Web.Code.JSON
                 if (!first)
                 {
                     sbOutput.Append(", ");
-                    if (!isLeaf || n > indentThresold)
+                    if (!isLeaf || n > _indentThresold)
                     {
                         WriteIndent(sbOutput, level + 1);
                     }
@@ -190,14 +190,14 @@ namespace VAR.Focus.Web.Code.JSON
                 first = false;
                 WriteValue(sbOutput, childObj, level + 1, true);
             }
-            if (!isLeaf || n > indentThresold)
+            if (!isLeaf || n > _indentThresold)
             {
                 WriteIndent(sbOutput, level);
             }
             sbOutput.Append(" ]");
         }
 
-        private void WriteObject(StringBuilder sbOutput, Object obj, int level)
+        private void WriteObject(StringBuilder sbOutput, object obj, int level)
         {
             IDictionary map = (IDictionary)obj;
             int n = map.Count;
@@ -223,7 +223,7 @@ namespace VAR.Focus.Web.Code.JSON
             // Write object
             bool first = true;
             sbOutput.Append("{ ");
-            if (!isLeaf || n > indentThresold)
+            if (!isLeaf || n > _indentThresold)
             {
                 WriteIndent(sbOutput, level + 1);
             }
@@ -233,7 +233,7 @@ namespace VAR.Focus.Web.Code.JSON
                 if (!first)
                 {
                     sbOutput.Append(", ");
-                    if (!isLeaf || n > indentThresold)
+                    if (!isLeaf || n > _indentThresold)
                     {
                         WriteIndent(sbOutput, level + 1);
                     }
@@ -243,14 +243,14 @@ namespace VAR.Focus.Web.Code.JSON
                 sbOutput.Append(": ");
                 WriteValue(sbOutput, value, level + 1, true);
             }
-            if (!isLeaf || n > indentThresold)
+            if (!isLeaf || n > _indentThresold)
             {
                 WriteIndent(sbOutput, level);
             }
             sbOutput.Append(" }");
         }
 
-        private void WriteReflectedObject(StringBuilder sbOutput, Object obj, int level)
+        private void WriteReflectedObject(StringBuilder sbOutput, object obj, int level)
         {
             Type type = obj.GetType();
             PropertyInfo[] rawProperties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -286,7 +286,7 @@ namespace VAR.Focus.Web.Code.JSON
             // Write object
             bool first = true;
             sbOutput.Append("{ ");
-            if (!isLeaf || n > indentThresold)
+            if (!isLeaf || n > _indentThresold)
             {
                 WriteIndent(sbOutput, level + 1);
             }
@@ -302,7 +302,7 @@ namespace VAR.Focus.Web.Code.JSON
                 if (!first)
                 {
                     sbOutput.Append(", ");
-                    if (!isLeaf || n > indentThresold)
+                    if (!isLeaf || n > _indentThresold)
                     {
                         WriteIndent(sbOutput, level + 1);
                     }
@@ -312,7 +312,7 @@ namespace VAR.Focus.Web.Code.JSON
                 sbOutput.Append(": ");
                 WriteValue(sbOutput, value, level + 1, false);
             }
-            if (!isLeaf || n > indentThresold)
+            if (!isLeaf || n > _indentThresold)
             {
                 WriteIndent(sbOutput, level);
             }
@@ -323,7 +323,7 @@ namespace VAR.Focus.Web.Code.JSON
 
         #region Public methods
 
-        public String Write(Object obj)
+        public string Write(object obj)
         {
             StringBuilder sbOutput = new StringBuilder();
             WriteValue(sbOutput, obj, 0, true);

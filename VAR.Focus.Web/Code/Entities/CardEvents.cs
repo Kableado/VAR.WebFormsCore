@@ -78,5 +78,4 @@ namespace VAR.Focus.Web.Code.Entities
 
         #endregion
     }
-
 }
