@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VAR.Focus.Web.Code.JSON;
 
 namespace VAR.Focus.Web.Controls
 {
@@ -89,32 +91,33 @@ namespace VAR.Focus.Web.Controls
 
         private void InitializeControls()
         {
-            string strCfgName = string.Format("{0}_cfg", this.ClientID);
-
             Panel divBoard = new Panel { ID = "divBoard", CssClass = "divBoard" };
             Controls.Add(divBoard);
 
+            string strCfgName = string.Format("{0}_cfg", this.ClientID);
+            Dictionary<string, object> cfg = new Dictionary<string, object>
+            {
+                {"divBoard", divBoard.ClientID},
+                {"IDBoard", _idBoard},
+                {"UserName", _userName},
+                {"IDCardEvent", string.Empty},
+                {"ServiceUrl", _serviceUrl},
+                {"TimePoolData", _timePoolData},
+                {"TimeRefresh", _timeRefresh},
+                {"TimeRefreshDisconnected", _timeRefreshDisconnected},
+                {"TimeMoveAnimation", _timeMoveAnimation},
+                {"Texts", new Dictionary<string, object> {
+                    {"Toolbox", "Toolbox"},
+                    {"AddCard", "+ Add card"},
+                    {"Accept", "Accept"},
+                    {"Cancel", "Cancel"},
+                    {"ConfirmDelete", "Are you sure to delete?"},
+                } },
+            };
+            JSONWriter jsonWriter = new JSONWriter();
             StringBuilder sbCfg = new StringBuilder();
             sbCfg.AppendFormat("<script>\n");
-            sbCfg.AppendFormat("var {0} = {{\n", strCfgName);
-            sbCfg.AppendFormat("  divBoard: \"{0}\",\n", divBoard.ClientID);
-            sbCfg.AppendFormat("  IDBoard: {0},\n", _idBoard);
-            sbCfg.AppendFormat("  UserName: \"{0}\",\n", _userName);
-            sbCfg.AppendFormat("  IDCardEvent: \"\",\n");
-            sbCfg.AppendFormat("  ServiceUrl: \"{0}\",\n", _serviceUrl);
-            sbCfg.AppendFormat("  TimePoolData: {0},\n", _timePoolData);
-            sbCfg.AppendFormat("  TimeRefresh: {0},\n", _timeRefresh);
-            sbCfg.AppendFormat("  TimeRefreshDisconnected: {0},\n", _timeRefreshDisconnected);
-            sbCfg.AppendFormat("  TimeMoveAnimation: {0},\n", _timeMoveAnimation);
-            sbCfg.AppendFormat("  Texts: {{\n");
-            sbCfg.AppendFormat("    Toolbox: \"Toolbox\",\n");
-            sbCfg.AppendFormat("    AddCard: \"+ Add card\",\n");
-            sbCfg.AppendFormat("    Accept: \"Accept\",\n");
-            sbCfg.AppendFormat("    Cancel: \"Cancel\",\n");
-            sbCfg.AppendFormat("    ConfirmDelete: \"Are you sure to delete?\",\n");
-            sbCfg.AppendFormat("    StringEmpty: \"\"\n");
-            sbCfg.AppendFormat("  }}\n");
-            sbCfg.AppendFormat("}};\n");
+            sbCfg.AppendFormat("var {0} = {1};\n", strCfgName, jsonWriter.Write(cfg));
             sbCfg.AppendFormat("RunCardBoard({0});\n", strCfgName);
             sbCfg.AppendFormat("</script>\n");
             LiteralControl liScript = new LiteralControl(sbCfg.ToString());

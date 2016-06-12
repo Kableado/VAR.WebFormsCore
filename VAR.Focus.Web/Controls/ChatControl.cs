@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VAR.Focus.Web.Code.JSON;
 
 namespace VAR.Focus.Web.Controls
 {
@@ -98,7 +100,7 @@ namespace VAR.Focus.Web.Controls
 
         private void InitializeControls()
         {
-            string strCfgName = string.Format("{0}_cfg", this.ClientID);
+            string strCfgName = string.Format("{0}_cfg", ClientID);
 
             _divChatWindow = new Panel { ID = "divChatWindow", CssClass = "divChatWindow" };
             Controls.Add(_divChatWindow);
@@ -123,38 +125,40 @@ namespace VAR.Focus.Web.Controls
 
             var txtText = new TextBox { ID = "txtText", CssClass = "chatTextBox" };
             txtText.Attributes.Add("autocomplete", "off");
-            txtText.Attributes.Add("onkeydown", String.Format("if(event.keyCode==13){{SendChat({0}); return false;}}", strCfgName));
+            txtText.Attributes.Add("onkeydown", string.Format("if(event.keyCode==13){{SendChat({0}); return false;}}", strCfgName));
             divChatControls.Controls.Add(txtText);
 
             var btnSend = new Button { ID = "btnSend", Text = "Send", CssClass = "chatButton" };
             divChatControls.Controls.Add(btnSend);
-            btnSend.Attributes.Add("onclick", String.Format("SendChat({0}); return false;", strCfgName));
-
+            btnSend.Attributes.Add("onclick", string.Format("SendChat({0}); return false;", strCfgName));
+            
+            Dictionary<string, object> cfg = new Dictionary<string, object>
+            {
+                {"divChatWindow", _divChatWindow.ClientID},
+                {"divChatTitleBar", _divChatTitleBar.ClientID},
+                {"lblTitle", lblTitle.ClientID},
+                {"divChatContainer", _divChatContainer.ClientID},
+                {"divChatContainerWidth", _width.ToString()},
+                {"divChatContainerHeight", _height.ToString()},
+                {"divChat", divChat.ClientID},
+                {"txtText", txtText.ClientID},
+                {"btnSend", btnSend.ClientID},
+                {"IDMessageBoard", _idMessageBoard},
+                {"UserName", _userName},
+                {"IDMessage", 0},
+                {"ServiceUrl", _serviceUrl},
+                {"TimePoolData", _timePoolData},
+                {"Texts", new Dictionary<string, object> {
+                    {"Chat", "Chat"},
+                    {"Close", "Close X"},
+                    {"NewMessages", "New messages"},
+                    {"Disconnected", "Disconnected"},
+                } },
+            };
+            JSONWriter jsonWriter = new JSONWriter();
             StringBuilder sbCfg = new StringBuilder();
             sbCfg.AppendFormat("<script>\n");
-            sbCfg.AppendFormat("var {0} = {{\n", strCfgName);
-            sbCfg.AppendFormat("  divChatWindow: \"{0}\",\n", _divChatWindow.ClientID);
-            sbCfg.AppendFormat("  divChatTitleBar: \"{0}\",\n", _divChatTitleBar.ClientID);
-            sbCfg.AppendFormat("  lblTitle: \"{0}\",\n", lblTitle.ClientID);
-            sbCfg.AppendFormat("  divChatContainer: \"{0}\",\n", _divChatContainer.ClientID);
-            sbCfg.AppendFormat("  divChatContainerWidth: \"{0}\",\n", _width);
-            sbCfg.AppendFormat("  divChatContainerHeight: \"{0}\",\n", _height);
-            sbCfg.AppendFormat("  divChat: \"{0}\",\n", divChat.ClientID);
-            sbCfg.AppendFormat("  txtText: \"{0}\",\n", txtText.ClientID);
-            sbCfg.AppendFormat("  btnSend: \"{0}\",\n", btnSend.ClientID);
-            sbCfg.AppendFormat("  IDMessageBoard:  \"{0}\",\n", _idMessageBoard);
-            sbCfg.AppendFormat("  UserName: \"{0}\",\n", _userName);
-            sbCfg.AppendFormat("  IDMessage: {0},\n", 0);
-            sbCfg.AppendFormat("  ServiceUrl: \"{0}\",\n", _serviceUrl);
-            sbCfg.AppendFormat("  TimePoolData: {0},\n", _timePoolData);
-            sbCfg.AppendFormat("  Texts: {{\n", _serviceUrl);
-            sbCfg.AppendFormat("    Chat: \"{0}\",\n", "Chat");
-            sbCfg.AppendFormat("    Close: \"{0}\",\n", "Close X");
-            sbCfg.AppendFormat("    NewMessages: \"{0}\",\n", "New messages");
-            sbCfg.AppendFormat("    Disconnected: \"{0}\",\n", "Disconnected");
-            sbCfg.AppendFormat("    StringEmpty: \"\"\n");
-            sbCfg.AppendFormat("  }}\n");
-            sbCfg.AppendFormat("}};\n");
+            sbCfg.AppendFormat("var {0} = {1};\n", strCfgName, jsonWriter.Write(cfg));
             sbCfg.AppendFormat("RunChat({0});\n", strCfgName);
             sbCfg.AppendFormat("</script>\n");
             LiteralControl liScript = new LiteralControl(sbCfg.ToString());
