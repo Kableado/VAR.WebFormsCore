@@ -118,10 +118,11 @@ namespace VAR.Focus.Web.Pages
             _head.Controls.Add(new HtmlMeta { HttpEquiv = "content-type", Content = "text/html; charset=utf-8" });
             _head.Controls.Add(new HtmlMeta { Name = "author", Content = Globals.Author });
             _head.Controls.Add(new HtmlMeta { Name = "Copyright", Content = Globals.Copyright });
+            _head.Controls.Add(new HtmlMeta { Name = "viewport", Content = "width=device-width, initial-scale=1, maximum-scale=4, user-scalable=1" });
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            _head.Controls.Add(new LiteralControl(String.Format("<script type=\"text/javascript\" src=\"ScriptsBundler?t={0}\"></script>\n", version)));
-            _head.Controls.Add(new LiteralControl(String.Format("<link href=\"StylesBundler?t={0}\" type=\"text/css\" rel=\"stylesheet\"/>\n", version)));
+            _head.Controls.Add(new LiteralControl(String.Format("<script type=\"text/javascript\" src=\"ScriptsBundler?v={0}\"></script>\n", version)));
+            _head.Controls.Add(new LiteralControl(String.Format("<link href=\"StylesBundler?v={0}\" type=\"text/css\" rel=\"stylesheet\"/>\n", version)));
 
 
             _body = new HtmlGenericControl("body");
