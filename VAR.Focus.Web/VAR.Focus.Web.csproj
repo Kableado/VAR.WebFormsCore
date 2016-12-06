@@ -118,8 +118,8 @@
     <Compile Include="Code\ScriptsBundler.cs" />
     <Compile Include="Code\StylesBundler.cs" />
     <Compile Include="GlobalRouter.cs" />
-    <Compile Include="Code\JSON\JSONParser.cs" />
-    <Compile Include="Code\JSON\JSONWriter.cs" />
+    <Compile Include="Code\JSON\JsonParser.cs" />
+    <Compile Include="Code\JSON\JsonWriter.cs" />
     <Compile Include="Pages\FrmError.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

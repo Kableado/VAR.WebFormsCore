@@ -6,7 +6,7 @@ using System.Text;
 
 namespace VAR.Focus.Web.Code.JSON
 {
-    public class JSONWriter
+    public class JsonWriter
     {
         #region Declarations
 
@@ -15,38 +15,40 @@ namespace VAR.Focus.Web.Code.JSON
         private int _indentChars = 4;
         private int _indentThresold = 3;
 
-        #endregion
+        #endregion Declarations
 
         #region Creator
 
-        public JSONWriter() { }
-
-        public JSONWriter(int indentChars)
+        public JsonWriter()
         {
-            _indent = true;
-            _indentChars = indentChars;
-            _useTabForIndent = false;
         }
 
-        public JSONWriter(bool useTabForIndent)
+        public JsonWriter(int indentChars)
         {
-            _indent = true;
-            _useTabForIndent = useTabForIndent;
+            this._indent = true;
+            this._indentChars = indentChars;
+            this._useTabForIndent = false;
         }
 
-        #endregion
+        public JsonWriter(bool useTabForIndent)
+        {
+            this._indent = true;
+            this._useTabForIndent = useTabForIndent;
+        }
+
+        #endregion Creator
 
         #region Private methods
 
-        private bool IsValue(object obj)
+        private bool IsValue(Object obj)
         {
             if (obj == null)
             {
                 return true;
             }
             if ((obj is float) || (obj is double) ||
-                (obj is short) || (obj is int) || (obj is long)
-                    || (obj is string) || (obj is bool))
+                (obj is System.Int16) || (obj is System.Int32) || (obj is System.Int64)
+                    || (obj is String) || (obj is Boolean))
             {
                 return true;
             }
@@ -87,8 +89,8 @@ namespace VAR.Focus.Web.Code.JSON
                 else if (c == '\n') { sbOutput.Append("\\n"); }
                 else if (c == '\r') { sbOutput.Append("\\r"); }
                 else if (c == '\t') { sbOutput.Append("\\t"); }
+                else if (c < 32 || c >= 127) { sbOutput.AppendFormat("\\u{0:X04}", (int)c); }
                 else { sbOutput.Append(c); }
-                // FIXME: Unicode characters
             }
             sbOutput.Append('"');
         }
@@ -101,20 +103,20 @@ namespace VAR.Focus.Web.Code.JSON
                 sbOutput.Append("null");
             }
             else if ((obj is float) || (obj is double) ||
-              (obj is short) || (obj is int) || (obj is long))
+              (obj is System.Int16) || (obj is System.Int32) || (obj is System.Int64))
             {
                 // Numbers
                 sbOutput.Append(obj.ToString());
             }
-            else if (obj is string)
+            else if (obj is String)
             {
                 // Strings
-                WriteString(sbOutput, (string)obj);
+                WriteString(sbOutput, (String)obj);
             }
-            else if (obj is bool)
+            else if (obj is Boolean)
             {
                 // Booleans
-                sbOutput.Append(((bool)obj) ? "true" : "false");
+                sbOutput.Append(((Boolean)obj) ? "true" : "false");
             }
             else if (obj is DateTime)
             {
@@ -147,7 +149,7 @@ namespace VAR.Focus.Web.Code.JSON
             }
         }
 
-        private void WriteList(StringBuilder sbOutput, object obj, int level)
+        private void WriteList(StringBuilder sbOutput, Object obj, int level)
         {
             IEnumerable list = (IEnumerable)obj;
             int n = 0;
@@ -197,7 +199,7 @@ namespace VAR.Focus.Web.Code.JSON
             sbOutput.Append(" ]");
         }
 
-        private void WriteObject(StringBuilder sbOutput, object obj, int level)
+        private void WriteObject(StringBuilder sbOutput, Object obj, int level)
         {
             IDictionary map = (IDictionary)obj;
             int n = map.Count;
@@ -250,7 +252,7 @@ namespace VAR.Focus.Web.Code.JSON
             sbOutput.Append(" }");
         }
 
-        private void WriteReflectedObject(StringBuilder sbOutput, object obj, int level)
+        private void WriteReflectedObject(StringBuilder sbOutput, Object obj, int level)
         {
             Type type = obj.GetType();
             PropertyInfo[] rawProperties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -319,17 +321,17 @@ namespace VAR.Focus.Web.Code.JSON
             sbOutput.Append(" }");
         }
 
-        #endregion
+        #endregion Private methods
 
         #region Public methods
 
-        public string Write(object obj)
+        public String Write(Object obj)
         {
             StringBuilder sbOutput = new StringBuilder();
             WriteValue(sbOutput, obj, 0, true);
             return sbOutput.ToString();
         }
 
-        #endregion
+        #endregion Public methods
     }
 }

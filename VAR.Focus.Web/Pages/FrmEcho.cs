@@ -14,7 +14,7 @@ namespace VAR.Focus.Web.Pages
 
         public void ProcessRequest(HttpContext context)
         {
-            var jsonWritter = new JSONWriter(true);
+            var jsonWritter = new JsonWriter(true);
             context.Response.Write("<pre><code>");
             context.Response.Write(jsonWritter.Write(context.Request));
             context.Response.Write("</code></pre>");

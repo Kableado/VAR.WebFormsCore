@@ -114,7 +114,7 @@ namespace VAR.Focus.Web.Controls
                     {"ConfirmDelete", "Are you sure to delete?"},
                 } },
             };
-            JSONWriter jsonWriter = new JSONWriter();
+            JsonWriter jsonWriter = new JsonWriter();
             StringBuilder sbCfg = new StringBuilder();
             sbCfg.AppendFormat("<script>\n");
             sbCfg.AppendFormat("var {0} = {1};\n", strCfgName, jsonWriter.Write(cfg));

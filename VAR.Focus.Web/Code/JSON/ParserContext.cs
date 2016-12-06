@@ -6,71 +6,71 @@ namespace VAR.Focus.Web.Code.JSON
     {
         #region Declarations
 
-        private string text;
-        private int length;
-        private int i;
-        private int markStart;
+        private string _text;
+        private int _length;
+        private int _i;
+        private int _markStart;
 
-        #endregion
+        #endregion Declarations
 
         #region Creator
 
         public ParserContext(string text)
         {
-            this.text = text;
-            length = text.Length;
-            i = 0;
-            markStart = 0;
+            _text = text;
+            _length = text.Length;
+            _i = 0;
+            _markStart = 0;
         }
 
-        #endregion
+        #endregion Creator
 
         #region Public methods
 
         public char SkipWhite()
         {
-            while (i < length && char.IsWhiteSpace(text[i]))
+            while (_i < _length && char.IsWhiteSpace(_text[_i]))
             {
-                i++;
+                _i++;
             }
             if (AtEnd())
             {
                 return (char)0;
             }
-            return text[i];
+            return _text[_i];
         }
 
         public char Next()
         {
-            i++;
+            _i++;
             if (AtEnd())
             {
                 return (char)0;
             }
-            return text[i];
+            return _text[_i];
         }
 
         public bool AtEnd()
         {
-            return i >= length;
+            return _i >= _length;
         }
 
         public void Mark()
         {
-            markStart = i;
+            _markStart = _i;
         }
 
         public string GetMarked()
         {
-            if (i < length && markStart < length)
+            if (_i < _length && _markStart < _length)
             {
-                return text.Substring(markStart, i);
+                return _text.Substring(_markStart, _i - _markStart);
             }
             else
             {
-                if (markStart < length)
+                if (_markStart < _length)
                 {
-                    return text.Substring(markStart, length);
+                    return _text.Substring(_markStart, _length - _markStart);
                 }
                 else
                 {
@@ -79,6 +79,6 @@ namespace VAR.Focus.Web.Code.JSON
             }
         }
 
-        #endregion
+        #endregion Public methods
     }
 }

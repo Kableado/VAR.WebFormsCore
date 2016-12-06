@@ -21,7 +21,7 @@ namespace VAR.Focus.Web.Code
 
         public static void ResponseObject(this HttpContext context, object obj)
         {
-            var jsonWritter = new JSONWriter(true);
+            var jsonWritter = new JsonWriter(true);
             context.Response.ContentType = "text/json";
             string strObject = jsonWritter.Write(obj);
             context.Response.Write(strObject);

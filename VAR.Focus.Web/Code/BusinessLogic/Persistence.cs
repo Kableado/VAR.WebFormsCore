@@ -28,7 +28,7 @@ namespace VAR.Focus.Web.Code.BusinessLogic
         public static List<T> LoadList<T>(string file, List<Type> types)
         {
             List<T> listResult = new List<T>();
-            JSONParser parser = new JSONParser();
+            JsonParser parser = new JsonParser();
             Type typeResult = typeof(T);
             if (typeResult.IsInterface == false)
             {
@@ -62,7 +62,7 @@ namespace VAR.Focus.Web.Code.BusinessLogic
 
         public static bool SaveList(string file, object data)
         {
-            JSONWriter writter = new JSONWriter(true);
+            JsonWriter writter = new JsonWriter(true);
             string strJsonUsers = writter.Write(data);
             string filePath = GetLocalPath(string.Format("priv/{0}.json", file));
             File.WriteAllText(filePath, strJsonUsers);
