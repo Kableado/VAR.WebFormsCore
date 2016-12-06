@@ -82,6 +82,7 @@
     <Compile Include="Code\Entities\Card.cs" />
     <Compile Include="Code\Entities\CardEvents.cs" />
     <Compile Include="Code\ExtensionMethods.cs" />
+    <Compile Include="Code\ObjectActivator.cs" />
     <Compile Include="Controls\CardBoardControl.cs" />
     <Compile Include="Controls\CardBoardHandler.cs" />
     <Compile Include="Controls\CButton.cs" />

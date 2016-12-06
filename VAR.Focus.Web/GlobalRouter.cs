@@ -21,7 +21,7 @@ namespace VAR.Focus.Web
             if (_handlers.ContainsKey(typeName))
             {
                 type = _handlers[typeName];
-                IHttpHandler handler = Activator.CreateInstance(type) as IHttpHandler;
+                IHttpHandler handler = ObjectActivator.CreateInstance(type) as IHttpHandler;
                 return handler;
             }
 
@@ -60,7 +60,7 @@ namespace VAR.Focus.Web
             // Use found type
             if (type != null)
             {
-                IHttpHandler handler = Activator.CreateInstance(type) as IHttpHandler;
+                IHttpHandler handler = ObjectActivator.CreateInstance(type) as IHttpHandler;
                 if (handler != null)
                 {
                     lock (_handlers)
