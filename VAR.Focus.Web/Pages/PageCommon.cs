@@ -4,8 +4,9 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using VAR.Focus.Web.Code.BusinessLogic;
-using VAR.Focus.Web.Code.Entities;
+using VAR.Focus.BusinessLogic;
+using VAR.Focus.BusinessLogic.Entities;
+using VAR.Focus.Web.Code;
 using VAR.Focus.Web.Controls;
 
 namespace VAR.Focus.Web.Pages
@@ -57,13 +58,13 @@ namespace VAR.Focus.Web.Pages
 
         void PageCommon_PreInit(object sender, EventArgs e)
         {
-            Session session = Sessions.Current.Session_GetCurrent(Context);
+            Session session = WebSessions.Current.Session_GetCurrent(Context);
             if (session != null)
             {
                 _currentUser = Users.Current.User_GetByName(session.UserName);
                 if (_mustBeAutenticated)
                 {
-                    Sessions.Current.Session_SetCookie(Context, session);
+                    WebSessions.Current.Session_SetCookie(Context, session);
                 }
             }
             if (_currentUser == null && _mustBeAutenticated)
@@ -89,7 +90,7 @@ namespace VAR.Focus.Web.Pages
 
         void btnLogout_Click(object sender, EventArgs e)
         {
-            Sessions.Current.Session_FinalizeCurrent(Context);
+            WebSessions.Current.Session_FinalizeCurrent(Context);
             _currentUser = null;
             if (_mustBeAutenticated)
             {

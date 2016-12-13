@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Web.UI.WebControls;
+using VAR.Focus.BusinessLogic;
+using VAR.Focus.BusinessLogic.Entities;
 using VAR.Focus.Web.Code;
-using VAR.Focus.Web.Code.BusinessLogic;
-using VAR.Focus.Web.Code.Entities;
 using VAR.Focus.Web.Controls;
 
 namespace VAR.Focus.Web.Pages

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-using VAR.Focus.Web.Code.BusinessLogic;
+using VAR.Focus.BusinessLogic;
+using VAR.Focus.Web.Code;
 using VAR.Focus.Web.Controls;
 
 namespace VAR.Focus.Web.Pages
@@ -42,7 +43,7 @@ namespace VAR.Focus.Web.Pages
                 return;
             }
 
-            Sessions.Current.Session_Init(Context, _txtNameEmail.Text);
+            WebSessions.Current.Session_Init(Context, _txtNameEmail.Text);
             Response.Redirect(Globals.DefaultHandler);
         }
 

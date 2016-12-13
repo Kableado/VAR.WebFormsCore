@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Web;
+using VAR.Focus.BusinessLogic;
+using VAR.Focus.BusinessLogic.Entities;
 using VAR.Focus.Web.Code;
-using VAR.Focus.Web.Code.BusinessLogic;
-using VAR.Focus.Web.Code.Entities;
 
 namespace VAR.Focus.Web.Controls
 {
@@ -136,7 +136,7 @@ namespace VAR.Focus.Web.Controls
 
         private void ProcessEventSender(HttpContext context)
         {
-            Session session = Sessions.Current.Session_GetCurrent(context);
+            Session session = WebSessions.Current.Session_GetCurrent(context);
             string currentUserName = session.UserName;
             string strIDBoard = context.GetRequestParm("IDBoard");
             int idBoard = Convert.ToInt32(string.IsNullOrEmpty(strIDBoard) ? "0" : strIDBoard);

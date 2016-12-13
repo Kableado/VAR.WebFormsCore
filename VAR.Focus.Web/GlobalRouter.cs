@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Web;
+using VAR.Focus.BusinessLogic.Utils;
 using VAR.Focus.Web.Code;
 
 namespace VAR.Focus.Web

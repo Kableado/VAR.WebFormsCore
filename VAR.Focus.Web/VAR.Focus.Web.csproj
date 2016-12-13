@@ -72,20 +72,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Bundler.cs" />
-    <Compile Include="Code\BusinessLogic\Boards.cs" />
-    <Compile Include="Code\BusinessLogic\CardBoard.cs" />
-    <Compile Include="Code\BusinessLogic\Groups.cs" />
-    <Compile Include="Code\BusinessLogic\MessageBoard.cs" />
-    <Compile Include="Code\BusinessLogic\Persistence.cs" />
-    <Compile Include="Code\BusinessLogic\Sessions.cs" />
-    <Compile Include="Code\BusinessLogic\Users.cs" />
-    <Compile Include="Code\Entities\Board.cs" />
-    <Compile Include="Code\Entities\Card.cs" />
-    <Compile Include="Code\Entities\CardEvents.cs" />
-    <Compile Include="Code\Entities\Group.cs" />
-    <Compile Include="Code\Entities\GroupMember.cs" />
     <Compile Include="Code\ExtensionMethods.cs" />
-    <Compile Include="Code\ObjectActivator.cs" />
+    <Compile Include="Code\WebSessions.cs" />
     <Compile Include="Controls\CardBoardControl.cs" />
     <Compile Include="Controls\CardBoardHandler.cs" />
     <Compile Include="Controls\CButton.cs" />
@@ -94,13 +82,7 @@
     <Compile Include="Controls\CLabel.cs" />
     <Compile Include="Controls\CTextBox.cs" />
     <Compile Include="Controls\IValidableControl.cs" />
-    <Compile Include="Code\CryptoUtils.cs" />
-    <Compile Include="Code\Entities\Message.cs" />
-    <Compile Include="Code\Entities\OperationStatus.cs" />
-    <Compile Include="Code\Entities\Session.cs" />
-    <Compile Include="Code\Entities\User.cs" />
     <Compile Include="Code\GlobalErrorHandler.cs" />
-    <Compile Include="Code\JSON\ParserContext.cs" />
     <Compile Include="Pages\FormUtils.cs" />
     <Compile Include="Pages\FrmBoard.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -121,8 +103,6 @@
     <Compile Include="Code\ScriptsBundler.cs" />
     <Compile Include="Code\StylesBundler.cs" />
     <Compile Include="GlobalRouter.cs" />
-    <Compile Include="Code\JSON\JsonParser.cs" />
-    <Compile Include="Code\JSON\JsonWriter.cs" />
     <Compile Include="Pages\FrmError.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -131,6 +111,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VAR.Focus.BusinessLogic\VAR.Focus.BusinessLogic.csproj">
+      <Project>{d88af21d-1c60-4b27-abff-a133d6afc51c}</Project>
+      <Name>VAR.Focus.BusinessLogic</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

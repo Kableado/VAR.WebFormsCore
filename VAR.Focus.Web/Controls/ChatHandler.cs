@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Web;
+using VAR.Focus.BusinessLogic;
+using VAR.Focus.BusinessLogic.Entities;
 using VAR.Focus.Web.Code;
-using VAR.Focus.Web.Code.BusinessLogic;
-using VAR.Focus.Web.Code.Entities;
 
 namespace VAR.Focus.Web.Controls
 {
@@ -95,7 +95,7 @@ namespace VAR.Focus.Web.Controls
             string idMessageBoard = context.GetRequestParm("IDMessageBoard");
             if (string.IsNullOrEmpty(idMessageBoard)) { idMessageBoard = "root"; }
             string userName = Convert.ToString(context.GetRequestParm("UserName"));
-            Session session = Sessions.Current.Session_GetCurrent(context);
+            Session session = WebSessions.Current.Session_GetCurrent(context);
             if (session.UserName.ToLower() != userName.ToLower())
             {
                 context.ResponseObject(new OperationStatus { IsOK = false, Message = "User mismatch" });

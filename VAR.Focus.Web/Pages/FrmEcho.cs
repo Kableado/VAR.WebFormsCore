@@ -1,5 +1,5 @@
 ﻿using System.Web;
-using VAR.Focus.Web.Code.JSON;
+using VAR.Focus.BusinessLogic.JSON;
 
 namespace VAR.Focus.Web.Pages
 {
