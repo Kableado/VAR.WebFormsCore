@@ -74,6 +74,7 @@
     <Compile Include="Code\Bundler.cs" />
     <Compile Include="Code\BusinessLogic\Boards.cs" />
     <Compile Include="Code\BusinessLogic\CardBoard.cs" />
+    <Compile Include="Code\BusinessLogic\Groups.cs" />
     <Compile Include="Code\BusinessLogic\MessageBoard.cs" />
     <Compile Include="Code\BusinessLogic\Persistence.cs" />
     <Compile Include="Code\BusinessLogic\Sessions.cs" />
@@ -81,6 +82,8 @@
     <Compile Include="Code\Entities\Board.cs" />
     <Compile Include="Code\Entities\Card.cs" />
     <Compile Include="Code\Entities\CardEvents.cs" />
+    <Compile Include="Code\Entities\Group.cs" />
+    <Compile Include="Code\Entities\GroupMember.cs" />
     <Compile Include="Code\ExtensionMethods.cs" />
     <Compile Include="Code\ObjectActivator.cs" />
     <Compile Include="Controls\CardBoardControl.cs" />
