@@ -12,7 +12,7 @@ namespace VAR.Focus.Web.Code
         private string _path = null;
         private List<string> _files = null;
 
-        #endregion
+        #endregion Declarations
 
         #region Properties
 
@@ -29,7 +29,7 @@ namespace VAR.Focus.Web.Code
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Creator
 
@@ -38,7 +38,7 @@ namespace VAR.Focus.Web.Code
             _path = path;
         }
 
-        #endregion
+        #endregion Creator
 
         #region Public methods
 
@@ -58,6 +58,6 @@ namespace VAR.Focus.Web.Code
             }
         }
 
-        #endregion
+        #endregion Public methods
     }
 }

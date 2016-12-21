@@ -12,9 +12,9 @@ namespace VAR.Focus.Web.Pages
 
         private CTextBox _txtNameEmail = new CTextBox { ID = "txtNameEmail", CssClassExtra = "width150px", AllowEmpty = false };
         private CTextBox _txtPassword = new CTextBox { ID = "txtPassword", CssClassExtra = "width150px", AllowEmpty = false, TextMode = TextBoxMode.Password };
-        private CButton _btnLogin = new CButton { ID = "btnLogin"};
+        private CButton _btnLogin = new CButton { ID = "btnLogin" };
 
-        #endregion
+        #endregion Declarations
 
         #region Page life cycle
 
@@ -29,7 +29,7 @@ namespace VAR.Focus.Web.Pages
             InitializeControls();
         }
 
-        #endregion
+        #endregion Page life cycle
 
         #region UI Events
 
@@ -47,7 +47,7 @@ namespace VAR.Focus.Web.Pages
             Response.Redirect(Globals.DefaultHandler);
         }
 
-        #endregion
+        #endregion UI Events
 
         #region Private methods
 
@@ -72,6 +72,6 @@ namespace VAR.Focus.Web.Pages
             Controls.Add(FormUtils.CreateField(String.Empty, new HyperLink { Text = "Register user", NavigateUrl = "FrmRegister" }));
         }
 
-        #endregion
+        #endregion Private methods
     }
 }

@@ -1,5 +1,4 @@
-﻿
-function SendRequest(url, data, onData, onError) {
+﻿function SendRequest(url, data, onData, onError) {
     var xhr = new XMLHttpRequest();
     if (data) {
         url += "?" + GetDataQueryString(data);

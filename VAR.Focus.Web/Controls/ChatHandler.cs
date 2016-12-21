@@ -15,7 +15,7 @@ namespace VAR.Focus.Web.Controls
         private static object _monitor = new object();
         private static Dictionary<string, MessageBoard> _chatBoards = new Dictionary<string, MessageBoard>();
 
-        #endregion
+        #endregion Declarations
 
         #region IHttpHandler
 
@@ -43,7 +43,7 @@ namespace VAR.Focus.Web.Controls
             }
         }
 
-        #endregion
+        #endregion IHttpHandler
 
         #region Private methods
 
@@ -120,6 +120,6 @@ namespace VAR.Focus.Web.Controls
             context.ResponseObject(new OperationStatus { IsOK = true, Message = "Message sent" });
         }
 
-        #endregion
+        #endregion Private methods
     }
 }

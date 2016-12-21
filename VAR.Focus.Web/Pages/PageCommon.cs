@@ -25,7 +25,7 @@ namespace VAR.Focus.Web.Pages
         private bool _mustBeAutenticated = true;
         private User _currentUser = null;
 
-        #endregion
+        #endregion Declarations
 
         #region Properties
 
@@ -45,7 +45,7 @@ namespace VAR.Focus.Web.Pages
             get { return _currentUser; }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Life cycle
 
@@ -56,7 +56,7 @@ namespace VAR.Focus.Web.Pages
             PreRender += PageCommon_PreRender;
         }
 
-        void PageCommon_PreInit(object sender, EventArgs e)
+        private void PageCommon_PreInit(object sender, EventArgs e)
         {
             Session session = WebSessions.Current.Session_GetCurrent(Context);
             if (session != null)
@@ -73,22 +73,22 @@ namespace VAR.Focus.Web.Pages
             }
         }
 
-        void PageCommon_Init(object sender, EventArgs e)
+        private void PageCommon_Init(object sender, EventArgs e)
         {
             CreateControls();
         }
 
-        void PageCommon_PreRender(object sender, EventArgs e)
+        private void PageCommon_PreRender(object sender, EventArgs e)
         {
             _head.Title = string.IsNullOrEmpty(Title) ? Globals.Title : String.Format("{0}{1}{2}", Title, Globals.TitleSeparator, Globals.Title);
             _btnLogout.Visible = (_currentUser != null);
         }
 
-        #endregion
+        #endregion Life cycle
 
         #region UI Events
 
-        void btnLogout_Click(object sender, EventArgs e)
+        private void btnLogout_Click(object sender, EventArgs e)
         {
             WebSessions.Current.Session_FinalizeCurrent(Context);
             _currentUser = null;
@@ -98,7 +98,7 @@ namespace VAR.Focus.Web.Pages
             }
         }
 
-        #endregion
+        #endregion UI Events
 
         #region Private methods
 
@@ -124,7 +124,6 @@ namespace VAR.Focus.Web.Pages
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             _head.Controls.Add(new LiteralControl(String.Format("<script type=\"text/javascript\" src=\"ScriptsBundler?v={0}\"></script>\n", version)));
             _head.Controls.Add(new LiteralControl(String.Format("<link href=\"StylesBundler?v={0}\" type=\"text/css\" rel=\"stylesheet\"/>\n", version)));
-
 
             _body = new HtmlGenericControl("body");
             html.Controls.Add(_body);
@@ -159,6 +158,6 @@ namespace VAR.Focus.Web.Pages
             _form.Controls.Add(_pnlContainer);
         }
 
-        #endregion
+        #endregion Private methods
     }
 }

@@ -9,7 +9,7 @@ namespace VAR.Focus.Web.Controls
 
         private string _tagName = "span";
 
-        #endregion
+        #endregion Declarations
 
         #region Properties
 
@@ -19,7 +19,7 @@ namespace VAR.Focus.Web.Controls
             set { _tagName = value; }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Life cycle
 
@@ -36,6 +36,6 @@ namespace VAR.Focus.Web.Controls
             }
         }
 
-        #endregion
+        #endregion Life cycle
     }
 }

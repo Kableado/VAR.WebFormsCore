@@ -78,7 +78,7 @@ namespace VAR.Focus.Web
             return null;
         }
 
-        #endregion
+        #endregion Handlers
 
         #region IHttpHandler
 
@@ -95,7 +95,7 @@ namespace VAR.Focus.Web
             }
             catch (Exception ex)
             {
-                if(ex is ThreadAbortException)
+                if (ex is ThreadAbortException)
                 {
                     return;
                 }
@@ -103,7 +103,7 @@ namespace VAR.Focus.Web
             }
         }
 
-        #endregion
+        #endregion IHttpHandler
 
         #region Private methods
 
@@ -117,7 +117,7 @@ namespace VAR.Focus.Web
 
             // Pass allowed extensions requests
             string extension = Path.GetExtension(context.Request.FilePath).ToLower();
-            if(Globals.AllowedExtensions.Contains(extension))
+            if (Globals.AllowedExtensions.Contains(extension))
             {
                 string filePath = context.Server.MapPath(string.Format("~/{0}", context.Request.FilePath));
                 if (File.Exists(filePath))
@@ -130,7 +130,7 @@ namespace VAR.Focus.Web
                     return;
                 }
             }
-            
+
             IHttpHandler handler = GetHandler(file);
             if (handler == null)
             {
@@ -144,6 +144,6 @@ namespace VAR.Focus.Web
             handler.ProcessRequest(context);
         }
 
-        #endregion
+        #endregion Private methods
     }
 }

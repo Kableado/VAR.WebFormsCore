@@ -62,7 +62,8 @@ namespace VAR.Focus.Web.Pages
             return true;
         }
 
-        public static bool Controls_AreValid(ControlCollection controls) {
+        public static bool Controls_AreValid(ControlCollection controls)
+        {
             bool valid = true;
             foreach (Control control in controls)
             {

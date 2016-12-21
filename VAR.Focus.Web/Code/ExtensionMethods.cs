@@ -27,7 +27,6 @@ namespace VAR.Focus.Web.Code
             context.Response.Write(strObject);
         }
 
-        #endregion
-
+        #endregion HttpContext
     }
 }

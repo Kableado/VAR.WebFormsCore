@@ -1,5 +1,4 @@
-﻿
-////////////////////////
+﻿////////////////////////
 //  GetElement
 //
 function GetElement(element) {
@@ -53,7 +52,6 @@ function ElementToggleClass(element, className) {
     }
 }
 
-
 function escapeHTML(s) {
     return s.replace(/&/g, '&amp;')
             .replace(/"/g, '&quot;')
@@ -66,7 +64,6 @@ function fixedEncodeURIComponent(str) {
         return '%' + c.charCodeAt(0).toString(16);
     });
 }
-
 
 ////////////////////////
 // localStorage polyfill

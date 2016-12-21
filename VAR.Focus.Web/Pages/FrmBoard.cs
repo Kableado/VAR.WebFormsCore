@@ -14,10 +14,10 @@ namespace VAR.Focus.Web.Pages
 
         private int _idBoard = 0;
 
-        private CTextBox _txtTitle = new CTextBox { ID = "txtTitle", CssClassExtra="width100pc", AllowEmpty = false };
+        private CTextBox _txtTitle = new CTextBox { ID = "txtTitle", CssClassExtra = "width100pc", AllowEmpty = false };
         private CTextBox _txtDescription = new CTextBox { ID = "txtDescription", CssClassExtra = "width100pc", TextMode = TextBoxMode.MultiLine };
 
-        #endregion
+        #endregion Declarations
 
         #region Life cycle
 
@@ -26,7 +26,7 @@ namespace VAR.Focus.Web.Pages
             Init += FrmBoard_Init;
         }
 
-        void FrmBoard_Init(object sender, EventArgs e)
+        private void FrmBoard_Init(object sender, EventArgs e)
         {
             string strIDBoard = Context.GetRequestParm("idBoard");
             if (String.IsNullOrEmpty(strIDBoard) == false)
@@ -43,19 +43,19 @@ namespace VAR.Focus.Web.Pages
             }
         }
 
-        #endregion
+        #endregion Life cycle
 
         #region UI Events
 
-        void btnAddBoard_Click(object sender, EventArgs e)
+        private void btnAddBoard_Click(object sender, EventArgs e)
         {
             if (FormUtils.Controls_AreValid(Controls) == false) { return; }
 
             Board board = Boards.Current.Boards_SetBoard(0, _txtTitle.Text, _txtDescription.Text, CurrentUser.Name);
             _idBoard = board.IDBoard;
 
-            Response.Redirect(string.Format("{0}?idBoard={1}", 
-                typeof(FrmBoard).Name, 
+            Response.Redirect(string.Format("{0}?idBoard={1}",
+                typeof(FrmBoard).Name,
                 _idBoard));
         }
 
@@ -72,8 +72,8 @@ namespace VAR.Focus.Web.Pages
         {
             CButton btnEdit = (CButton)sender;
             int idBoard = Convert.ToInt32(btnEdit.CommandArgument);
-            Response.Redirect(string.Format("{0}?idBoard={1}&returnUrl={2}", 
-                typeof(FrmBoardEdit).Name, 
+            Response.Redirect(string.Format("{0}?idBoard={1}&returnUrl={2}",
+                typeof(FrmBoardEdit).Name,
                 idBoard,
                 typeof(FrmBoard).Name));
         }
@@ -90,7 +90,7 @@ namespace VAR.Focus.Web.Pages
             }
         }
 
-        #endregion
+        #endregion UI Events
 
         #region Private methods
 
@@ -169,7 +169,6 @@ namespace VAR.Focus.Web.Pages
             _txtDescription.PlaceHolder = "Description";
             pnlBoardAdd.Controls.Add(FormUtils.CreatePanel("formRow", btnAddBoard));
             Controls.Add(pnlBoardAdd);
-
         }
 
         private void FrmBoard_InitBoard()
@@ -194,7 +193,7 @@ namespace VAR.Focus.Web.Pages
             };
             Controls.Add(chatControl);
         }
-        
-        #endregion
+
+        #endregion Private methods
     }
 }

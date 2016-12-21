@@ -26,7 +26,7 @@ namespace VAR.Focus.Web.Controls
         private Panel _divChatContainer = null;
         private Panel _divChatTitleBar = null;
 
-        #endregion
+        #endregion Declarations
 
         #region Properties
 
@@ -80,7 +80,7 @@ namespace VAR.Focus.Web.Controls
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Control Life cycle
 
@@ -89,12 +89,12 @@ namespace VAR.Focus.Web.Controls
             Init += ChatControl_Init;
         }
 
-        void ChatControl_Init(object sender, EventArgs e)
+        private void ChatControl_Init(object sender, EventArgs e)
         {
             InitializeControls();
         }
 
-        #endregion
+        #endregion Control Life cycle
 
         #region Private methods
 
@@ -131,7 +131,7 @@ namespace VAR.Focus.Web.Controls
             var btnSend = new Button { ID = "btnSend", Text = "Send", CssClass = "chatButton" };
             divChatControls.Controls.Add(btnSend);
             btnSend.Attributes.Add("onclick", string.Format("SendChat({0}); return false;", strCfgName));
-            
+
             Dictionary<string, object> cfg = new Dictionary<string, object>
             {
                 {"divChatWindow", _divChatWindow.ClientID},
@@ -165,6 +165,6 @@ namespace VAR.Focus.Web.Controls
             Controls.Add(liScript);
         }
 
-        #endregion
+        #endregion Private methods
     }
 }

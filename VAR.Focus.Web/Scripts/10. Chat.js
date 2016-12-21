@@ -81,7 +81,6 @@
 
     var RequestChatData = function () {
         var ReciveChatData = function (responseText) {
-
             // Mark as connected
             if (cfg.Connected == false) {
                 if (cfg.Minimized) {
@@ -134,7 +133,6 @@
             }, 20);
         };
         var ErrorChatData = function () {
-
             // Mark as disconnected
             cfg.lblTitle.innerHTML = cfg.Texts.Disconnected;
             cfg.lblTitle.className = "titleChatDisconnected";

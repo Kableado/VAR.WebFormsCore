@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using VAR.Focus.BusinessLogic;
 using VAR.Focus.BusinessLogic.Entities;
@@ -16,7 +14,7 @@ namespace VAR.Focus.Web.Code
         private string _cookieName = "FocusSID";
         private int _cookieExpirationDays = 30;
 
-        #endregion
+        #endregion Declarations
 
         #region Properties
 
@@ -45,7 +43,7 @@ namespace VAR.Focus.Web.Code
             set { _cookieExpirationDays = value; }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Public methods
 
@@ -86,7 +84,6 @@ namespace VAR.Focus.Web.Code
             return true;
         }
 
-        #endregion
-
+        #endregion Public methods
     }
 }

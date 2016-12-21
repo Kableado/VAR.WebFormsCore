@@ -19,7 +19,7 @@ namespace VAR.Focus.Web.Controls
 
         private Control _nextFocusOnEnter = null;
 
-        #endregion
+        #endregion Declarations
 
         #region Properties
 
@@ -53,7 +53,7 @@ namespace VAR.Focus.Web.Controls
             set { _nextFocusOnEnter = value; }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Control life cycle
 
@@ -62,7 +62,7 @@ namespace VAR.Focus.Web.Controls
             PreRender += CTextbox_PreRender;
         }
 
-        void CTextbox_PreRender(object sender, EventArgs e)
+        private void CTextbox_PreRender(object sender, EventArgs e)
         {
             CssClass = CssClassBase;
             if (string.IsNullOrEmpty(_cssClassExtra) == false)
@@ -80,13 +80,12 @@ namespace VAR.Focus.Web.Controls
                 Attributes.Add("placeholder", _placeHolder);
             }
 
-            if (_nextFocusOnEnter!=null)
+            if (_nextFocusOnEnter != null)
             {
                 this.Attributes.Add("onkeydown", String.Format(
                     "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}",
                     _nextFocusOnEnter.ClientID));
             }
-
 
             // FIX: The framework deletes textbox values on password mode
             if (TextMode == TextBoxMode.Password)
@@ -95,7 +94,7 @@ namespace VAR.Focus.Web.Controls
             }
         }
 
-        #endregion
+        #endregion Control life cycle
 
         #region Public methods
 
@@ -109,7 +108,6 @@ namespace VAR.Focus.Web.Controls
             return _allowEmpty || (string.IsNullOrEmpty(Text) == false);
         }
 
-        #endregion
-
+        #endregion Public methods
     }
 }

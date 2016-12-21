@@ -10,9 +10,9 @@ namespace VAR.Focus.Web.Pages
     {
         #region Declarations
 
-        Exception _ex = null;
+        private Exception _ex = null;
 
-        #endregion
+        #endregion Declarations
 
         #region Page life cycle
 
@@ -22,12 +22,12 @@ namespace VAR.Focus.Web.Pages
             Init += FrmError_Init;
         }
 
-        void FrmError_Init(object sender, EventArgs e)
+        private void FrmError_Init(object sender, EventArgs e)
         {
             InitializeControls();
         }
 
-        #endregion
+        #endregion Page life cycle
 
         #region Private methods
 
@@ -60,6 +60,6 @@ namespace VAR.Focus.Web.Pages
             }
         }
 
-        #endregion
+        #endregion Private methods
     }
 }

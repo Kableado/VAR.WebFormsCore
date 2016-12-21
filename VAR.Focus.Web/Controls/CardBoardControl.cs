@@ -25,7 +25,7 @@ namespace VAR.Focus.Web.Controls
 
         private int _timeMoveAnimation = 500;
 
-        #endregion
+        #endregion Declarations
 
         #region Properties
 
@@ -71,8 +71,8 @@ namespace VAR.Focus.Web.Controls
             set { _timeMoveAnimation = value; }
         }
 
-        #endregion
-        
+        #endregion Properties
+
         #region Control Life cycle
 
         public CardBoardControl()
@@ -80,12 +80,12 @@ namespace VAR.Focus.Web.Controls
             Init += ChatControl_Init;
         }
 
-        void ChatControl_Init(object sender, EventArgs e)
+        private void ChatControl_Init(object sender, EventArgs e)
         {
             InitializeControls();
         }
 
-        #endregion
+        #endregion Control Life cycle
 
         #region Private methods
 
@@ -124,6 +124,6 @@ namespace VAR.Focus.Web.Controls
             Controls.Add(liScript);
         }
 
-        #endregion
+        #endregion Private methods
     }
 }

@@ -40,7 +40,7 @@ namespace VAR.Focus.Web.Code
             context.Response.Write(sbOutput.ToString());
         }
 
-        #endregion
+        #endregion Private methods
 
         #region Public methods
 
@@ -59,6 +59,6 @@ namespace VAR.Focus.Web.Code
             }
         }
 
-        #endregion
+        #endregion Public methods
     }
 }

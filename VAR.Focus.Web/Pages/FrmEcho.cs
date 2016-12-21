@@ -20,6 +20,6 @@ namespace VAR.Focus.Web.Pages
             context.Response.Write("</code></pre>");
         }
 
-        #endregion
+        #endregion IHttpHandler
     }
 }

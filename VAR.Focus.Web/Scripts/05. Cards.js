@@ -1,5 +1,4 @@
-﻿
-var CosineInterpolation = function (f) {
+﻿var CosineInterpolation = function (f) {
     return 1.0 - (Math.cos(f * Math.PI) + 1.0) / 2.0;
 };
 
@@ -84,7 +83,7 @@ Toolbox.prototype = {
         this.divToolbox.style.left = x + "px";
         this.divToolbox.style.top = y + "px";
     },
-    SavePosition: function(){
+    SavePosition: function () {
         var pos = { X: this.X, Y: this.Y };
         window.localStorage.setItem(this.StrKeyPosition, JSON.stringify(pos));
     },
@@ -242,7 +241,7 @@ Card.prototype = {
         this.container.appendChild(this.divCard);
         this.cfg.Toolbox.ReInsertOnContainer();
     },
-    RemoveFromContainer: function(){
+    RemoveFromContainer: function () {
         this.container.removeChild(this.divCard);
     },
     MoveFrame: function () {
@@ -537,11 +536,11 @@ Card.prototype = {
         document.removeEventListener("touchcancel", this.bindedTouchEnd, false);
         document.removeEventListener("touchmove", this.bindedTouchMove, false);
 
-        this.OnMove(); 
+        this.OnMove();
 
         return false;
     },
-    EnterEditionMode: function(){
+    EnterEditionMode: function () {
         this.divTitle.innerHTML = "";
         this.txtTitle.value = this.Title;
         this.divTitle.appendChild(this.txtTitle);
@@ -556,7 +555,7 @@ Card.prototype = {
         this.divOverlay.style.display = "none";
         this.Editing = true;
     },
-    ExitEditionMode: function(){
+    ExitEditionMode: function () {
         this.divTitle.removeChild(this.txtTitle);
         this.divBody.removeChild(this.txtBody);
         this.divBody.removeChild(this.btnAcceptEdit);
@@ -601,7 +600,7 @@ Card.prototype = {
     },
     btnDelete_Click: function (evt) {
         evt.preventDefault();
-        if (this.IDCard==0 || confirm(this.cfg.Texts.ConfirmDelete)) {
+        if (this.IDCard == 0 || confirm(this.cfg.Texts.ConfirmDelete)) {
             this.OnDelete();
         }
         return false;
@@ -636,7 +635,7 @@ function RunCardBoard(cfg) {
         return false;
     }
 
-    var ProcessCardCreateEvent = function(cardEvent){
+    var ProcessCardCreateEvent = function (cardEvent) {
         var card = new Card(cfg, cardEvent.IDCard, cardEvent.Title, cardEvent.Body, cardEvent.X, cardEvent.Y);
     };
 
@@ -661,7 +660,7 @@ function RunCardBoard(cfg) {
     var RequestCardEventData = function () {
         var ReciveCardEventData = function (responseText) {
             cfg.Connected = true;
-            
+
             var recvData = JSON.parse(responseText);
             if (recvData && recvData instanceof Array) {
                 for (var i = 0, n = recvData.length; i < n; i++) {

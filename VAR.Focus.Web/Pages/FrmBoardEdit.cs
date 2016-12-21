@@ -18,7 +18,7 @@ namespace VAR.Focus.Web.Pages
         private CButton _btnSave = new CButton { ID = "btnSave" };
         private CButton _btnExit = new CButton { ID = "btnExit" };
 
-        #endregion
+        #endregion Declarations
 
         #region Page life cycle
 
@@ -36,7 +36,7 @@ namespace VAR.Focus.Web.Pages
             }
         }
 
-        void FrmBoardEdit_Init(object sender, EventArgs e)
+        private void FrmBoardEdit_Init(object sender, EventArgs e)
         {
             string strIDBoard = Context.GetRequestParm("idBoard");
             if (String.IsNullOrEmpty(strIDBoard) == false)
@@ -50,7 +50,7 @@ namespace VAR.Focus.Web.Pages
             InitializeComponents();
         }
 
-        #endregion
+        #endregion Page life cycle
 
         #region UI Events
 
@@ -76,7 +76,7 @@ namespace VAR.Focus.Web.Pages
             }
         }
 
-        #endregion
+        #endregion UI Events
 
         #region Private methods
 
@@ -85,7 +85,7 @@ namespace VAR.Focus.Web.Pages
             Title = "Register";
             var lblTitle = new CLabel { Text = "Register", Tag = "h2" };
             Controls.Add(lblTitle);
-            
+
             Controls.Add(FormUtils.CreateField("Title", _txtTitle));
             _txtTitle.NextFocusOnEnter = _txtTitle;
             _txtTitle.PlaceHolder = "Title";
@@ -113,7 +113,6 @@ namespace VAR.Focus.Web.Pages
             _txtDescription.Text = board.Description;
         }
 
-        #endregion
-
+        #endregion Private methods
     }
 }

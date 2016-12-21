@@ -15,6 +15,6 @@ namespace VAR.Focus.Web.Code
             bundler.WriteResponse(context.Response.OutputStream);
         }
 
-        #endregion
+        #endregion IHttpHandler
     }
 }

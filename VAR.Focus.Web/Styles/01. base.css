@@ -1,5 +1,4 @@
-﻿
-html {
+﻿html {
     height: 100%;
 }
 
@@ -84,7 +83,6 @@ h3 {
     box-shadow: 0 0 10px rgb(0,0,0);
 }
 
-
 .formColumn {
     display: inline-block;
     font-size: 0;
@@ -101,6 +99,9 @@ h3 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 12px;
     text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+    text-align: right;
+    padding-right: 20px;
+    vertical-align: top;
 }
 
     .formLabel span:last-child::after {
@@ -143,7 +144,6 @@ textarea.textbox {
         box-shadow: 0 0 10px rgba(255,0,0,0.5), inset 0 -2px 5px rgba(255,255,255,1), inset 0 2px 5px rgba(0,0,0,0.5);
         border: solid 1px black;
     }
-
 
 .button {
     padding: 5px;

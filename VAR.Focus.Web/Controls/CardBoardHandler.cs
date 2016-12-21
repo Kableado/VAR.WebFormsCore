@@ -15,7 +15,7 @@ namespace VAR.Focus.Web.Controls
         private static object _monitor = new object();
         private static Dictionary<int, CardBoard> _cardBoards = new Dictionary<int, CardBoard>();
 
-        #endregion
+        #endregion Declarations
 
         #region IHttpHandler
 
@@ -50,7 +50,7 @@ namespace VAR.Focus.Web.Controls
             }
         }
 
-        #endregion
+        #endregion IHttpHandler
 
         #region Private methods
 
@@ -195,6 +195,6 @@ namespace VAR.Focus.Web.Controls
             lock (_monitor) { Monitor.PulseAll(_monitor); }
         }
 
-        #endregion
+        #endregion Private methods
     }
 }

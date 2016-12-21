@@ -21,7 +21,7 @@ namespace VAR.Focus.Web.Pages
         private CLabel _lblSuccess = new CLabel { ID = "lblSuccess" };
         private CButton _btnExitSuccess = new CButton { ID = "btnExitSuccess" };
 
-        #endregion
+        #endregion Declarations
 
         #region Page life cycle
 
@@ -31,16 +31,16 @@ namespace VAR.Focus.Web.Pages
             Init += FrmRegister_Init;
         }
 
-        void FrmRegister_Init(object sender, EventArgs e)
+        private void FrmRegister_Init(object sender, EventArgs e)
         {
             InitializeComponents();
         }
 
-        #endregion
+        #endregion Page life cycle
 
         #region UI Events
 
-        void btnRegister_Click(object sender, EventArgs e)
+        private void btnRegister_Click(object sender, EventArgs e)
         {
             if (FormUtils.Controls_AreValid(Controls) == false) { return; }
 
@@ -63,12 +63,12 @@ namespace VAR.Focus.Web.Pages
             _lblSuccess.Text = String.Format("User {0} created sucessfully", user.Name);
         }
 
-        void btnExit_Click(object sender, EventArgs e)
+        private void btnExit_Click(object sender, EventArgs e)
         {
             Response.Redirect(Globals.DefaultHandler);
         }
 
-        #endregion
+        #endregion UI Events
 
         #region Private methods
 
@@ -102,11 +102,11 @@ namespace VAR.Focus.Web.Pages
             _btnExit.Text = "Exit";
             _btnExit.Click += btnExit_Click;
 
-            Panel pnlButtons=new Panel();
+            Panel pnlButtons = new Panel();
             pnlButtons.Controls.Add(_btnRegister);
             pnlButtons.Controls.Add(_btnExit);
             _pnlRegister.Controls.Add(FormUtils.CreateField(String.Empty, pnlButtons));
-            
+
             Controls.Add(_pnlSuccess);
             _pnlSuccess.Visible = false;
 
@@ -115,10 +115,8 @@ namespace VAR.Focus.Web.Pages
             _btnExitSuccess.Text = "Exit";
             _btnExitSuccess.Click += btnExit_Click;
             _pnlSuccess.Controls.Add(FormUtils.CreateField(String.Empty, _btnExitSuccess));
-
         }
 
-        #endregion
-
+        #endregion Private methods
     }
 }
