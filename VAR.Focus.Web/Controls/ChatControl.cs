@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using VAR.Focus.BusinessLogic.JSON;
+using VAR.Json;
 
 namespace VAR.Focus.Web.Controls
 {
