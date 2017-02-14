@@ -44,13 +44,15 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Web" />
-    <Reference Include="VAR.Json">
-      <HintPath>..\..\VAR.Json\VAR.Json\bin\Debug\VAR.Json.dll</HintPath>
+    <Reference Include="VAR.Json, Version=1.0.6252.27492, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VAR.Json.1.0.6252.27492\lib\net461\VAR.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="priv\keep.txt" />
     <Content Include="Scripts\01. Base.js" />
+    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\VAR.Focus.Web.pubxml" />
     <None Include="Properties\PublishProfiles\VARFocus - Web Deploy.pubxml" />
     <None Include="web.Debug.config">

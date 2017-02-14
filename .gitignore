@@ -8,3 +8,4 @@ Published/*
 
 VAR.Focus.Web/priv/*.json
 .vs
+packages/*
