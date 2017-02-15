@@ -51,8 +51,8 @@ namespace VAR.Focus.Web.Pages
             {
                 _txtPassword1.MarkedInvalid = true;
                 _txtPassword2.MarkedInvalid = true;
-                _txtPassword1.Text = String.Empty;
-                _txtPassword2.Text = String.Empty;
+                _txtPassword1.Text = string.Empty;
+                _txtPassword2.Text = string.Empty;
                 return;
             }
 
@@ -60,7 +60,7 @@ namespace VAR.Focus.Web.Pages
 
             _pnlRegister.Visible = false;
             _pnlSuccess.Visible = true;
-            _lblSuccess.Text = String.Format("User {0} created sucessfully", user.Name);
+            _lblSuccess.Text = string.Format("User {0} created sucessfully", user.Name);
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -92,7 +92,7 @@ namespace VAR.Focus.Web.Pages
             _txtPassword1.NextFocusOnEnter = _txtPassword2;
             _txtPassword1.PlaceHolder = "Password";
 
-            _pnlRegister.Controls.Add(FormUtils.CreateField(String.Empty, _txtPassword2));
+            _pnlRegister.Controls.Add(FormUtils.CreateField(string.Empty, _txtPassword2));
             _txtPassword2.NextFocusOnEnter = _btnRegister;
             _txtPassword2.PlaceHolder = "Password";
 
@@ -105,7 +105,7 @@ namespace VAR.Focus.Web.Pages
             Panel pnlButtons = new Panel();
             pnlButtons.Controls.Add(_btnRegister);
             pnlButtons.Controls.Add(_btnExit);
-            _pnlRegister.Controls.Add(FormUtils.CreateField(String.Empty, pnlButtons));
+            _pnlRegister.Controls.Add(FormUtils.CreateField(string.Empty, pnlButtons));
 
             Controls.Add(_pnlSuccess);
             _pnlSuccess.Visible = false;
@@ -114,7 +114,7 @@ namespace VAR.Focus.Web.Pages
 
             _btnExitSuccess.Text = "Exit";
             _btnExitSuccess.Click += btnExit_Click;
-            _pnlSuccess.Controls.Add(FormUtils.CreateField(String.Empty, _btnExitSuccess));
+            _pnlSuccess.Controls.Add(FormUtils.CreateField(string.Empty, _btnExitSuccess));
         }
 
         #endregion Private methods

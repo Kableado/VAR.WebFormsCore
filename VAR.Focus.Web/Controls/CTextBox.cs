@@ -67,7 +67,7 @@ namespace VAR.Focus.Web.Controls
             CssClass = CssClassBase;
             if (string.IsNullOrEmpty(_cssClassExtra) == false)
             {
-                CssClass = String.Format("{0} {1}", CssClassBase, _cssClassExtra);
+                CssClass = string.Format("{0} {1}", CssClassBase, _cssClassExtra);
             }
             if (Page.IsPostBack && (_allowEmpty == false && IsEmpty()) || _markedInvalid)
             {
@@ -82,7 +82,7 @@ namespace VAR.Focus.Web.Controls
 
             if (_nextFocusOnEnter != null)
             {
-                this.Attributes.Add("onkeydown", String.Format(
+                this.Attributes.Add("onkeydown", string.Format(
                     "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}",
                     _nextFocusOnEnter.ClientID));
             }

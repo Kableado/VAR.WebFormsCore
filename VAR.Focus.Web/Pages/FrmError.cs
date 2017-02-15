@@ -43,17 +43,17 @@ namespace VAR.Focus.Web.Pages
             while (exAux != null)
             {
                 CLabel lblMessage = new CLabel { Tag = "P" };
-                lblMessage.Text = String.Format("<b>{0}:</b> {1}", "Message", HttpUtility.HtmlEncode(exAux.Message));
+                lblMessage.Text = string.Format("<b>{0}:</b> {1}", "Message", HttpUtility.HtmlEncode(exAux.Message));
                 Controls.Add(lblMessage);
 
                 CLabel lblStacktraceTitle = new CLabel { Tag = "p" };
-                lblStacktraceTitle.Text = String.Format("<b>{0}:</b>", "Stacktrace");
+                lblStacktraceTitle.Text = string.Format("<b>{0}:</b>", "Stacktrace");
                 Controls.Add(lblStacktraceTitle);
                 Panel pnlStacktrace = new Panel();
                 pnlStacktrace.CssClass = "divCode";
                 Controls.Add(pnlStacktrace);
                 LiteralControl litStackTrace = new LiteralControl(
-                    String.Format("<pre><code>{0}</code></pre>", HttpUtility.HtmlEncode(exAux.StackTrace)));
+                    string.Format("<pre><code>{0}</code></pre>", HttpUtility.HtmlEncode(exAux.StackTrace)));
                 pnlStacktrace.Controls.Add(litStackTrace);
 
                 exAux = exAux.InnerException;

@@ -80,7 +80,7 @@ namespace VAR.Focus.Web.Pages
 
         private void PageCommon_PreRender(object sender, EventArgs e)
         {
-            _head.Title = string.IsNullOrEmpty(Title) ? Globals.Title : String.Format("{0}{1}{2}", Title, Globals.TitleSeparator, Globals.Title);
+            _head.Title = string.IsNullOrEmpty(Title) ? Globals.Title : string.Format("{0}{1}{2}", Title, Globals.TitleSeparator, Globals.Title);
             _btnLogout.Visible = (_currentUser != null);
         }
 
@@ -122,8 +122,8 @@ namespace VAR.Focus.Web.Pages
             _head.Controls.Add(new HtmlMeta { Name = "viewport", Content = "width=device-width, initial-scale=1, maximum-scale=4, user-scalable=1" });
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            _head.Controls.Add(new LiteralControl(String.Format("<script type=\"text/javascript\" src=\"ScriptsBundler?v={0}\"></script>\n", version)));
-            _head.Controls.Add(new LiteralControl(String.Format("<link href=\"StylesBundler?v={0}\" type=\"text/css\" rel=\"stylesheet\"/>\n", version)));
+            _head.Controls.Add(new LiteralControl(string.Format("<script type=\"text/javascript\" src=\"ScriptsBundler?v={0}\"></script>\n", version)));
+            _head.Controls.Add(new LiteralControl(string.Format("<link href=\"StylesBundler?v={0}\" type=\"text/css\" rel=\"stylesheet\"/>\n", version)));
 
             _body = new HtmlGenericControl("body");
             html.Controls.Add(_body);
@@ -151,7 +151,7 @@ namespace VAR.Focus.Web.Pages
             _btnLogout.ID = "btnLogout";
             _btnLogout.Text = "Logout";
             _btnLogout.Click += btnLogout_Click;
-            _btnLogout.Attributes.Add("onclick", String.Format("return confirm('{0}');", "¿Are you sure to exit?"));
+            _btnLogout.Attributes.Add("onclick", string.Format("return confirm('{0}');", "¿Are you sure to exit?"));
             pnlUserInfo.Controls.Add(_btnLogout);
 
             _pnlContainer.CssClass = "divContent";

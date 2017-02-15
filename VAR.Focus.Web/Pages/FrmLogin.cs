@@ -65,11 +65,11 @@ namespace VAR.Focus.Web.Pages
             _txtPassword.NextFocusOnEnter = _btnLogin;
             _txtPassword.PlaceHolder = "Password";
 
-            Controls.Add(FormUtils.CreateField(String.Empty, _btnLogin));
+            Controls.Add(FormUtils.CreateField(string.Empty, _btnLogin));
             _btnLogin.Text = "Login";
             _btnLogin.Click += btnLogin_Click;
 
-            Controls.Add(FormUtils.CreateField(String.Empty, new HyperLink { Text = "Register user", NavigateUrl = "FrmRegister" }));
+            Controls.Add(FormUtils.CreateField(string.Empty, new HyperLink { Text = "Register user", NavigateUrl = "FrmRegister" }));
         }
 
         #endregion Private methods

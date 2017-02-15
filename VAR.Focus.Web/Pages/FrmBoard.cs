@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.UI.WebControls;
 using VAR.Focus.BusinessLogic;
 using VAR.Focus.BusinessLogic.Entities;
@@ -29,7 +30,7 @@ namespace VAR.Focus.Web.Pages
         private void FrmBoard_Init(object sender, EventArgs e)
         {
             string strIDBoard = Context.GetRequestParm("idBoard");
-            if (String.IsNullOrEmpty(strIDBoard) == false)
+            if (string.IsNullOrEmpty(strIDBoard) == false)
             {
                 _idBoard = Convert.ToInt32(strIDBoard);
             }
@@ -134,7 +135,7 @@ namespace VAR.Focus.Web.Pages
             };
             btnDelete.CommandArgument = Convert.ToString(board.IDBoard);
             btnDelete.Click += BtnDelete_Click;
-            btnDelete.Attributes.Add("onclick", String.Format("return confirm('{0}');", "¿Are you sure to delete?"));
+            btnDelete.Attributes.Add("onclick", string.Format("return confirm('{0}');", "¿Are you sure to delete?"));
             pnlButtons.Controls.Add(btnDelete);
             pnlBoardSelector.Controls.Add(pnlButtons);
 

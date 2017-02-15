@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Web.UI.WebControls;
 using VAR.Focus.BusinessLogic;
 using VAR.Focus.BusinessLogic.Entities;
@@ -39,7 +40,7 @@ namespace VAR.Focus.Web.Pages
         private void FrmBoardEdit_Init(object sender, EventArgs e)
         {
             string strIDBoard = Context.GetRequestParm("idBoard");
-            if (String.IsNullOrEmpty(strIDBoard) == false)
+            if (string.IsNullOrEmpty(strIDBoard) == false)
             {
                 _idBoard = Convert.ToInt32(strIDBoard);
             }
@@ -102,7 +103,7 @@ namespace VAR.Focus.Web.Pages
             Panel pnlButtons = new Panel();
             pnlButtons.Controls.Add(_btnSave);
             pnlButtons.Controls.Add(_btnExit);
-            Controls.Add(FormUtils.CreateField(String.Empty, pnlButtons));
+            Controls.Add(FormUtils.CreateField(string.Empty, pnlButtons));
         }
 
         private void LoadData()
