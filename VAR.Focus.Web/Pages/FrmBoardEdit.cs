@@ -45,7 +45,7 @@ namespace VAR.Focus.Web.Pages
             }
             if (_idBoard == 0)
             {
-                Response.Redirect(typeof(FrmBoard).Name);
+                Response.Redirect(nameof(FrmBoard));
             }
             InitializeComponents();
         }
@@ -68,7 +68,7 @@ namespace VAR.Focus.Web.Pages
             string returnUrl = Context.GetRequestParm("returnUrl");
             if (string.IsNullOrEmpty(returnUrl))
             {
-                Response.Redirect(string.Format("{0}?idBoard={1}", typeof(FrmBoard).Name, _idBoard));
+                Response.Redirect(FrmBoard.GetUrl(_idBoard));
             }
             else
             {
@@ -114,5 +114,18 @@ namespace VAR.Focus.Web.Pages
         }
 
         #endregion Private methods
+
+        #region Public methods
+
+        public static string GetUrl(int idBoard, string returnUrl = null)
+        {
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return string.Format("{0}?idBoard={1}", nameof(FrmBoardEdit), idBoard);
+            }
+            return string.Format("{0}?idBoard={1}&returnUrl={2}", nameof(FrmBoardEdit), idBoard, HttpUtility.UrlEncode(returnUrl));
+        }
+
+        #endregion Public methods
     }
 }

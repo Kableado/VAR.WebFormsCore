@@ -54,28 +54,21 @@ namespace VAR.Focus.Web.Pages
             Board board = Boards.Current.Boards_SetBoard(0, _txtTitle.Text, _txtDescription.Text, CurrentUser.Name);
             _idBoard = board.IDBoard;
 
-            Response.Redirect(string.Format("{0}?idBoard={1}",
-                typeof(FrmBoard).Name,
-                _idBoard));
+            Response.Redirect(GetUrl(_idBoard));
         }
 
         private void BtnView_Click(object sender, EventArgs e)
         {
             CButton btnView = (CButton)sender;
             int idBoard = Convert.ToInt32(btnView.CommandArgument);
-            Response.Redirect(string.Format("{0}?idBoard={1}",
-                typeof(FrmBoard).Name,
-                idBoard));
+            Response.Redirect(GetUrl(idBoard));
         }
 
         private void BtnEdit_Click(object sender, EventArgs e)
         {
             CButton btnEdit = (CButton)sender;
             int idBoard = Convert.ToInt32(btnEdit.CommandArgument);
-            Response.Redirect(string.Format("{0}?idBoard={1}&returnUrl={2}",
-                typeof(FrmBoardEdit).Name,
-                idBoard,
-                typeof(FrmBoard).Name));
+            Response.Redirect(FrmBoardEdit.GetUrl(idBoard, nameof(FrmBoard)));
         }
 
         private void BtnDelete_Click(object sender, EventArgs e)
@@ -100,7 +93,7 @@ namespace VAR.Focus.Web.Pages
 
             var lnkTitle = new HyperLink
             {
-                NavigateUrl = string.Format("{0}?idBoard={1}", typeof(FrmBoard).Name, board.IDBoard),
+                NavigateUrl = GetUrl(board.IDBoard),
             };
             var lblTitle = new CLabel
             {
@@ -195,5 +188,18 @@ namespace VAR.Focus.Web.Pages
         }
 
         #endregion Private methods
+
+        #region Public methods
+        
+        public static string GetUrl(int idBoard, string returnUrl = null)
+        {
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                return string.Format("{0}?idBoard={1}", nameof(FrmBoard), idBoard);
+            }
+            return string.Format("{0}?idBoard={1}&returnUrl={2}", nameof(FrmBoard), idBoard, HttpUtility.UrlEncode(returnUrl));
+        }
+
+        #endregion Public methods
     }
 }

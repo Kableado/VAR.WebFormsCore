@@ -69,7 +69,7 @@ namespace VAR.Focus.Web.Pages
             }
             if (_currentUser == null && _mustBeAutenticated)
             {
-                Response.Redirect("FrmLogin");
+                Response.Redirect(nameof(FrmLogin));
             }
         }
 
@@ -94,7 +94,7 @@ namespace VAR.Focus.Web.Pages
             _currentUser = null;
             if (_mustBeAutenticated)
             {
-                Response.Redirect("FrmLogin");
+                Response.Redirect(nameof(FrmLogin));
             }
         }
 
