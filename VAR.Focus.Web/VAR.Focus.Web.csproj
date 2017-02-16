@@ -52,7 +52,7 @@
   <ItemGroup>
     <Content Include="priv\keep.txt" />
     <Content Include="Scripts\01. Base.js" />
-    <Content Include="packages.config" />
+    <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\VAR.Focus.Web.pubxml" />
     <None Include="Properties\PublishProfiles\VARFocus - Web Deploy.pubxml" />
     <None Include="web.Debug.config">
