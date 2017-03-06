@@ -2,7 +2,7 @@
 //  GetElement
 //
 function GetElement(element) {
-    if (typeof element == "string") {
+    if (typeof element === "string") {
         element = document.getElementById(element);
     }
     return element;
@@ -15,10 +15,10 @@ function ElementAddClass(element, classname) {
     element = GetElement(element);
     if (!element) { return; }
     var cn = element.className;
-    if (cn.indexOf(classname) != -1) {
+    if (cn.indexOf(classname) !== -1) {
         return;
     }
-    if (cn != '') {
+    if (cn !== '') {
         classname = ' ' + classname;
     }
     element.className = cn + classname;

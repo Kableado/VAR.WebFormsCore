@@ -5,8 +5,8 @@
     }
     xhr.open("GET", url, true);
     xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
                 if (onData) {
                     onData(xhr.responseText);
                 }
@@ -16,7 +16,7 @@
                 }
             }
         }
-    }
+    };
     xhr.send(null);
 }
 
@@ -37,8 +37,8 @@ function SendData(url, data, onData, onError) {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
                 if (onData) {
                     onData(xhr.responseText);
                 }
@@ -48,7 +48,7 @@ function SendData(url, data, onData, onError) {
                 }
             }
         }
-    }
+    };
     xhr.setRequestHeader('Content-Type',
 		'application/x-www-form-urlencoded');
     xhr.send(GetDataQueryString(data));
@@ -74,20 +74,20 @@ function GetFormQueryString(idForm) {
 
         if (elemName) {
             if (
-				elemType.indexOf("TEXT") != -1 ||
-				elemType.indexOf("TEXTAREA") != -1 ||
-				elemType.indexOf("PASSWORD") != -1 ||
-				elemType.indexOf("BUTTON") != -1 ||
-				elemType.indexOf("HIDDEN") != -1 ||
-				elemType.indexOf("SUBMIT") != -1 ||
-				elemType.indexOf("IMAGE") != -1
+				elemType.indexOf("TEXT") !== -1 ||
+				elemType.indexOf("TEXTAREA") !== -1 ||
+				elemType.indexOf("PASSWORD") !== -1 ||
+				elemType.indexOf("BUTTON") !== -1 ||
+				elemType.indexOf("HIDDEN") !== -1 ||
+				elemType.indexOf("SUBMIT") !== -1 ||
+				elemType.indexOf("IMAGE") !== -1
 			) {
                 appendVal(elemName, element.value);
-            } else if (elemType.indexOf("CHECKBOX") != -1 && element.checked) {
+            } else if (elemType.indexOf("CHECKBOX") !== -1 && element.checked) {
                 appendVal(elemName, element.value ? element.value : "On");
-            } else if (elemType.indexOf("RADIO") != -1 && element.checked) {
+            } else if (elemType.indexOf("RADIO") !== -1 && element.checked) {
                 appendVal(elemName, element.value);
-            } else if (elemType.indexOf("SELECT") != -1) {
+            } else if (elemType.indexOf("SELECT") !== -1) {
                 for (var j = 0; j < element.options.length; j++) {
                     var option = element.options[j];
                     if (option.selected) {
@@ -106,8 +106,8 @@ function SendForm(url, idForm, onData, onError) {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
                 if (onData) {
                     onData(xhr.responseText);
                 }
@@ -117,7 +117,7 @@ function SendForm(url, idForm, onData, onError) {
                 }
             }
         }
-    }
+    };
     xhr.setRequestHeader('Content-Type',
 		'application/x-www-form-urlencoded');
     xhr.send(GetFormQueryString(idForm));

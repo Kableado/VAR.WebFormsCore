@@ -333,7 +333,7 @@ Card.prototype = {
     },
     OnMove: function () {
         var card = this;
-        if (this.cfg.Connected == false) {
+        if (this.cfg.Connected === false) {
             card.Reset();
             return;
         }
@@ -349,20 +349,20 @@ Card.prototype = {
             function (responseText) {
                 try {
                     var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK == true) {
+                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
                         card.SetNew();
                     } else {
                         card.Reset();
                     }
-                } catch (e) { }
+                } catch (e) { /* Empty */ }
             }, function () {
                 card.Reset();
             });
     },
     OnEdit: function () {
-        if (this.Title != this.newTitle || this.Body != this.newBody) {
+        if (this.Title !== this.newTitle || this.Body !== this.newBody) {
             var card = this;
-            if (this.cfg.Connected == false) {
+            if (this.cfg.Connected === false) {
                 card.Reset();
                 return;
             }
@@ -378,12 +378,12 @@ Card.prototype = {
                 function (responseText) {
                     try {
                         var recvData = JSON.parse(responseText);
-                        if (recvData && recvData instanceof Object && recvData.IsOK == true) {
+                        if (recvData && recvData instanceof Object && recvData.IsOK === true) {
                             card.SetNew();
                         } else {
                             card.Reset();
                         }
-                    } catch (e) { }
+                    } catch (e) { /* Empty */ }
                 }, function () {
                     card.Reset();
                 });
@@ -392,11 +392,11 @@ Card.prototype = {
     OnDelete: function () {
         var card = this;
         this.Hide();
-        if (this.cfg.Connected == false) {
+        if (this.cfg.Connected === false) {
             this.Show();
             return;
         }
-        if (this.IDCard == 0) {
+        if (this.IDCard === 0) {
             this.RemoveFromContainer();
             this.cfg.RemoveCardByID(card.IDCard);
             return;
@@ -411,7 +411,7 @@ Card.prototype = {
             function (responseText) {
                 try {
                     var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK == true) {
+                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
                         card.RemoveFromContainer();
                         if (card.IDCard > 0) {
                             card.cfg.RemoveCardByID(card.IDCard);
@@ -419,14 +419,14 @@ Card.prototype = {
                     } else {
                         card.Show();
                     }
-                } catch (e) { }
+                } catch (e) { /* Empty */ }
             }, function () {
                 card.Show();
             });
     },
     OnCreate: function () {
         var card = this;
-        if (this.cfg.Connected == false) {
+        if (this.cfg.Connected === false) {
             card.OnDelete();
             return;
         }
@@ -443,13 +443,13 @@ Card.prototype = {
             function (responseText) {
                 try {
                     var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK == true) {
+                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
                         //card.IDCard = parseInt(recvData.ReturnValue);
                         card.OnDelete();
                     } else {
                         card.OnDelete();
                     }
-                } catch (e) { }
+                } catch (e) { /* Empty */ }
             }, function () {
                 card.OnDelete();
             });
@@ -565,7 +565,7 @@ Card.prototype = {
     },
     btnEdit_Click: function (evt) {
         evt.preventDefault();
-        if (this.Editing == false) {
+        if (this.Editing === false) {
             this.EnterEditionMode();
         } else {
             this.ExitEditionMode();
@@ -593,14 +593,14 @@ Card.prototype = {
         evt.preventDefault();
         this.ExitEditionMode();
         this.Reset();
-        if (this.IDCard == 0) {
+        if (this.IDCard === 0) {
             this.OnDelete();
         }
         return false;
     },
     btnDelete_Click: function (evt) {
         evt.preventDefault();
-        if (this.IDCard == 0 || confirm(this.cfg.Texts.ConfirmDelete)) {
+        if (this.IDCard === 0 || confirm(this.cfg.Texts.ConfirmDelete)) {
             this.OnDelete();
         }
         return false;
@@ -619,7 +619,7 @@ function RunCardBoard(cfg) {
     cfg.GetCardByID = function (idCard) {
         for (var i = 0, n = this.Cards.length; i < n; i++) {
             var card = this.Cards[i];
-            if (card.IDCard == idCard) {
+            if (card.IDCard === idCard) {
                 return card;
             }
         }
@@ -628,12 +628,12 @@ function RunCardBoard(cfg) {
     cfg.RemoveCardByID = function (idCard) {
         for (var i = 0, n = this.Cards.length; i < n; i++) {
             var card = this.Cards[i];
-            if (card.IDCard == idCard) {
+            if (card.IDCard === idCard) {
                 this.Cards.splice(i, 1);
             }
         }
         return false;
-    }
+    };
 
     var ProcessCardCreateEvent = function (cardEvent) {
         var card = new Card(cfg, cardEvent.IDCard, cardEvent.Title, cardEvent.Body, cardEvent.X, cardEvent.Y);
@@ -641,19 +641,19 @@ function RunCardBoard(cfg) {
 
     var ProcessCardMoveEvent = function (cardEvent) {
         var card = cfg.GetCardByID(cardEvent.IDCard);
-        if (card == null) { return; }
+        if (card === null) { return; }
         card.Move(cardEvent.X, cardEvent.Y);
     };
 
     var ProcessCardEditEvent = function (cardEvent) {
         var card = cfg.GetCardByID(cardEvent.IDCard);
-        if (card == null) { return; }
+        if (card === null) { return; }
         card.Edit(cardEvent.Title, cardEvent.Body);
     };
 
     var ProcessCardDeleteEvent = function (cardEvent) {
         var card = cfg.GetCardByID(cardEvent.IDCard);
-        if (card == null) { return; }
+        if (card === null) { return; }
         card.RemoveFromContainer(cfg.divBoard);
     };
 
@@ -668,16 +668,16 @@ function RunCardBoard(cfg) {
                     if (cardEvent.IDCardEvent > cfg.IDCardEvent) {
                         cfg.IDCardEvent = cardEvent.IDCardEvent;
                     }
-                    if (cardEvent.EventType == "CardCreate") {
+                    if (cardEvent.EventType === "CardCreate") {
                         ProcessCardCreateEvent(cardEvent);
                     }
-                    if (cardEvent.EventType == "CardMove") {
+                    if (cardEvent.EventType === "CardMove") {
                         ProcessCardMoveEvent(cardEvent);
                     }
-                    if (cardEvent.EventType == "CardEdit") {
+                    if (cardEvent.EventType === "CardEdit") {
                         ProcessCardEditEvent(cardEvent);
                     }
-                    if (cardEvent.EventType == "CardDelete") {
+                    if (cardEvent.EventType === "CardDelete") {
                         ProcessCardDeleteEvent(cardEvent);
                     }
                 }
@@ -701,7 +701,7 @@ function RunCardBoard(cfg) {
         var data = {
             "IDBoard": cfg.IDBoard,
             "IDCardEvent": cfg.IDCardEvent,
-            "TimePoolData": ((cfg.Connected == false) ? "0" : String(cfg.TimePoolData)),
+            "TimePoolData": ((cfg.Connected === false) ? "0" : String(cfg.TimePoolData)),
             "TimeStamp": new Date().getTime()
         };
         SendRequest(cfg.ServiceUrl, data, ReciveCardEventData, ErrorCardEventData);

@@ -82,7 +82,7 @@
     var RequestChatData = function () {
         var ReciveChatData = function (responseText) {
             // Mark as connected
-            if (cfg.Connected == false) {
+            if (cfg.Connected === false) {
                 if (cfg.Minimized) {
                     cfg.lblTitle.innerHTML = cfg.Texts.Chat;
                 } else {
@@ -98,7 +98,7 @@
             if (recvMsgs) {
                 var msgCount = 0;
                 var scrollChat = false;
-                if (cfg.Minimized == false && cfg.divChat.scrollTop > (cfg.divChat.scrollHeight - cfg.divChat.offsetHeight)) {
+                if (cfg.Minimized === false && cfg.divChat.scrollTop > (cfg.divChat.scrollHeight - cfg.divChat.offsetHeight)) {
                     scrollChat = true;
                 }
 
@@ -108,7 +108,7 @@
                     if (cfg.IDMessage < msg.IDMessage) {
                         cfg.IDMessage = msg.IDMessage;
                         var elemMessage = CreateMessageDOM(msg,
-                            (msg.UserName == cfg.UserName),
+                            (msg.UserName === cfg.UserName),
                             (cfg.LastUser !== msg.UserName));
                         cfg.LastUser = msg.UserName;
                         frag.appendChild(elemMessage);
@@ -119,7 +119,7 @@
                 if (scrollChat) {
                     cfg.divChat.scrollTop = cfg.divChat.scrollHeight;
                 }
-                if (cfg.Minimized && cfg.FirstMessages == false && msgCount > 0) {
+                if (cfg.Minimized && cfg.FirstMessages === false && msgCount > 0) {
                     cfg.lblTitle.innerHTML = cfg.Texts.NewMessages;
                     cfg.lblTitle.className = "titleChatAlert";
                 }
@@ -152,7 +152,7 @@
         var data = {
             "IDMessageBoard": cfg.IDMessageBoard,
             "IDMessage": cfg.IDMessage,
-            "TimePoolData": ((cfg.FirstMessages || cfg.Connected == false) ? "0" : String(cfg.TimePoolData)),
+            "TimePoolData": ((cfg.FirstMessages || cfg.Connected === false) ? "0" : String(cfg.TimePoolData)),
             "TimeStamp": new Date().getTime()
         };
         SendRequest(cfg.ServiceUrl, data, ReciveChatData, ErrorChatData);
@@ -163,7 +163,7 @@
 function SendChat(cfg) {
     cfg.txtText = GetElement(cfg.txtText);
 
-    if (cfg.txtText.value.trim() == "") {
+    if (cfg.txtText.value.trim() === "") {
         return;
     }
 
