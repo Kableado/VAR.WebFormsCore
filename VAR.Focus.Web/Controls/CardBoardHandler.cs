@@ -4,6 +4,7 @@ using System.Threading;
 using System.Web;
 using VAR.Focus.BusinessLogic;
 using VAR.Focus.BusinessLogic.Entities;
+using VAR.Focus.BusinessLogic.Persistence;
 using VAR.Focus.Web.Code;
 
 namespace VAR.Focus.Web.Controls
@@ -64,7 +65,7 @@ namespace VAR.Focus.Web.Controls
                 {
                     if (_cardBoards.ContainsKey(idBoard) == false)
                     {
-                        cardBoard = new CardBoard(idBoard);
+                        cardBoard = new CardBoard(idBoard, new JsonFilePersistence());
                         _cardBoards[idBoard] = cardBoard;
                     }
                 }
@@ -98,7 +99,7 @@ namespace VAR.Focus.Web.Controls
                 {
                     if (_cardBoards.ContainsKey(idBoard) == false)
                     {
-                        cardBoard = new CardBoard(idBoard);
+                        cardBoard = new CardBoard(idBoard, new JsonFilePersistence());
                         _cardBoards[idBoard] = cardBoard;
                     }
                 }

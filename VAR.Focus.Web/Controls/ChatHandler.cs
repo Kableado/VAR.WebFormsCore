@@ -4,6 +4,7 @@ using System.Threading;
 using System.Web;
 using VAR.Focus.BusinessLogic;
 using VAR.Focus.BusinessLogic.Entities;
+using VAR.Focus.BusinessLogic.Persistence;
 using VAR.Focus.Web.Code;
 
 namespace VAR.Focus.Web.Controls
@@ -64,7 +65,7 @@ namespace VAR.Focus.Web.Controls
                     {
                         if (_chatBoards.ContainsKey(idMessageBoard) == false)
                         {
-                            messageBoard = new MessageBoard(idMessageBoard);
+                            messageBoard = new MessageBoard(idMessageBoard, new JsonFilePersistence());
                             _chatBoards[idMessageBoard] = messageBoard;
                         }
                     }
@@ -111,7 +112,7 @@ namespace VAR.Focus.Web.Controls
                 }
                 else
                 {
-                    messageBoard = new MessageBoard(idMessageBoard);
+                    messageBoard = new MessageBoard(idMessageBoard, new JsonFilePersistence());
                     _chatBoards[idMessageBoard] = messageBoard;
                 }
                 messageBoard.Message_Add(userName, text);
