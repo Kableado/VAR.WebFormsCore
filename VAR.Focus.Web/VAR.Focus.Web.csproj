@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\02. Ajax.js" />
+    <Content Include="Scripts\03. Controls.js" />
     <Content Include="Scripts\05. Cards.js" />
     <Content Include="Scripts\10. Chat.js" />
     <Content Include="Styles\00. Reset.css" />

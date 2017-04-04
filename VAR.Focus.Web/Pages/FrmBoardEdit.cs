@@ -15,7 +15,7 @@ namespace VAR.Focus.Web.Pages
         private int _idBoard = 0;
 
         private CTextBox _txtTitle = new CTextBox { ID = "txtTitle", CssClassExtra = "width100pc", AllowEmpty = false };
-        private CTextBox _txtDescription = new CTextBox { ID = "txtDescription", CssClassExtra = "width100pc", TextMode = TextBoxMode.MultiLine };
+        private CTextBox _txtDescription = new CTextBox { ID = "txtDescription", CssClassExtra = "width100pc", TextMode = TextBoxMode.MultiLine, KeepSize = true, };
         private CButton _btnSave = new CButton { ID = "btnSave" };
         private CButton _btnExit = new CButton { ID = "btnExit" };
 

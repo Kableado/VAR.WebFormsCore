@@ -15,8 +15,8 @@ namespace VAR.Focus.Web.Pages
 
         private int _idBoard = 0;
 
-        private CTextBox _txtTitle = new CTextBox { ID = "txtTitle", CssClassExtra = "width100pc", AllowEmpty = false };
-        private CTextBox _txtDescription = new CTextBox { ID = "txtDescription", CssClassExtra = "width100pc", TextMode = TextBoxMode.MultiLine };
+        private CTextBox _txtTitle = new CTextBox { ID = "txtTitle", CssClassExtra = "width100pc", AllowEmpty = false, };
+        private CTextBox _txtDescription = new CTextBox { ID = "txtDescription", CssClassExtra = "width100pc", TextMode = TextBoxMode.MultiLine, KeepSize = true, };
 
         #endregion Declarations
 
@@ -191,7 +191,7 @@ namespace VAR.Focus.Web.Pages
         #endregion Private methods
 
         #region Public methods
-        
+
         public static string GetUrl(int idBoard, string returnUrl = null)
         {
             if (string.IsNullOrEmpty(returnUrl))

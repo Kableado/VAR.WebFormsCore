@@ -13,8 +13,8 @@ namespace VAR.Focus.Web.Pages
         private Panel _pnlRegister = new Panel { ID = "pnlRegister" };
         private CTextBox _txtName = new CTextBox { ID = "txtName", CssClassExtra = "width150px", AllowEmpty = false };
         private CTextBox _txtEmail = new CTextBox { ID = "txtEmail", CssClassExtra = "width150px", AllowEmpty = false };
-        private CTextBox _txtPassword1 = new CTextBox { ID = "txtPassword1", CssClass = "width150px", AllowEmpty = false, TextMode = TextBoxMode.Password };
-        private CTextBox _txtPassword2 = new CTextBox { ID = "txtPassword2", CssClass = "width150px", AllowEmpty = false, TextMode = TextBoxMode.Password };
+        private CTextBox _txtPassword1 = new CTextBox { ID = "txtPassword1", CssClassExtra = "width150px", AllowEmpty = false, TextMode = TextBoxMode.Password };
+        private CTextBox _txtPassword2 = new CTextBox { ID = "txtPassword2", CssClassExtra = "width150px", AllowEmpty = false, TextMode = TextBoxMode.Password };
         private CButton _btnRegister = new CButton { ID = "btnRegister" };
         private CButton _btnExit = new CButton { ID = "btnExit" };
         private Panel _pnlSuccess = new Panel { ID = "pnlSuccess" };
