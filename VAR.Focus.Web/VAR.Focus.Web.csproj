@@ -21,6 +21,7 @@
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,8 +54,7 @@
     <Content Include="priv\keep.txt" />
     <Content Include="Scripts\01. Base.js" />
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\VAR.Focus.Web.pubxml" />
-    <None Include="Properties\PublishProfiles\VARFocus - Azure.pubxml" />
+    <None Include="Properties\PublishProfiles\VARFocus - Web Deploy.pubxml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
       <SubType>Designer</SubType>
