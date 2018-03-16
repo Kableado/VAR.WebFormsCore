@@ -133,6 +133,7 @@ h3 {
 textarea.textbox {
     height: 64px;
     resize: vertical;
+    min-height: 21px;
 }
 
 .textboxInvalid {
