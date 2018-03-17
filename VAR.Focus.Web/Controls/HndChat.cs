@@ -9,7 +9,7 @@ using VAR.Focus.Web.Code;
 
 namespace VAR.Focus.Web.Controls
 {
-    public class ChatHandler : IHttpHandler
+    public class HndChat : IHttpHandler
     {
         #region Declarations
 

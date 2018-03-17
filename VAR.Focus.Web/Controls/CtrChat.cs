@@ -7,11 +7,11 @@ using VAR.Json;
 
 namespace VAR.Focus.Web.Controls
 {
-    public class ChatControl : Control, INamingContainer
+    public class CtrChat : Control, INamingContainer
     {
         #region Declarations
 
-        private string _serviceUrl = "ChatHandler";
+        private string _serviceUrl = nameof(HndChat);
 
         private string _idMessageBoard = null;
 
@@ -84,7 +84,7 @@ namespace VAR.Focus.Web.Controls
 
         #region Control Life cycle
 
-        public ChatControl()
+        public CtrChat()
         {
             Init += ChatControl_Init;
         }

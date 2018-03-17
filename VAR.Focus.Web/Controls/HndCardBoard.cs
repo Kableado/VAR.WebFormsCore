@@ -9,7 +9,7 @@ using VAR.Focus.Web.Code;
 
 namespace VAR.Focus.Web.Controls
 {
-    public class CardBoardHandler : IHttpHandler
+    public class HndCardBoard : IHttpHandler
     {
         #region Declarations
 

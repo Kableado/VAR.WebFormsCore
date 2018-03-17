@@ -172,7 +172,7 @@ namespace VAR.Focus.Web.Pages
 
             Title = board.Title;
 
-            CardBoardControl cardBoardControl = new CardBoardControl
+            CtrCardBoard cardBoardControl = new CtrCardBoard
             {
                 ID = "ctrCardBoard",
                 IDBoard = board.IDBoard,
@@ -180,7 +180,7 @@ namespace VAR.Focus.Web.Pages
             };
             Controls.Add(cardBoardControl);
 
-            ChatControl chatControl = new ChatControl
+            CtrChat chatControl = new CtrChat
             {
                 ID = "ctrChat",
                 IDMessageBoard = string.Format("CardBoard_{0}", board.IDBoard),

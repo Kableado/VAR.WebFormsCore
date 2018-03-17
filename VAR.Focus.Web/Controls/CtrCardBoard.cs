@@ -7,11 +7,11 @@ using VAR.Json;
 
 namespace VAR.Focus.Web.Controls
 {
-    public class CardBoardControl : Control, INamingContainer
+    public class CtrCardBoard : Control, INamingContainer
     {
         #region Declarations
 
-        private string _serviceUrl = "CardBoardHandler";
+        private string _serviceUrl = nameof(HndCardBoard);
 
         private int _idBoard = 0;
 
@@ -71,11 +71,13 @@ namespace VAR.Focus.Web.Controls
             set { _timeMoveAnimation = value; }
         }
 
+        public string ServiceUrl1 { get => _serviceUrl; set => _serviceUrl = value; }
+
         #endregion Properties
 
         #region Control Life cycle
 
-        public CardBoardControl()
+        public CtrCardBoard()
         {
             Init += ChatControl_Init;
         }

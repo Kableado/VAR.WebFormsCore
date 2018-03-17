@@ -83,11 +83,11 @@
     <Compile Include="Code\ExtensionMethods.cs" />
     <Compile Include="Code\StaticFileHelper.cs" />
     <Compile Include="Code\WebSessions.cs" />
-    <Compile Include="Controls\CardBoardControl.cs" />
-    <Compile Include="Controls\CardBoardHandler.cs" />
+    <Compile Include="Controls\CtrCardBoard.cs" />
+    <Compile Include="Controls\HndCardBoard.cs" />
     <Compile Include="Controls\CButton.cs" />
-    <Compile Include="Controls\ChatControl.cs" />
-    <Compile Include="Controls\ChatHandler.cs" />
+    <Compile Include="Controls\CtrChat.cs" />
+    <Compile Include="Controls\HndChat.cs" />
     <Compile Include="Controls\CLabel.cs" />
     <Compile Include="Controls\CTextBox.cs" />
     <Compile Include="Controls\IValidableControl.cs" />
