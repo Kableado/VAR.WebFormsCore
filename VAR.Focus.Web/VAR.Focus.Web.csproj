@@ -91,6 +91,7 @@
     <Compile Include="Controls\CTextBox.cs" />
     <Compile Include="Controls\IValidableControl.cs" />
     <Compile Include="Code\GlobalErrorHandler.cs" />
+    <Compile Include="GlobalModule.cs" />
     <Compile Include="Pages\FormUtils.cs" />
     <Compile Include="Pages\FrmBoard.cs">
       <SubType>ASPXCodeBehind</SubType>
