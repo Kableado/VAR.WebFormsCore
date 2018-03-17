@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 
 namespace VAR.Focus.Web.Code
 {
@@ -11,8 +12,8 @@ namespace VAR.Focus.Web.Code
         public void ProcessRequest(HttpContext context)
         {
             Bundler bundler = new Bundler(context.Server.MapPath("~/Scripts/"));
-            context.Response.ContentType = "text/javascript";
-            bundler.WriteResponse(context.Response.OutputStream);
+            bundler.PrepareCacheableResponse(context.Response);
+            bundler.WriteResponse(context.Response, "text/javascript");
         }
 
         #endregion IHttpHandler

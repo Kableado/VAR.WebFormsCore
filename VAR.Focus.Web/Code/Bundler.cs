@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace VAR.Focus.Web.Code
 {
@@ -42,20 +44,30 @@ namespace VAR.Focus.Web.Code
 
         #region Public methods
 
-        public void WriteResponse(Stream outStream)
+        public void WriteResponse(HttpResponse response, string contentType)
         {
+            response.ContentType = contentType;
             foreach (string fileName in Files)
             {
                 string fileContent = File.ReadAllText(fileName);
                 byte[] byteArray = Encoding.UTF8.GetBytes(fileContent);
                 if (byteArray.Length > 0)
                 {
-                    outStream.Write(byteArray, 0, byteArray.Length);
+                    response.OutputStream.Write(byteArray, 0, byteArray.Length);
 
                     byteArray = Encoding.UTF8.GetBytes("\n\n");
-                    outStream.Write(byteArray, 0, byteArray.Length);
+                    response.OutputStream.Write(byteArray, 0, byteArray.Length);
                 }
             }
+        }
+
+        public void PrepareCacheableResponse(HttpResponse response)
+        {
+            const int secondsInDay = 86400;
+            response.ExpiresAbsolute = DateTime.Now.AddSeconds(secondsInDay);
+            response.Expires = secondsInDay;
+            response.Cache.SetCacheability(HttpCacheability.Public);
+            response.Cache.SetMaxAge(new TimeSpan(0, 0, secondsInDay));
         }
 
         #endregion Public methods
