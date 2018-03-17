@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Code\Bundler.cs" />
     <Compile Include="Code\ExtensionMethods.cs" />
+    <Compile Include="Code\StaticFileHelper.cs" />
     <Compile Include="Code\WebSessions.cs" />
     <Compile Include="Controls\CardBoardControl.cs" />
     <Compile Include="Controls\CardBoardHandler.cs" />

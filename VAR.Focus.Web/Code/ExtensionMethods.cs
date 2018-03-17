@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using VAR.Json;
 
 namespace VAR.Focus.Web.Code
@@ -25,6 +26,15 @@ namespace VAR.Focus.Web.Code
             context.Response.ContentType = "text/json";
             string strObject = jsonWritter.Write(obj);
             context.Response.Write(strObject);
+        }
+
+        public static void PrepareCacheableResponse(this HttpResponse response)
+        {
+            const int secondsInDay = 86400;
+            response.ExpiresAbsolute = DateTime.Now.AddSeconds(secondsInDay);
+            response.Expires = secondsInDay;
+            response.Cache.SetCacheability(HttpCacheability.Public);
+            response.Cache.SetMaxAge(new TimeSpan(0, 0, secondsInDay));
         }
 
         #endregion HttpContext

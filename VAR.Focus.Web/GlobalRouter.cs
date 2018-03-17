@@ -122,11 +122,7 @@ namespace VAR.Focus.Web
                 string filePath = context.Server.MapPath(string.Format("~/{0}", context.Request.FilePath));
                 if (File.Exists(filePath))
                 {
-                    context.Response.Buffer = true;
-                    context.Response.WriteFile(filePath);
-                    context.Response.Flush();
-                    context.Response.Close();
-                    context.Response.End();
+                    StaticFileHelper.ResponseStaticFile(context, filePath);
                     return;
                 }
             }

@@ -61,15 +61,6 @@ namespace VAR.Focus.Web.Code
             }
         }
 
-        public void PrepareCacheableResponse(HttpResponse response)
-        {
-            const int secondsInDay = 86400;
-            response.ExpiresAbsolute = DateTime.Now.AddSeconds(secondsInDay);
-            response.Expires = secondsInDay;
-            response.Cache.SetCacheability(HttpCacheability.Public);
-            response.Cache.SetMaxAge(new TimeSpan(0, 0, secondsInDay));
-        }
-
         #endregion Public methods
     }
 }

@@ -12,7 +12,7 @@ namespace VAR.Focus.Web.Code
         public void ProcessRequest(HttpContext context)
         {
             Bundler bundler = new Bundler(context.Server.MapPath("~/Styles/"));
-            bundler.PrepareCacheableResponse(context.Response);
+            context.Response.PrepareCacheableResponse();
             bundler.WriteResponse(context.Response, "text/css");
         }
 
