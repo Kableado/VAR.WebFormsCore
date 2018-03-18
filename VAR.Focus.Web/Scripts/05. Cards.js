@@ -38,6 +38,12 @@ var Toolbox = function (cfg, container) {
     this.btnAdd.innerHTML = cfg.Texts.AddCard;
     this.btnAdd.addEventListener("click", Toolbox.prototype.btnAdd_Click.bind(this), false);
 
+    this.btnEditBoard = document.createElement("button");
+    this.divToolbox.appendChild(this.btnEditBoard);
+    this.btnEditBoard.className = "btnToolbox";
+    this.btnEditBoard.innerHTML = cfg.Texts.EditBoard;
+    this.btnEditBoard.addEventListener("click", Toolbox.prototype.btnEditBoard_Click.bind(this), false);
+
     this.divOverlay = document.createElement("div");
     this.divToolbox.appendChild(this.divOverlay);
     this.divOverlay.className = "divOverlay";
@@ -142,7 +148,13 @@ Toolbox.prototype = {
         card.InsertOnContainer(this.cfg.divBoard);
         card.EnterEditionMode();
         return false;
-    }
+    },
+    btnEditBoard_Click: function (evt) {
+        evt.preventDefault();
+        window.location.href = this.cfg.EditBoardUrl;
+        return false;
+    },
+    empty: null
 };
 
 var Card = function (cfg, idCard, title, body, x, y) {

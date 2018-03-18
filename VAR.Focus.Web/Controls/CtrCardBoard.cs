@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VAR.Focus.Web.Pages;
 using VAR.Json;
 
 namespace VAR.Focus.Web.Controls
@@ -102,6 +103,7 @@ namespace VAR.Focus.Web.Controls
                 {"divBoard", divBoard.ClientID},
                 {"IDBoard", _idBoard},
                 {"UserName", _userName},
+                {"EditBoardUrl", FrmBoardEdit.GetUrl(_idBoard)},
                 {"IDCardEvent", string.Empty},
                 {"ServiceUrl", _serviceUrl},
                 {"TimePoolData", _timePoolData},
@@ -111,6 +113,7 @@ namespace VAR.Focus.Web.Controls
                 {"Texts", new Dictionary<string, object> {
                     {"Toolbox", "Toolbox"},
                     {"AddCard", "+ Add card"},
+                    {"EditBoard", "Config"},
                     {"Accept", "Accept"},
                     {"Cancel", "Cancel"},
                     {"ConfirmDelete", "Are you sure to delete?"},
