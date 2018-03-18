@@ -36,7 +36,8 @@
             cfg.Minimized = false;
         } else {
             cfg.ScrollPosition = cfg.divChat.scrollTop;
-            cfg.ScrollOnRestore = (cfg.divChat.scrollTop > (cfg.divChat.scrollHeight - cfg.divChat.offsetHeight));
+            var scrollVisible = cfg.divChat.scrollHeight - cfg.divChat.offsetHeight;
+            cfg.ScrollOnRestore = cfg.divChat.scrollTop > scrollVisible;
             cfg.divChatContainer.style.width = 0;
             cfg.divChatContainer.style.height = 0;
             cfg.divChatContainer.style.opacity = 0;
@@ -98,7 +99,8 @@
             if (recvMsgs) {
                 var msgCount = 0;
                 var scrollChat = false;
-                if (cfg.Minimized === false && cfg.divChat.scrollTop > (cfg.divChat.scrollHeight - cfg.divChat.offsetHeight)) {
+                var scrollVisible = cfg.divChat.scrollHeight - cfg.divChat.offsetHeight;
+                if (cfg.Minimized === false && cfg.divChat.scrollTop > scrollVisible) {
                     scrollChat = true;
                 }
 
@@ -108,8 +110,8 @@
                     if (cfg.IDMessage < msg.IDMessage) {
                         cfg.IDMessage = msg.IDMessage;
                         var elemMessage = CreateMessageDOM(msg,
-                            (msg.UserName === cfg.UserName),
-                            (cfg.LastUser !== msg.UserName));
+                            msg.UserName === cfg.UserName,
+                            cfg.LastUser !== msg.UserName);
                         cfg.LastUser = msg.UserName;
                         frag.appendChild(elemMessage);
                         msgCount++;
@@ -149,10 +151,11 @@
         };
 
         // Pool data
+        var isImmediate = cfg.FirstMessages || cfg.Connected === false;
         var data = {
             "IDMessageBoard": cfg.IDMessageBoard,
             "IDMessage": cfg.IDMessage,
-            "TimePoolData": ((cfg.FirstMessages || cfg.Connected === false) ? "0" : String(cfg.TimePoolData)),
+            "TimePoolData": isImmediate ? "0" : String(cfg.TimePoolData),
             "TimeStamp": new Date().getTime()
         };
         SendRequest(cfg.ServiceUrl, data, ReciveChatData, ErrorChatData);

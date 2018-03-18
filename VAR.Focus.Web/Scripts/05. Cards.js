@@ -12,7 +12,7 @@ var Toolbox = function (cfg, container) {
     this.StrKeyPosition = "Toolbox_" + cfg.IDBoard + "_Position";
     try {
         var pos = window.localStorage.getItem(this.StrKeyPosition);
-        if (pos && (typeof pos === "string")) {
+        if (pos && typeof pos === "string") {
             pos = JSON.parse(pos);
             this.X = parseInt(pos.X);
             this.Y = parseInt(pos.Y);
@@ -250,7 +250,7 @@ Card.prototype = {
     },
     MoveFrame: function () {
         if (this.animData) {
-            var f = ((+new Date()) - this.animData.startTime) / this.animData.time;
+            var f = (+new Date() - this.animData.startTime) / this.animData.time;
             if (f < 1.0) {
                 f = CosineInterpolation(f);
                 f = CosineInterpolation(f);
@@ -710,7 +710,7 @@ function RunCardBoard(cfg) {
         var data = {
             "IDBoard": cfg.IDBoard,
             "IDCardEvent": cfg.IDCardEvent,
-            "TimePoolData": ((cfg.Connected === false) ? "0" : String(cfg.TimePoolData)),
+            "TimePoolData": cfg.Connected === false ? "0" : String(cfg.TimePoolData),
             "TimeStamp": new Date().getTime()
         };
         SendRequest(cfg.ServiceUrl, data, ReciveCardEventData, ErrorCardEventData);
