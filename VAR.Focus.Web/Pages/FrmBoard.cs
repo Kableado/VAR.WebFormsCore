@@ -52,7 +52,7 @@ namespace VAR.Focus.Web.Pages
         {
             if (FormUtils.Controls_AreValid(Controls) == false) { return; }
 
-            Board board = Boards.Current.Boards_SetBoard(0, _txtTitle.Text, _txtDescription.Text, CurrentUser.Name);
+            Board board = Boards.Current.Boards_SetBoard(0, _txtTitle.Text, _txtDescription.Text, null, CurrentUser.Name);
             _idBoard = board.IDBoard;
 
             Response.Redirect(GetUrl(_idBoard));

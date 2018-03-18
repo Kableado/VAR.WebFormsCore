@@ -58,8 +58,13 @@ namespace VAR.Focus.Web.Pages
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (FormUtils.Controls_AreValid(Controls) == false) { return; }
-
-            Board board = Boards.Current.Boards_SetBoard(_idBoard, _txtTitle.Text, _txtDescription.Text, CurrentUser.Name);
+            
+            Board board = Boards.Current.Boards_SetBoard(
+                _idBoard, 
+                _txtTitle.Text, 
+                _txtDescription.Text, 
+                _txtDescription.GetClientsideHeight(), 
+                CurrentUser.Name);
 
             // FIXME: Notify User of "Save Succesfully"
         }
@@ -112,6 +117,7 @@ namespace VAR.Focus.Web.Pages
 
             _txtTitle.Text = board.Title;
             _txtDescription.Text = board.Description;
+            _txtDescription.SetClientsideHeight(board.DescriptionHeight);
         }
 
         #endregion Private methods
