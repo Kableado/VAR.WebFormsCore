@@ -147,7 +147,6 @@ textarea.textbox {
     }
 
 .button {
-    padding: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,1), inset 0 -2px 5px rgba(128,128,128,1);
     vertical-align: top;
     border-radius: 5px;
@@ -159,6 +158,10 @@ textarea.textbox {
     cursor: pointer;
     background-color: rgb(192,192,192);
     margin-left: 5px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
     .button:first-child {
