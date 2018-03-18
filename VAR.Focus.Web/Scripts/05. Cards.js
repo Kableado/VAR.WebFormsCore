@@ -545,15 +545,25 @@ Card.prototype = {
         return false;
     },
     EnterEditionMode: function () {
+        this.RemoveFromContainer();
+        this.InsertOnContainer(this.cfg.divBoard);
+
         this.txtTitle.value = this.Title;
         this.txtBody.value = this.Body;
 
         this.divOverlay.style.display = "none";
         this.Editing = true;
+
+        this.divEditBackground = document.createElement("div");
+        this.divEditBackground.className = "divEditBackground";
+        this.divEditBackground.addEventListener("click", Card.prototype.btnEdit_Click.bind(this), false);
+        this.divCard.offsetParent.insertBefore(this.divEditBackground, this.divCard);
+
     },
     ExitEditionMode: function () {
         this.divOverlay.style.display = "";
         this.Editing = false;
+        this.divEditBackground.offsetParent.removeChild(this.divEditBackground);
     },
     btnEdit_Click: function (evt) {
         evt.preventDefault();
