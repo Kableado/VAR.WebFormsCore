@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VAR.Focus.Web.Code;
 using VAR.Json;
 
 namespace VAR.Focus.Web.Controls
@@ -128,7 +129,7 @@ namespace VAR.Focus.Web.Controls
             txtText.Attributes.Add("onkeydown", string.Format("if(event.keyCode==13){{SendChat({0}); return false;}}", strCfgName));
             divChatControls.Controls.Add(txtText);
 
-            var btnSend = new Button { ID = "btnSend", Text = "Send", CssClass = "chatButton" };
+            var btnSend = new Button { ID = "btnSend", Text = MultiLang.GetLiteral("ChatSend"), CssClass = "chatButton" };
             divChatControls.Controls.Add(btnSend);
             btnSend.Attributes.Add("onclick", string.Format("SendChat({0}); return false;", strCfgName));
 
@@ -149,10 +150,10 @@ namespace VAR.Focus.Web.Controls
                 {"ServiceUrl", _serviceUrl},
                 {"TimePoolData", _timePoolData},
                 {"Texts", new Dictionary<string, object> {
-                    {"Chat", "Chat"},
-                    {"Close", "Close X"},
-                    {"NewMessages", "New messages"},
-                    {"Disconnected", "Disconnected"},
+                    {"Chat", MultiLang.GetLiteral("Chat")},
+                    {"Close", MultiLang.GetLiteral("ChatClose")},
+                    {"NewMessages", MultiLang.GetLiteral("ChatNewMessages")},
+                    {"Disconnected", MultiLang.GetLiteral("Disconnected")},
                 } },
             };
             JsonWriter jsonWriter = new JsonWriter();

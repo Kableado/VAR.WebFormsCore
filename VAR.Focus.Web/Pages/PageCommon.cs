@@ -149,9 +149,9 @@ namespace VAR.Focus.Web.Pages
             pnlHeader.Controls.Add(pnlUserInfo);
 
             _btnLogout.ID = "btnLogout";
-            _btnLogout.Text = "Logout";
+            _btnLogout.Text = MultiLang.GetLiteral("Logout");
             _btnLogout.Click += btnLogout_Click;
-            _btnLogout.Attributes.Add("onclick", string.Format("return confirm('{0}');", "¿Are you sure to exit?"));
+            _btnLogout.Attributes.Add("onclick", string.Format("return confirm('{0}');", MultiLang.GetLiteral("ConfirmExit")));
             pnlUserInfo.Controls.Add(_btnLogout);
 
             _pnlContainer.CssClass = "divContent";

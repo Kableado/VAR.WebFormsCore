@@ -2,6 +2,7 @@
 using System.Web.UI.WebControls;
 using VAR.Focus.BusinessLogic;
 using VAR.Focus.BusinessLogic.Entities;
+using VAR.Focus.Web.Code;
 using VAR.Focus.Web.Controls;
 
 namespace VAR.Focus.Web.Pages
@@ -74,32 +75,32 @@ namespace VAR.Focus.Web.Pages
 
         private void InitializeComponents()
         {
-            Title = "Register";
-            var lblTitle = new CLabel { Text = "Register", Tag = "h2" };
+            Title = MultiLang.GetLiteral("RegisterUser");
+            var lblTitle = new CLabel { Text = Title, Tag = "h2" };
             Controls.Add(lblTitle);
 
             Controls.Add(_pnlRegister);
 
-            _pnlRegister.Controls.Add(FormUtils.CreateField("Name", _txtName));
+            _pnlRegister.Controls.Add(FormUtils.CreateField(MultiLang.GetLiteral("Name"), _txtName));
             _txtName.NextFocusOnEnter = _txtEmail;
-            _txtName.PlaceHolder = "Name";
+            _txtName.PlaceHolder = MultiLang.GetLiteral("Name");
 
-            _pnlRegister.Controls.Add(FormUtils.CreateField("Email", _txtEmail));
+            _pnlRegister.Controls.Add(FormUtils.CreateField(MultiLang.GetLiteral("Email"), _txtEmail));
             _txtEmail.NextFocusOnEnter = _txtPassword1;
-            _txtEmail.PlaceHolder = "Email";
+            _txtEmail.PlaceHolder = MultiLang.GetLiteral("Email");
 
-            _pnlRegister.Controls.Add(FormUtils.CreateField("Password", _txtPassword1));
+            _pnlRegister.Controls.Add(FormUtils.CreateField(MultiLang.GetLiteral("Password"), _txtPassword1));
             _txtPassword1.NextFocusOnEnter = _txtPassword2;
-            _txtPassword1.PlaceHolder = "Password";
+            _txtPassword1.PlaceHolder = MultiLang.GetLiteral("Password");
 
             _pnlRegister.Controls.Add(FormUtils.CreateField(string.Empty, _txtPassword2));
             _txtPassword2.NextFocusOnEnter = _btnRegister;
-            _txtPassword2.PlaceHolder = "Password";
+            _txtPassword2.PlaceHolder = MultiLang.GetLiteral("Password");
 
-            _btnRegister.Text = "Register";
+            _btnRegister.Text = MultiLang.GetLiteral("Register");
             _btnRegister.Click += btnRegister_Click;
 
-            _btnExit.Text = "Exit";
+            _btnExit.Text = MultiLang.GetLiteral("Exit");
             _btnExit.Click += btnExit_Click;
 
             Panel pnlButtons = new Panel();
@@ -112,7 +113,7 @@ namespace VAR.Focus.Web.Pages
 
             _pnlSuccess.Controls.Add(_lblSuccess);
 
-            _btnExitSuccess.Text = "Exit";
+            _btnExitSuccess.Text = MultiLang.GetLiteral("Exit");
             _btnExitSuccess.Click += btnExit_Click;
             _pnlSuccess.Controls.Add(FormUtils.CreateField(string.Empty, _btnExitSuccess));
         }

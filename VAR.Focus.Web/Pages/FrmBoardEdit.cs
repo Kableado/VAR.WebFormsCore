@@ -88,21 +88,21 @@ namespace VAR.Focus.Web.Pages
 
         private void InitializeComponents()
         {
-            Title = "Register";
-            var lblTitle = new CLabel { Text = "Register", Tag = "h2" };
+            Title = MultiLang.GetLiteral("EditBoard");
+            var lblTitle = new CLabel { Text = Title, Tag = "h2" };
             Controls.Add(lblTitle);
 
-            Controls.Add(FormUtils.CreateField("Title", _txtTitle));
+            Controls.Add(FormUtils.CreateField(MultiLang.GetLiteral("Title"), _txtTitle));
             _txtTitle.NextFocusOnEnter = _txtTitle;
-            _txtTitle.PlaceHolder = "Title";
+            _txtTitle.PlaceHolder = MultiLang.GetLiteral("Title");
 
-            Controls.Add(FormUtils.CreateField("Description", _txtDescription));
-            _txtDescription.PlaceHolder = "Description";
+            Controls.Add(FormUtils.CreateField(MultiLang.GetLiteral("Description"), _txtDescription));
+            _txtDescription.PlaceHolder = MultiLang.GetLiteral("Description");
 
-            _btnSave.Text = "Save";
+            _btnSave.Text = MultiLang.GetLiteral("Save");
             _btnSave.Click += btnSave_Click;
 
-            _btnExit.Text = "Exit";
+            _btnExit.Text = MultiLang.GetLiteral("Exit");
             _btnExit.Click += btnExit_Click;
 
             Panel pnlButtons = new Panel();

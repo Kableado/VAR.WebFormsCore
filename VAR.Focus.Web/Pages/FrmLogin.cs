@@ -53,23 +53,23 @@ namespace VAR.Focus.Web.Pages
 
         private void InitializeControls()
         {
-            Title = "Login";
-            var lblTitle = new CLabel { Text = "Login", Tag = "h2" };
+            Title = MultiLang.GetLiteral("Login");
+            var lblTitle = new CLabel { Text = Title, Tag = "h2" };
             Controls.Add(lblTitle);
 
-            Controls.Add(FormUtils.CreateField("Name/Mail", _txtNameEmail));
+            Controls.Add(FormUtils.CreateField(MultiLang.GetLiteral("NameOrMail"), _txtNameEmail));
             _txtNameEmail.NextFocusOnEnter = _txtPassword;
-            _txtNameEmail.PlaceHolder = "Name/Mail";
+            _txtNameEmail.PlaceHolder = MultiLang.GetLiteral("NameOrMail");
 
-            Controls.Add(FormUtils.CreateField("Password", _txtPassword));
+            Controls.Add(FormUtils.CreateField(MultiLang.GetLiteral("Password"), _txtPassword));
             _txtPassword.NextFocusOnEnter = _btnLogin;
-            _txtPassword.PlaceHolder = "Password";
+            _txtPassword.PlaceHolder = MultiLang.GetLiteral("Password");
 
             Controls.Add(FormUtils.CreateField(string.Empty, _btnLogin));
-            _btnLogin.Text = "Login";
+            _btnLogin.Text = MultiLang.GetLiteral("Login");
             _btnLogin.Click += btnLogin_Click;
 
-            Controls.Add(FormUtils.CreateField(string.Empty, new HyperLink { Text = "Register user", NavigateUrl = "FrmRegister" }));
+            Controls.Add(FormUtils.CreateField(string.Empty, new HyperLink { Text = MultiLang.GetLiteral("RegisterUser"), NavigateUrl = "FrmRegister" }));
         }
 
         #endregion Private methods

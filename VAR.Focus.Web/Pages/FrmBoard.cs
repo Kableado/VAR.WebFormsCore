@@ -115,7 +115,7 @@ namespace VAR.Focus.Web.Pages
             var btnView = new CButton
             {
                 ID = string.Format("btnView{0}", board.IDBoard),
-                Text = "View",
+                Text = MultiLang.GetLiteral("View"),
             };
             btnView.CommandArgument = Convert.ToString(board.IDBoard);
             btnView.Click += BtnView_Click;
@@ -123,7 +123,7 @@ namespace VAR.Focus.Web.Pages
             var btnEdit = new CButton
             {
                 ID = string.Format("btnEdit{0}", board.IDBoard),
-                Text = "Edit",
+                Text = MultiLang.GetLiteral("Edit"),
             };
             btnEdit.CommandArgument = Convert.ToString(board.IDBoard);
             btnEdit.Click += BtnEdit_Click;
@@ -131,11 +131,11 @@ namespace VAR.Focus.Web.Pages
             var btnDelete = new CButton
             {
                 ID = string.Format("btnDelete{0}", board.IDBoard),
-                Text = "Delete",
+                Text = MultiLang.GetLiteral("Delete"),
             };
             btnDelete.CommandArgument = Convert.ToString(board.IDBoard);
             btnDelete.Click += BtnDelete_Click;
-            btnDelete.Attributes.Add("onclick", string.Format("return confirm('{0}');", "¿Are you sure to delete?"));
+            btnDelete.Attributes.Add("onclick", string.Format("return confirm('{0}');", MultiLang.GetLiteral("ConfirmDelete")));
             pnlButtons.Controls.Add(btnDelete);
             pnlBoardSelector.Controls.Add(pnlButtons);
 
@@ -155,12 +155,12 @@ namespace VAR.Focus.Web.Pages
 
             // Board creator
             var pnlBoardAdd = new Panel { CssClass = "boardBanner" };
-            var btnAddBoard = new CButton { ID = "btnAddBoard", Text = "AddBoard" };
+            var btnAddBoard = new CButton { ID = "btnAddBoard", Text = MultiLang.GetLiteral("AddBoard") };
             btnAddBoard.Click += btnAddBoard_Click;
             pnlBoardAdd.Controls.Add(FormUtils.CreatePanel("formRow", _txtTitle));
-            _txtTitle.PlaceHolder = "Title";
+            _txtTitle.PlaceHolder = MultiLang.GetLiteral("Title");
             pnlBoardAdd.Controls.Add(FormUtils.CreatePanel("formRow", _txtDescription));
-            _txtDescription.PlaceHolder = "Description";
+            _txtDescription.PlaceHolder = MultiLang.GetLiteral("Description");
             pnlBoardAdd.Controls.Add(FormUtils.CreatePanel("formRow", btnAddBoard));
             Controls.Add(pnlBoardAdd);
         }

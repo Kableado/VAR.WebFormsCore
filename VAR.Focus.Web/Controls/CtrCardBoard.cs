@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VAR.Focus.Web.Code;
 using VAR.Focus.Web.Pages;
 using VAR.Json;
 
@@ -71,9 +72,7 @@ namespace VAR.Focus.Web.Controls
             get { return _timeMoveAnimation; }
             set { _timeMoveAnimation = value; }
         }
-
-        public string ServiceUrl1 { get => _serviceUrl; set => _serviceUrl = value; }
-
+        
         #endregion Properties
 
         #region Control Life cycle
@@ -97,7 +96,7 @@ namespace VAR.Focus.Web.Controls
             Panel divBoard = new Panel { ID = "divBoard", CssClass = "divBoard" };
             Controls.Add(divBoard);
 
-            string strCfgName = string.Format("{0}_cfg", this.ClientID);
+            string strCfgName = string.Format("{0}_cfg", ClientID);
             Dictionary<string, object> cfg = new Dictionary<string, object>
             {
                 {"divBoard", divBoard.ClientID},
@@ -111,12 +110,12 @@ namespace VAR.Focus.Web.Controls
                 {"TimeRefreshDisconnected", _timeRefreshDisconnected},
                 {"TimeMoveAnimation", _timeMoveAnimation},
                 {"Texts", new Dictionary<string, object> {
-                    {"Toolbox", "Toolbox"},
-                    {"AddCard", "+ Add card"},
-                    {"EditBoard", "Config"},
-                    {"Accept", "Accept"},
-                    {"Cancel", "Cancel"},
-                    {"ConfirmDelete", "Are you sure to delete?"},
+                    {"Toolbox",MultiLang.GetLiteral( "Toolbox")},
+                    {"AddCard", MultiLang.GetLiteral("AddCard")},
+                    {"EditBoard", MultiLang.GetLiteral("Config")},
+                    {"Accept", MultiLang.GetLiteral("Accept")},
+                    {"Cancel", MultiLang.GetLiteral("Cancel")},
+                    {"ConfirmDelete", MultiLang.GetLiteral("ConfirmDelete")},
                 } },
             };
             JsonWriter jsonWriter = new JsonWriter();
