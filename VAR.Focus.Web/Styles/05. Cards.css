@@ -83,11 +83,14 @@
         font-size: 12px;
         font-weight: bold;
         text-align: center;
+        height: 17px;
+        box-sizing: content-box;
     }
 
     .divCard .divBody {
         font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
         font-size: 12px;
+        height: calc(100% - 17px);
     }
 
     .divCard .divOverlay {
@@ -147,19 +150,16 @@
         font-size: 12px;
         background-color: transparent;
         border: none;
-        border-radius: 3px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.4) inset, 0 -2px 3px rgba(255,255,255,1) inset;
-        padding: 2px;
+        font-weight: bold;
+        text-align: center;
     }
 
     .divCard .txtBody {
-        min-height: 150px;
+        height: 100%;
         width: 100%;
         font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
         font-size: 12px;
         background-color: transparent;
         border: none;
-        border-radius: 3px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.4) inset, 0 -2px 3px rgba(255,255,255,1) inset;
-        padding: 2px;
+        resize: none;
     }

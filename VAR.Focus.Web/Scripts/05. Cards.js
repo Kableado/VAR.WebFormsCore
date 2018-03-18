@@ -163,12 +163,10 @@ var Card = function (cfg, idCard, title, body, x, y) {
     this.divTitle = document.createElement("div");
     this.divCard.appendChild(this.divTitle);
     this.divTitle.className = "divTitle";
-    this.divTitle.innerHTML = this.FilterText(title);
 
     this.divBody = document.createElement("div");
     this.divCard.appendChild(this.divBody);
     this.divBody.className = "divBody";
-    this.divBody.innerHTML = this.FilterText(body);
 
     this.divOverlay = document.createElement("div");
     this.divCard.appendChild(this.divOverlay);
@@ -188,20 +186,14 @@ var Card = function (cfg, idCard, title, body, x, y) {
 
     this.txtTitle = document.createElement("input");
     this.txtTitle.className = "txtTitle";
+    this.txtTitle.value = this.Title;
+    this.divTitle.appendChild(this.txtTitle);
 
     this.txtBody = document.createElement("textarea");
     this.txtBody.className = "txtBody";
-
-    this.btnAcceptEdit = document.createElement("button");
-    this.btnAcceptEdit.className = "btnCard";
-    this.btnAcceptEdit.innerHTML = this.cfg.Texts.Accept;
-    this.btnAcceptEdit.addEventListener("click", Card.prototype.btnAcceptEdit_Click.bind(this), false);
-
-    this.btnCancelEdit = document.createElement("button");
-    this.btnCancelEdit.className = "btnCard";
-    this.btnCancelEdit.innerHTML = this.cfg.Texts.Cancel;
-    this.btnCancelEdit.addEventListener("click", Card.prototype.btnCancelEdit_Click.bind(this), false);
-
+    this.txtBody.value = this.Body;
+    this.divBody.appendChild(this.txtBody);
+    
     // Bind mouse event handlers
     this.bindedMouseDown = Card.prototype.MouseDown.bind(this);
     this.bindedMouseMove = Card.prototype.MouseMove.bind(this);
@@ -292,8 +284,8 @@ Card.prototype = {
         this.Body = body;
         this.newTitle = title;
         this.newBody = body;
-        this.divTitle.innerHTML = this.FilterText(this.Title);
-        this.divBody.innerHTML = this.FilterText(this.Body);
+        this.txtTitle.value = this.Title;
+        this.txtBody.value = this.Body;
         this.RemoveFromContainer();
         this.InsertOnContainer(this.cfg.divBoard);
     },
@@ -304,8 +296,8 @@ Card.prototype = {
         this.newBody = this.Body;
         this.divCard.style.left = this.X + "px";
         this.divCard.style.top = this.Y + "px";
-        this.divTitle.innerHTML = this.FilterText(this.Title);
-        this.divBody.innerHTML = this.FilterText(this.Body);
+        this.txtTitle.value = this.Title;
+        this.txtBody.value = this.Body;
     },
     SetNew: function () {
         this.X = this.newX;
@@ -314,8 +306,8 @@ Card.prototype = {
         this.Body = this.newBody;
         this.divCard.style.left = this.X + "px";
         this.divCard.style.top = this.Y + "px";
-        this.divTitle.innerHTML = this.FilterText(this.Title);
-        this.divBody.innerHTML = this.FilterText(this.Body);
+        this.txtTitle.value = this.Title;
+        this.txtBody.value = this.Body;
     },
     Hide: function () {
         this.divCard.style.display = "none";
@@ -541,25 +533,13 @@ Card.prototype = {
         return false;
     },
     EnterEditionMode: function () {
-        this.divTitle.innerHTML = "";
         this.txtTitle.value = this.Title;
-        this.divTitle.appendChild(this.txtTitle);
-
-        this.divBody.innerHTML = "";
         this.txtBody.value = this.Body;
-        this.divBody.appendChild(this.txtBody);
-        this.divBody.appendChild(document.createElement("br"));
-        this.divBody.appendChild(this.btnAcceptEdit);
-        this.divBody.appendChild(this.btnCancelEdit);
 
         this.divOverlay.style.display = "none";
         this.Editing = true;
     },
     ExitEditionMode: function () {
-        this.divTitle.removeChild(this.txtTitle);
-        this.divBody.removeChild(this.txtBody);
-        this.divBody.removeChild(this.btnAcceptEdit);
-        this.divBody.removeChild(this.btnCancelEdit);
         this.divOverlay.style.display = "";
         this.Editing = false;
     },
@@ -568,18 +548,28 @@ Card.prototype = {
         if (this.Editing === false) {
             this.EnterEditionMode();
         } else {
+            this.newTitle = this.txtTitle.value;
+            this.newBody = this.txtBody.value;
             this.ExitEditionMode();
-            this.Reset();
+            this.txtTitle.value = this.newTitle;
+            this.txtBody.value = this.newBody;
+            if (this.IDCard > 0) {
+                this.OnEdit();
+            } else {
+                this.Title = this.newTitle;
+                this.Body = this.newBody;
+                this.OnCreate();
+            }
         }
         return false;
     },
-    btnAcceptEdit_Click: function (evt) {
+    btnAcceptEdit_Click: function (evt) { // Deprecated
         evt.preventDefault();
         this.newTitle = this.txtTitle.value;
         this.newBody = this.txtBody.value;
         this.ExitEditionMode();
-        this.divTitle.innerHTML = this.FilterText(this.newTitle);
-        this.divBody.innerHTML = this.FilterText(this.newBody);
+        this.txtTitle.value = this.newTitle;
+        this.txtBody.value = this.newBody;
         if (this.IDCard > 0) {
             this.OnEdit();
         } else {
@@ -589,7 +579,7 @@ Card.prototype = {
         }
         return false;
     },
-    btnCancelEdit_Click: function (evt) {
+    btnCancelEdit_Click: function (evt) { // Deprecated
         evt.preventDefault();
         this.ExitEditionMode();
         this.Reset();
@@ -600,6 +590,13 @@ Card.prototype = {
     },
     btnDelete_Click: function (evt) {
         evt.preventDefault();
+        if (this.Editing === true) {
+            this.ExitEditionMode();
+            this.Reset();
+            if (this.IDCard > 0) {
+                return false;
+            }
+        }
         if (this.IDCard === 0 || confirm(this.cfg.Texts.ConfirmDelete)) {
             this.OnDelete();
         }
