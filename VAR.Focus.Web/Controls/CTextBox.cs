@@ -166,6 +166,45 @@ namespace VAR.Focus.Web.Controls
             return _allowEmpty || (string.IsNullOrEmpty(_txtContent.Text) == false);
         }
 
+        public int? GetClientsideHeight()
+        {
+            if (string.IsNullOrEmpty(_hidSize.Value))
+            {
+                return null;
+            }
+            JsonParser jsonParser = new JsonParser();
+            Dictionary<string, object> sizeObj = jsonParser.Parse(_hidSize.Value) as Dictionary<string, object>;
+            if (sizeObj == null) { return null; }
+
+            if (sizeObj.ContainsKey("height") == false) { return null; }
+            return (int)sizeObj["height"];
+        }
+
+        public void SetClientsideHeight(int? height)
+        {
+            if(height == null)
+            {
+                _hidSize.Value = string.Empty;
+                return;
+            }
+            Dictionary<string, object> sizeObj = null;
+            if (string.IsNullOrEmpty(_hidSize.Value) == false)
+            {
+                JsonParser jsonParser = new JsonParser();
+                sizeObj = jsonParser.Parse(_hidSize.Value) as Dictionary<string, object>;
+            }
+            else
+            {
+                sizeObj = new Dictionary<string, object> {
+                    { "height", height },
+                    { "width", null },
+                    { "scrollTop", null },
+                };
+            }
+            JsonWriter jsonWriter = new JsonWriter();
+            _hidSize.Value = jsonWriter.Write(sizeObj);
+        }
+        
         #endregion Public methods
     }
 }
