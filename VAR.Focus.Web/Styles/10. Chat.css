@@ -57,7 +57,7 @@
     padding: 5px;
 }
 
-.divChatContainer{
+.divChatContainer {
     transition-property: width, height, opacity;
     transition-duration: 0.3s;
     overflow: hidden;

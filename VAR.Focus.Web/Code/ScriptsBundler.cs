@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 
 namespace VAR.Focus.Web.Code
 {

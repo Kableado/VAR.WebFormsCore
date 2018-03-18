@@ -54,9 +54,9 @@ function ElementToggleClass(element, className) {
 
 function escapeHTML(s) {
     return s.replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
 }
 
 function fixedEncodeURIComponent(str) {

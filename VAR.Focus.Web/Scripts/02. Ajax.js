@@ -50,7 +50,7 @@ function SendData(url, data, onData, onError) {
         }
     };
     xhr.setRequestHeader('Content-Type',
-		'application/x-www-form-urlencoded');
+        'application/x-www-form-urlencoded');
     xhr.send(GetDataQueryString(data));
 }
 
@@ -62,8 +62,8 @@ function GetFormQueryString(idForm) {
 
     function appendVal(name, value) {
         queryString += (queryString.length > 0 ? "&" : "")
-			+ fixedEncodeURIComponent(name) + "="
-			+ fixedEncodeURIComponent(value ? value : "");
+            + fixedEncodeURIComponent(name) + "="
+            + fixedEncodeURIComponent(value ? value : "");
     }
 
     var elements = form.elements;
@@ -74,14 +74,14 @@ function GetFormQueryString(idForm) {
 
         if (elemName) {
             if (
-				elemType.indexOf("TEXT") !== -1 ||
-				elemType.indexOf("TEXTAREA") !== -1 ||
-				elemType.indexOf("PASSWORD") !== -1 ||
-				elemType.indexOf("BUTTON") !== -1 ||
-				elemType.indexOf("HIDDEN") !== -1 ||
-				elemType.indexOf("SUBMIT") !== -1 ||
-				elemType.indexOf("IMAGE") !== -1
-			) {
+                elemType.indexOf("TEXT") !== -1 ||
+                elemType.indexOf("TEXTAREA") !== -1 ||
+                elemType.indexOf("PASSWORD") !== -1 ||
+                elemType.indexOf("BUTTON") !== -1 ||
+                elemType.indexOf("HIDDEN") !== -1 ||
+                elemType.indexOf("SUBMIT") !== -1 ||
+                elemType.indexOf("IMAGE") !== -1
+            ) {
                 appendVal(elemName, element.value);
             } else if (elemType.indexOf("CHECKBOX") !== -1 && element.checked) {
                 appendVal(elemName, element.value ? element.value : "On");
@@ -119,6 +119,6 @@ function SendForm(url, idForm, onData, onError) {
         }
     };
     xhr.setRequestHeader('Content-Type',
-		'application/x-www-form-urlencoded');
+        'application/x-www-form-urlencoded');
     xhr.send(GetFormQueryString(idForm));
 }
