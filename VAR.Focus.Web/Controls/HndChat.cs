@@ -13,6 +13,8 @@ namespace VAR.Focus.Web.Controls
     {
         #region Declarations
 
+        private const int MaxWaitLoops = 5;
+
         private static object _monitor = new object();
         private static Dictionary<string, MessageBoard> _chatBoards = new Dictionary<string, MessageBoard>();
 
@@ -56,7 +58,7 @@ namespace VAR.Focus.Web.Controls
             int timePoolData = Convert.ToInt32(string.IsNullOrEmpty(strTimePoolData) ? "0" : strTimePoolData);
 
             MessageBoard messageBoard;
-            bool mustWait = (timePoolData > 0);
+            int waitCount = (timePoolData > 0) ? MaxWaitLoops : 0;
             do
             {
                 if (_chatBoards.ContainsKey(idMessageBoard) == false)
@@ -77,16 +79,17 @@ namespace VAR.Focus.Web.Controls
                     List<Message> listMessages = messageBoard.Messages_GetList(idMessage);
                     if (listMessages.Count > 0)
                     {
-                        mustWait = false;
+                        waitCount = 0;
                         context.ResponseObject(listMessages);
                         return;
                     }
                 }
-                if (mustWait)
+                if (waitCount > 0)
                 {
                     lock (_monitor) { Monitor.Wait(_monitor, timePoolData); }
+                    waitCount--;
                 }
-            } while (mustWait);
+            } while (waitCount > 0);
             context.ResponseObject(new List<Message>());
         }
 

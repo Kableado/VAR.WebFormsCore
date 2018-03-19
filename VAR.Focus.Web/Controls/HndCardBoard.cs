@@ -13,6 +13,8 @@ namespace VAR.Focus.Web.Controls
     {
         #region Declarations
 
+        private const int MaxWaitLoops = 5;
+
         private static object _monitor = new object();
         private static Dictionary<int, CardBoard> _cardBoards = new Dictionary<int, CardBoard>();
 
@@ -116,22 +118,23 @@ namespace VAR.Focus.Web.Controls
             int timePoolData = Convert.ToInt32(string.IsNullOrEmpty(strTimePoolData) ? "0" : strTimePoolData);
 
             CardBoard cardBoard = GetCardBoard(idBoard);
-            bool mustWait = (timePoolData > 0);
+            int waitCount = (timePoolData > 0) ? MaxWaitLoops : 0;
             do
             {
                 List<ICardEvent> listMessages = cardBoard.Cards_GetEventList(idCardEvent);
                 if (listMessages.Count > 0)
                 {
-                    mustWait = false;
+                    waitCount = 0;
                     context.ResponseObject(listMessages);
                     return;
                 }
 
-                if (mustWait)
+                if (waitCount > 0)
                 {
                     lock (_monitor) { Monitor.Wait(_monitor, timePoolData); }
+                    waitCount--;
                 }
-            } while (mustWait);
+            } while (waitCount > 0);
             context.ResponseObject(new List<Message>());
         }
 
