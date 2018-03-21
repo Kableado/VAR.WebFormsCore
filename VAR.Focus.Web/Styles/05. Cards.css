@@ -10,8 +10,7 @@
     position: absolute;
     background-color: rgb(127,127,255);
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    min-width: 150px;
-    min-height: 50px;
+    width: 200px;
     padding: 5px;
     border-radius: 2px;
 }
@@ -72,8 +71,6 @@
     position: absolute;
     background-color: rgb(255,255,127);
     box-shadow: 0 3px 10px rgba(0,0,0,0.5);
-    width: 200px;
-    height: 150px;
     padding: 5px;
     border-radius: 2px;
     overflow: auto;
@@ -106,6 +103,19 @@
         right: 0;
         -ms-touch-action: none;
         touch-action: none;
+    }
+
+    .divCard .divResize {
+        opacity: 0;
+        background-color: rgb(255,0,255);
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        bottom: 0;
+        right: 0;
+        -ms-touch-action: none;
+        touch-action: none;
+        cursor: se-resize;
     }
 
     .divCard .btnCard {

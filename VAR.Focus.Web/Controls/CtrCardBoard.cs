@@ -27,6 +27,10 @@ namespace VAR.Focus.Web.Controls
 
         private int _timeMoveAnimation = 500;
 
+        private int _defaultCardWidth = 200;
+
+        private int _defaultCardHeight = 150;
+
         #endregion Declarations
 
         #region Properties
@@ -72,7 +76,19 @@ namespace VAR.Focus.Web.Controls
             get { return _timeMoveAnimation; }
             set { _timeMoveAnimation = value; }
         }
-        
+
+        private int DefaultCardWidth
+        {
+            get { return _defaultCardWidth; }
+            set { _defaultCardWidth = value; }
+        }
+
+        private int DefaultCardHeight
+        {
+            get { return _defaultCardHeight; }
+            set { _defaultCardHeight = value; }
+        }
+
         #endregion Properties
 
         #region Control Life cycle
@@ -109,6 +125,8 @@ namespace VAR.Focus.Web.Controls
                 {"TimeRefresh", _timeRefresh},
                 {"TimeRefreshDisconnected", _timeRefreshDisconnected},
                 {"TimeMoveAnimation", _timeMoveAnimation},
+                {"DefaultCardWidth", _defaultCardWidth},
+                {"DefaultCardHeight", _defaultCardHeight},
                 {"Texts", new Dictionary<string, object> {
                     {"Toolbox",MultiLang.GetLiteral( "Toolbox")},
                     {"AddCard", MultiLang.GetLiteral("AddCard")},

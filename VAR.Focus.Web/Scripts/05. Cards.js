@@ -144,7 +144,7 @@ Toolbox.prototype = {
         var pos = { x: 0, y: 0 };
         pos.x += this.divToolbox.offsetLeft;
         pos.y += this.divToolbox.offsetTop + this.divToolbox.offsetHeight;
-        var card = new Card(this.cfg, 0, "", "", pos.x, pos.y);
+        var card = new Card(this.cfg, 0, "", "", pos.x, pos.y, this.cfg.DefaultCardWidth, this.cfg.DefaultCardHeight);
         card.InsertOnContainer(this.cfg.divBoard);
         card.EnterEditionMode();
         return false;
@@ -157,13 +157,15 @@ Toolbox.prototype = {
     empty: null
 };
 
-var Card = function (cfg, idCard, title, body, x, y) {
+var Card = function (cfg, idCard, title, body, x, y, width, height) {
     this.cfg = cfg;
     this.IDCard = idCard;
     this.Title = title;
     this.Body = body;
     this.X = x;
     this.Y = y;
+    this.Width = width;
+    this.Height = height;
 
     // Create DOM
     this.container = null;
@@ -171,18 +173,38 @@ var Card = function (cfg, idCard, title, body, x, y) {
     this.divCard.className = "divCard";
     this.divCard.style.left = x + "px";
     this.divCard.style.top = y + "px";
+    this.divCard.style.width = width + "px";
+    this.divCard.style.height = height + "px";
 
     this.divTitle = document.createElement("div");
     this.divCard.appendChild(this.divTitle);
     this.divTitle.className = "divTitle";
 
+    this.txtTitle = document.createElement("input");
+    this.txtTitle.className = "txtTitle";
+    this.txtTitle.value = this.Title;
+    this.divTitle.appendChild(this.txtTitle);
+
     this.divBody = document.createElement("div");
     this.divCard.appendChild(this.divBody);
     this.divBody.className = "divBody";
 
+    this.txtBody = document.createElement("textarea");
+    this.txtBody.className = "txtBody";
+    this.txtBody.value = this.Body;
+    this.divBody.appendChild(this.txtBody);
+
     this.divOverlay = document.createElement("div");
     this.divCard.appendChild(this.divOverlay);
     this.divOverlay.className = "divOverlay";
+    this.divOverlay_MouseDownBinded = Card.prototype.divOverlay_MouseDown.bind(this);
+    this.divOverlay_MouseMoveBinded = Card.prototype.divOverlay_MouseMove.bind(this);
+    this.divOverlay_MouseUpBinded = Card.prototype.divOverlay_MouseUp.bind(this);
+    this.divOverlay.addEventListener("mousedown", this.divOverlay_MouseDownBinded, false);
+    this.divOverlay_TouchStartBinded = Card.prototype.divOverlay_TouchStart.bind(this);
+    this.divOverlay_TouchMoveBinded = Card.prototype.divOverlay_TouchMove.bind(this);
+    this.divOverlay_TouchEndBinded = Card.prototype.divOverlay_TouchEnd.bind(this);
+    this.divOverlay.addEventListener("touchstart", this.divOverlay_TouchStartBinded, false);
 
     this.btnEdit = document.createElement("button");
     this.divCard.appendChild(this.btnEdit);
@@ -196,33 +218,25 @@ var Card = function (cfg, idCard, title, body, x, y) {
     this.btnDelete.innerHTML = "X";
     this.btnDelete.addEventListener("click", Card.prototype.btnDelete_Click.bind(this), false);
 
-    this.txtTitle = document.createElement("input");
-    this.txtTitle.className = "txtTitle";
-    this.txtTitle.value = this.Title;
-    this.divTitle.appendChild(this.txtTitle);
-
-    this.txtBody = document.createElement("textarea");
-    this.txtBody.className = "txtBody";
-    this.txtBody.value = this.Body;
-    this.divBody.appendChild(this.txtBody);
-    
-    // Bind mouse event handlers
-    this.bindedMouseDown = Card.prototype.MouseDown.bind(this);
-    this.bindedMouseMove = Card.prototype.MouseMove.bind(this);
-    this.bindedMouseUp = Card.prototype.MouseUp.bind(this);
-    this.divOverlay.addEventListener("mousedown", this.bindedMouseDown, false);
-
-    // Bind touch event handlers
-    this.bindedTouchStart = Card.prototype.TouchStart.bind(this);
-    this.bindedTouchMove = Card.prototype.TouchMove.bind(this);
-    this.bindedTouchEnd = Card.prototype.TouchEnd.bind(this);
-    this.divOverlay.addEventListener("touchstart", this.bindedTouchStart, false);
+    this.divResize = document.createElement("div");
+    this.divCard.appendChild(this.divResize);
+    this.divResize.className = "divResize";
+    this.divResize_MouseDownBinded = Card.prototype.divResize_MouseDown.bind(this);
+    this.divResize_MouseMoveBinded = Card.prototype.divResize_MouseMove.bind(this);
+    this.divResize_MouseUpBinded = Card.prototype.divResize_MouseUp.bind(this);
+    this.divResize.addEventListener("mousedown", this.divResize_MouseDownBinded, false);
+    this.divResize_TouchStartBinded = Card.prototype.divResize_TouchStart.bind(this);
+    this.divResize_TouchMoveBinded = Card.prototype.divResize_TouchMove.bind(this);
+    this.divResize_TouchEndBinded = Card.prototype.divResize_TouchEnd.bind(this);
+    this.divResize.addEventListener("touchstart", this.divResize_TouchStartBinded, false);
 
     // Temporal variables for dragging, editing and deleting
     this.offsetX = 0;
     this.offsetY = 0;
     this.newX = this.X;
     this.newY = this.Y;
+    this.newWidth = this.Width;
+    this.newHeight = this.Height;
     this.newTitle = this.Title;
     this.newBody = this.Body;
     this.Editing = false;
@@ -268,6 +282,26 @@ Card.prototype = {
         this.divCard.style.top = this.Y + "px";
         this.animData = null;
     },
+    ResizeFrame: function () {
+        if (this.animData) {
+            var f = (+new Date() - this.animData.startTime) / this.animData.time;
+            if (f < 1.0) {
+                f = CosineInterpolation(f);
+                f = CosineInterpolation(f);
+                f = CosineInterpolation(f);
+                var f2 = 1 - f;
+                var width = this.animData.Width1 * f + this.animData.Width0 * f2;
+                var height = this.animData.Height1 * f + this.animData.Height0 * f2;
+                this.divCard.style.width = width + "px";
+                this.divCard.style.height = height + "px";
+                this.animData.animationID = window.setTimeout(this.bindedResizeFrame, 16);
+                return;
+            }
+        }
+        this.divCard.style.width = this.Width + "px";
+        this.divCard.style.height = this.Height + "px";
+        this.animData = null;
+    },
     Move: function (x, y) {
         if (x < 0) { x = 0; }
         if (y < 0) { y = 0; }
@@ -287,6 +321,26 @@ Card.prototype = {
         };
         this.bindedMoveFrame = Card.prototype.MoveFrame.bind(this);
         this.animData.animationID = window.setTimeout(this.bindedMoveFrame, 16);
+    },
+    Resize: function (width, height) {
+        if (width < 100) { x = 100; }
+        if (height < 100) { y = 100; }
+        this.OnResizeStart();
+        this.Width = width;
+        this.Height = height;
+        this.newWidth = width;
+        this.newHeight = height;
+        this.animData = {
+            Width0: parseInt(this.divCard.style.width),
+            Height0: parseInt(this.divCard.style.height),
+            Width1: width,
+            Height1: height,
+            time: this.cfg.TimeMoveAnimation,
+            startTime: +new Date(),
+            animationID: 0
+        };
+        this.bindedResizeFrame = Card.prototype.ResizeFrame.bind(this);
+        this.animData.animationID = window.setTimeout(this.bindedResizeFrame, 16);
     },
     Edit: function (title, body) {
         if (this.Editing) {
@@ -347,6 +401,42 @@ Card.prototype = {
             "IDCard": this.IDCard,
             "X": this.newX,
             "Y": this.newY,
+            "TimeStamp": new Date().getTime()
+        };
+        SendData(this.cfg.ServiceUrl, data,
+            function (responseText) {
+                try {
+                    var recvData = JSON.parse(responseText);
+                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
+                        card.SetNew();
+                    } else {
+                        card.Reset();
+                    }
+                } catch (e) { /* Empty */ }
+            }, function () {
+                card.Reset();
+            });
+    },
+    OnResizeStart: function () {
+        if (this.animData) {
+            window.clearTimeout(this.animData.animationID);
+            this.animData = null;
+        }
+        this.RemoveFromContainer();
+        this.InsertOnContainer(this.cfg.divBoard);
+    },
+    OnResize: function () {
+        var card = this;
+        if (this.cfg.Connected === false) {
+            card.Reset();
+            return;
+        }
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "Resize",
+            "IDCard": this.IDCard,
+            "Width": this.newWidth,
+            "Height": this.newHeight,
             "TimeStamp": new Date().getTime()
         };
         SendData(this.cfg.ServiceUrl, data,
@@ -439,6 +529,8 @@ Card.prototype = {
             "Command": "Create",
             "X": this.X,
             "Y": this.Y,
+            "Width": this.Width,
+            "Height": this.Height,
             "Title": this.Title,
             "Body": this.Body,
             "TimeStamp": new Date().getTime()
@@ -468,7 +560,7 @@ Card.prototype = {
         }
         return relPos;
     },
-    MouseDown: function (evt) {
+    divOverlay_MouseDown: function (evt) {
         evt.preventDefault();
 
         this.OnMoveStart();
@@ -477,12 +569,12 @@ Card.prototype = {
         this.offsetX = pos.x - this.divCard.offsetLeft;
         this.offsetY = pos.y - this.divCard.offsetTop;
 
-        document.addEventListener("mouseup", this.bindedMouseUp, false);
-        document.addEventListener("mousemove", this.bindedMouseMove, false);
+        document.addEventListener("mouseup", this.divOverlay_MouseUpBinded, false);
+        document.addEventListener("mousemove", this.divOverlay_MouseMoveBinded, false);
 
         return false;
     },
-    MouseMove: function (evt) {
+    divOverlay_MouseMove: function (evt) {
         evt.preventDefault();
 
         var pos = this.GetRelativePosToContainer({ x: evt.clientX, y: evt.clientY });
@@ -495,17 +587,17 @@ Card.prototype = {
 
         return false;
     },
-    MouseUp: function (evt) {
+    divOverlay_MouseUp: function (evt) {
         evt.preventDefault();
 
-        document.removeEventListener("mouseup", this.bindedMouseUp, false);
-        document.removeEventListener("mousemove", this.bindedMouseMove, false);
+        document.removeEventListener("mouseup", this.divOverlay_MouseUpBinded, false);
+        document.removeEventListener("mousemove", this.divOverlay_MouseMoveBinded, false);
 
         this.OnMove();
 
         return false;
     },
-    TouchStart: function (evt) {
+    divOverlay_TouchStart: function (evt) {
         evt.preventDefault();
 
         this.OnMoveStart();
@@ -514,13 +606,13 @@ Card.prototype = {
         this.offsetX = pos.x - this.divCard.offsetLeft;
         this.offsetY = pos.y - this.divCard.offsetTop;
 
-        document.addEventListener("touchend", this.bindedTouchEnd, false);
-        document.addEventListener("touchcancel", this.bindedTouchEnd, false);
-        document.addEventListener("touchmove", this.bindedTouchMove, false);
+        document.addEventListener("touchend", this.divOverlay_TouchEndBinded, false);
+        document.addEventListener("touchcancel", this.divOverlay_TouchEndBinded, false);
+        document.addEventListener("touchmove", this.divOverlay_TouchMoveBinded, false);
 
         return false;
     },
-    TouchMove: function (evt) {
+    divOverlay_TouchMove: function (evt) {
         evt.preventDefault();
 
         var pos = this.GetRelativePosToContainer({ x: evt.touches[0].clientX, y: evt.touches[0].clientY });
@@ -533,14 +625,86 @@ Card.prototype = {
 
         return false;
     },
-    TouchEnd: function (evt) {
+    divOverlay_TouchEnd: function (evt) {
         evt.preventDefault();
 
-        document.removeEventListener("touchend", this.bindedTouchEnd, false);
-        document.removeEventListener("touchcancel", this.bindedTouchEnd, false);
-        document.removeEventListener("touchmove", this.bindedTouchMove, false);
+        document.removeEventListener("touchend", this.divOverlay_TouchEndBinded, false);
+        document.removeEventListener("touchcancel", this.divOverlay_TouchEndBinded, false);
+        document.removeEventListener("touchmove", this.divOverlay_TouchMoveBinded, false);
 
         this.OnMove();
+
+        return false;
+    },
+    divResize_MouseDown: function (evt) {
+        evt.preventDefault();
+
+        this.OnResizeStart();
+        
+        this.offsetX = evt.clientX;
+        this.offsetY = evt.clientY;
+
+        document.addEventListener("mouseup", this.divResize_MouseUpBinded, false);
+        document.addEventListener("mousemove", this.divResize_MouseMoveBinded, false);
+
+        return false;
+    },
+    divResize_MouseMove: function (evt) {
+        evt.preventDefault();
+        
+        this.newWidth = this.Width + (evt.clientX - this.offsetX);
+        this.newHeight = this.Height + (evt.clientY - this.offsetY);
+        if (this.newWidth < 100) { this.newWidth = 100; }
+        if (this.newHeight < 100) { this.newHeight = 100; }
+        this.divCard.style.width = this.newWidth + "px";
+        this.divCard.style.height = this.newHeight + "px";
+
+        return false;
+    },
+    divResize_MouseUp: function (evt) {
+        evt.preventDefault();
+
+        document.removeEventListener("mouseup", this.divResize_MouseUpBinded, false);
+        document.removeEventListener("mousemove", this.divResize_MouseMoveBinded, false);
+
+        this.OnResize();
+
+        return false;
+    },
+    divResize_TouchStart: function (evt) {
+        evt.preventDefault();
+
+        this.OnResizeStart();
+        
+        this.offsetX = evt.touches[0].clientX;
+        this.offsetY = evt.touches[0].clientY;
+
+        document.addEventListener("touchend", this.divResize_TouchEndBinded, false);
+        document.addEventListener("touchcancel", this.divResize_TouchEndBinded, false);
+        document.addEventListener("touchmove", this.divResize_TouchMoveBinded, false);
+
+        return false;
+    },
+    divResize_TouchMove: function (evt) {
+        evt.preventDefault();
+
+        this.newWidth = this.Width + (evt.touches[0].clientX - this.offsetX);
+        this.newHeight = this.Height + (evt.touches[0].clientY - this.offsetY);
+        if (this.newWidth < 100) { this.newWidth = 100; }
+        if (this.newHeight < 100) { this.newHeight = 100; }
+        this.divCard.style.width = this.newWidth + "px";
+        this.divCard.style.height = this.newHeight + "px";
+
+        return false;
+    },
+    divResize_TouchEnd: function (evt) {
+        evt.preventDefault();
+
+        document.removeEventListener("touchend", this.divResize_TouchEndBinded, false);
+        document.removeEventListener("touchcancel", this.divResize_TouchEndBinded, false);
+        document.removeEventListener("touchmove", this.divResize_TouchMoveBinded, false);
+
+        this.OnResize();
 
         return false;
     },
@@ -552,6 +716,7 @@ Card.prototype = {
         this.txtBody.value = this.Body;
 
         this.divOverlay.style.display = "none";
+        this.divResize.style.display = "none";
         this.Editing = true;
 
         this.divEditBackground = document.createElement("div");
@@ -562,6 +727,7 @@ Card.prototype = {
     },
     ExitEditionMode: function () {
         this.divOverlay.style.display = "";
+        this.divResize.style.display = "";
         this.Editing = false;
         this.divEditBackground.className = ""; // Needed to remove "position: fixed" that causes to be not found on parentElement.
         this.divEditBackground.parentElement.removeChild(this.divEditBackground);
@@ -583,31 +749,6 @@ Card.prototype = {
                 this.Body = this.newBody;
                 this.OnCreate();
             }
-        }
-        return false;
-    },
-    btnAcceptEdit_Click: function (evt) { // Deprecated
-        evt.preventDefault();
-        this.newTitle = this.txtTitle.value;
-        this.newBody = this.txtBody.value;
-        this.ExitEditionMode();
-        this.txtTitle.value = this.newTitle;
-        this.txtBody.value = this.newBody;
-        if (this.IDCard > 0) {
-            this.OnEdit();
-        } else {
-            this.Title = this.newTitle;
-            this.Body = this.newBody;
-            this.OnCreate();
-        }
-        return false;
-    },
-    btnCancelEdit_Click: function (evt) { // Deprecated
-        evt.preventDefault();
-        this.ExitEditionMode();
-        this.Reset();
-        if (this.IDCard === 0) {
-            this.OnDelete();
         }
         return false;
     },
@@ -656,13 +797,19 @@ function RunCardBoard(cfg) {
     };
 
     var ProcessCardCreateEvent = function (cardEvent) {
-        var card = new Card(cfg, cardEvent.IDCard, cardEvent.Title, cardEvent.Body, cardEvent.X, cardEvent.Y);
+        var card = new Card(cfg, cardEvent.IDCard, cardEvent.Title, cardEvent.Body, cardEvent.X, cardEvent.Y, cardEvent.Width, cardEvent.Height);
     };
 
     var ProcessCardMoveEvent = function (cardEvent) {
         var card = cfg.GetCardByID(cardEvent.IDCard);
         if (card === null) { return; }
         card.Move(cardEvent.X, cardEvent.Y);
+    };
+
+    var ProcessCardResizeEvent = function (cardEvent) {
+        var card = cfg.GetCardByID(cardEvent.IDCard);
+        if (card === null) { return; }
+        card.Resize(cardEvent.Width, cardEvent.Height);
     };
 
     var ProcessCardEditEvent = function (cardEvent) {
@@ -693,6 +840,9 @@ function RunCardBoard(cfg) {
                     }
                     if (cardEvent.EventType === "CardMove") {
                         ProcessCardMoveEvent(cardEvent);
+                    }
+                    if (cardEvent.EventType === "CardResize") {
+                        ProcessCardResizeEvent(cardEvent);
                     }
                     if (cardEvent.EventType === "CardEdit") {
                         ProcessCardEditEvent(cardEvent);

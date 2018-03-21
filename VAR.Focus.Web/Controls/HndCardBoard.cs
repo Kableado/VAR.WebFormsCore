@@ -156,7 +156,9 @@ namespace VAR.Focus.Web.Controls
                     string body = context.GetRequestParm("Body");
                     int x = Convert.ToInt32(context.GetRequestParm("X"));
                     int y = Convert.ToInt32(context.GetRequestParm("Y"));
-                    idCard = cardBoard.Card_Create(title, body, x, y, currentUserName);
+                    int width = Convert.ToInt32(context.GetRequestParm("Width"));
+                    int height = Convert.ToInt32(context.GetRequestParm("Height"));
+                    idCard = cardBoard.Card_Create(title, body, x, y, width, height, currentUserName);
                     done = true;
                 }
                 if (command == "Move")
@@ -165,6 +167,14 @@ namespace VAR.Focus.Web.Controls
                     int x = Convert.ToInt32(context.GetRequestParm("X"));
                     int y = Convert.ToInt32(context.GetRequestParm("Y"));
                     cardBoard.Card_Move(idCard, x, y, currentUserName);
+                    done = true;
+                }
+                if (command == "Resize")
+                {
+                    idCard = Convert.ToInt32(context.GetRequestParm("IDCard"));
+                    int width = Convert.ToInt32(context.GetRequestParm("Width"));
+                    int height = Convert.ToInt32(context.GetRequestParm("Height"));
+                    cardBoard.Card_Resize(idCard, width, height, currentUserName);
                     done = true;
                 }
                 if (command == "Edit")
