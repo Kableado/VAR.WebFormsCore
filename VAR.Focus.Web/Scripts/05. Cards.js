@@ -557,13 +557,14 @@ Card.prototype = {
         this.divEditBackground = document.createElement("div");
         this.divEditBackground.className = "divEditBackground";
         this.divEditBackground.addEventListener("click", Card.prototype.btnEdit_Click.bind(this), false);
-        this.divCard.offsetParent.insertBefore(this.divEditBackground, this.divCard);
+        this.divCard.parentElement.insertBefore(this.divEditBackground, this.divCard);
 
     },
     ExitEditionMode: function () {
         this.divOverlay.style.display = "";
         this.Editing = false;
-        this.divEditBackground.offsetParent.removeChild(this.divEditBackground);
+        this.divEditBackground.className = ""; // Needed to remove "position: fixed" that causes to be not found on parentElement.
+        this.divEditBackground.parentElement.removeChild(this.divEditBackground);
     },
     btnEdit_Click: function (evt) {
         evt.preventDefault();
