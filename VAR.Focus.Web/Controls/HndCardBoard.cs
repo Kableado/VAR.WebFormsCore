@@ -77,16 +77,18 @@ namespace VAR.Focus.Web.Controls
             {
                 cardBoard = _cardBoards[idBoard];
                 List<Card> listCards = cardBoard.Cards_Status();
-                List<ICardEvent> listEvents = new List<ICardEvent>();
+                List<Region> listRegions = cardBoard.Regions_Status();
+                List<IBoardEvent> listEvents = new List<IBoardEvent>();
                 int lastIDCardEvent = cardBoard.GetLastIDCardEvent();
                 int lastIDCard = cardBoard.GetLastIDCard();
+                listEvents = new List<IBoardEvent>();
+                if (listRegions.Count > 0)
+                {
+                    listEvents.AddRange(CardBoard.ConvertRegionsToEvents(listRegions, lastIDCardEvent));
+                }
                 if (listCards.Count > 0)
                 {
-                    listEvents = CardBoard.ConvertCardsToEvents(listCards, lastIDCardEvent);
-                }
-                else
-                {
-                    listEvents = new List<ICardEvent>();
+                    listEvents.AddRange(CardBoard.ConvertCardsToEvents(listCards, lastIDCardEvent));
                 }
                 context.ResponseObject(listEvents);
             }
@@ -121,7 +123,7 @@ namespace VAR.Focus.Web.Controls
             int waitCount = (timePoolData > 0) ? MaxWaitLoops : 0;
             do
             {
-                List<ICardEvent> listMessages = cardBoard.Cards_GetEventList(idCardEvent);
+                List<IBoardEvent> listMessages = cardBoard.Cards_GetEventList(idCardEvent);
                 if (listMessages.Count > 0)
                 {
                     waitCount = 0;
@@ -146,11 +148,12 @@ namespace VAR.Focus.Web.Controls
             int idBoard = Convert.ToInt32(string.IsNullOrEmpty(strIDBoard) ? "0" : strIDBoard);
             string command = context.GetRequestParm("Command");
             int idCard = 0;
+            int idRegion = 0;
             bool done = false;
             CardBoard cardBoard = GetCardBoard(idBoard);
             lock (cardBoard)
             {
-                if (command == "Create")
+                if (command == "CardCreate")
                 {
                     string title = context.GetRequestParm("Title");
                     string body = context.GetRequestParm("Body");
@@ -161,7 +164,7 @@ namespace VAR.Focus.Web.Controls
                     idCard = cardBoard.Card_Create(title, body, x, y, width, height, currentUserName);
                     done = true;
                 }
-                if (command == "Move")
+                if (command == "CardMove")
                 {
                     idCard = Convert.ToInt32(context.GetRequestParm("IDCard"));
                     int x = Convert.ToInt32(context.GetRequestParm("X"));
@@ -169,7 +172,7 @@ namespace VAR.Focus.Web.Controls
                     cardBoard.Card_Move(idCard, x, y, currentUserName);
                     done = true;
                 }
-                if (command == "Resize")
+                if (command == "CardResize")
                 {
                     idCard = Convert.ToInt32(context.GetRequestParm("IDCard"));
                     int width = Convert.ToInt32(context.GetRequestParm("Width"));
@@ -177,7 +180,7 @@ namespace VAR.Focus.Web.Controls
                     cardBoard.Card_Resize(idCard, width, height, currentUserName);
                     done = true;
                 }
-                if (command == "Edit")
+                if (command == "CardEdit")
                 {
                     idCard = Convert.ToInt32(context.GetRequestParm("IDCard"));
                     string title = context.GetRequestParm("Title");
@@ -185,10 +188,49 @@ namespace VAR.Focus.Web.Controls
                     cardBoard.Card_Edit(idCard, title, body, currentUserName);
                     done = true;
                 }
-                if (command == "Delete")
+                if (command == "CardDelete")
                 {
                     idCard = Convert.ToInt32(context.GetRequestParm("IDCard"));
                     cardBoard.Card_Delete(idCard, currentUserName);
+                    done = true;
+                }
+                if (command == "RegionCreate")
+                {
+                    string title = context.GetRequestParm("Title");
+                    int x = Convert.ToInt32(context.GetRequestParm("X"));
+                    int y = Convert.ToInt32(context.GetRequestParm("Y"));
+                    int width = Convert.ToInt32(context.GetRequestParm("Width"));
+                    int height = Convert.ToInt32(context.GetRequestParm("Height"));
+                    idRegion = cardBoard.Region_Create(title, x, y, width, height, currentUserName);
+                    done = true;
+                }
+                if (command == "RegionMove")
+                {
+                    idRegion = Convert.ToInt32(context.GetRequestParm("IDRegion"));
+                    int x = Convert.ToInt32(context.GetRequestParm("X"));
+                    int y = Convert.ToInt32(context.GetRequestParm("Y"));
+                    cardBoard.Region_Move(idRegion, x, y, currentUserName);
+                    done = true;
+                }
+                if (command == "RegionResize")
+                {
+                    idRegion = Convert.ToInt32(context.GetRequestParm("IDRegion"));
+                    int width = Convert.ToInt32(context.GetRequestParm("Width"));
+                    int height = Convert.ToInt32(context.GetRequestParm("Height"));
+                    cardBoard.Region_Resize(idRegion, width, height, currentUserName);
+                    done = true;
+                }
+                if (command == "RegionEdit")
+                {
+                    idRegion = Convert.ToInt32(context.GetRequestParm("IDRegion"));
+                    string title = context.GetRequestParm("Title");
+                    cardBoard.Region_Edit(idRegion, title, currentUserName);
+                    done = true;
+                }
+                if (command == "RegionDelete")
+                {
+                    idRegion = Convert.ToInt32(context.GetRequestParm("IDRegion"));
+                    cardBoard.Region_Delete(idRegion, currentUserName);
                     done = true;
                 }
             }

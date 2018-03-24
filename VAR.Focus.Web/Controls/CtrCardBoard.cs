@@ -31,6 +31,10 @@ namespace VAR.Focus.Web.Controls
 
         private int _defaultCardHeight = 150;
 
+        private int _defaultRegionWidth = 300;
+
+        private int _defaultRegionHeight = 500;
+
         #endregion Declarations
 
         #region Properties
@@ -89,6 +93,18 @@ namespace VAR.Focus.Web.Controls
             set { _defaultCardHeight = value; }
         }
 
+        private int DefaultRegionWidth
+        {
+            get { return _defaultRegionWidth; }
+            set { _defaultRegionWidth = value; }
+        }
+
+        private int DefaultRegionHeight
+        {
+            get { return _defaultRegionHeight; }
+            set { _defaultRegionHeight = value; }
+        }
+
         #endregion Properties
 
         #region Control Life cycle
@@ -127,9 +143,12 @@ namespace VAR.Focus.Web.Controls
                 {"TimeMoveAnimation", _timeMoveAnimation},
                 {"DefaultCardWidth", _defaultCardWidth},
                 {"DefaultCardHeight", _defaultCardHeight},
+                {"DefaultRegionWidth", _defaultRegionWidth},
+                {"DefaultRegionHeight", _defaultRegionHeight},
                 {"Texts", new Dictionary<string, object> {
                     {"Toolbox",MultiLang.GetLiteral( "Toolbox")},
                     {"AddCard", MultiLang.GetLiteral("AddCard")},
+                    {"AddRegion", MultiLang.GetLiteral("AddRegion")},
                     {"EditBoard", MultiLang.GetLiteral("Config")},
                     {"Accept", MultiLang.GetLiteral("Accept")},
                     {"Cancel", MultiLang.GetLiteral("Cancel")},

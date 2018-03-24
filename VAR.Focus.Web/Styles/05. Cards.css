@@ -87,10 +87,30 @@
         box-sizing: content-box;
     }
 
+    .divCard .txtTitle {
+        width: 100%;
+        font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+        font-size: 12px;
+        background-color: transparent;
+        border: none;
+        font-weight: bold;
+        text-align: center;
+    }
+
     .divCard .divBody {
         font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
         font-size: 12px;
         height: calc(100% - 17px);
+    }
+
+    .divCard .txtBody {
+        height: 100%;
+        width: 100%;
+        font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+        font-size: 12px;
+        background-color: transparent;
+        border: none;
+        resize: none;
     }
 
     .divCard .divOverlay {
@@ -157,24 +177,100 @@
         right: 4px;
     }
 
-    .divCard .txtTitle {
-        width: 100%;
+.divRegion {
+    position: absolute;
+    background-color: rgba(0,0,0,0.5);
+    box-shadow: 0 0 0 5px rgba(0,0,0,0.5);
+    padding: 5px;
+    border-radius: 10px;
+    border: dashed 5px rgba(255, 255, 255, 0.5);
+    overflow: auto;
+}
+
+    .divRegion .divTitle {
+        padding-bottom: 5px;
+        padding-right: 44px;
         font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
         font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        height: 17px;
+        box-sizing: content-box;
+    }
+
+    .divRegion .txtTitle {
+        width: 100%;
+        font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+        font-size: 30px;
+        color: rgba(255, 255, 255, 0.5);
         background-color: transparent;
         border: none;
         font-weight: bold;
         text-align: center;
     }
 
-    .divCard .txtBody {
-        height: 100%;
-        width: 100%;
+    .divRegion .divOverlay {
+        opacity: 0;
+        background-color: rgb(255,255,0);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        -ms-touch-action: none;
+        touch-action: none;
+    }
+
+    .divRegion .divResize {
+        opacity: 0;
+        background-color: rgb(255,0,255);
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        bottom: 0;
+        right: 0;
+        -ms-touch-action: none;
+        touch-action: none;
+        cursor: se-resize;
+    }
+
+    .divRegion .btnRegion {
+        margin-top: 5px;
+        margin-right: 5px;
+        padding: 2px;
+        border: none;
+        border-radius: 3px;
+        box-shadow: 0 -2px 4px rgba(0,0,0,0.4) inset, 0 2px 3px rgba(255,255,255,1) inset;
+        color: black;
+        background-color: transparent;
         font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
         font-size: 12px;
-        background-color: transparent;
-        border: none;
-        resize: none;
+        cursor: pointer;
+    }
+
+        .divRegion .btnRegion:hover {
+            color: yellow;
+            background-color: black;
+        }
+
+        .divRegion .btnRegion:active {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4) inset, 0 -2px 3px rgba(255,255,255,1) inset;
+        }
+
+    .divRegion .btnEdit {
+        margin: 0;
+        top: 4px;
+        position: absolute;
+        width: 16px;
+        right: 24px;
+    }
+
+    .divRegion .btnDelete {
+        margin: 0;
+        top: 4px;
+        position: absolute;
+        width: 16px;
+        right: 4px;
     }
 
 .divEditBackground {

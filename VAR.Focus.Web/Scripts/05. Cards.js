@@ -1,6 +1,4 @@
-﻿var CosineInterpolation = function (f) {
-    return 1.0 - (Math.cos(f * Math.PI) + 1.0) / 2.0;
-};
+﻿
 
 var Toolbox = function (cfg, container) {
     this.cfg = cfg;
@@ -32,11 +30,17 @@ var Toolbox = function (cfg, container) {
     this.divTitle.className = "divTitle";
     this.divTitle.innerHTML = cfg.Texts.Toolbox;
 
-    this.btnAdd = document.createElement("button");
-    this.divToolbox.appendChild(this.btnAdd);
-    this.btnAdd.className = "btnToolbox";
-    this.btnAdd.innerHTML = cfg.Texts.AddCard;
-    this.btnAdd.addEventListener("click", Toolbox.prototype.btnAdd_Click.bind(this), false);
+    this.btnAddCard = document.createElement("button");
+    this.divToolbox.appendChild(this.btnAddCard);
+    this.btnAddCard.className = "btnToolbox";
+    this.btnAddCard.innerHTML = cfg.Texts.AddCard;
+    this.btnAddCard.addEventListener("click", Toolbox.prototype.btnAddCard_Click.bind(this), false);
+
+    this.btnAddRegion = document.createElement("button");
+    this.divToolbox.appendChild(this.btnAddRegion);
+    this.btnAddRegion.className = "btnToolbox";
+    this.btnAddRegion.innerHTML = cfg.Texts.AddRegion;
+    this.btnAddRegion.addEventListener("click", Toolbox.prototype.btnAddRegion_Click.bind(this), false);
 
     this.btnEditBoard = document.createElement("button");
     this.divToolbox.appendChild(this.btnEditBoard);
@@ -139,7 +143,7 @@ Toolbox.prototype = {
         document.removeEventListener("touchmove", this.bindedTouchMove, false);
         return false;
     },
-    btnAdd_Click: function (evt) {
+    btnAddCard_Click: function (evt) {
         evt.preventDefault();
         var pos = { x: 0, y: 0 };
         pos.x += this.divToolbox.offsetLeft;
@@ -147,6 +151,16 @@ Toolbox.prototype = {
         var card = new Card(this.cfg, 0, "", "", pos.x, pos.y, this.cfg.DefaultCardWidth, this.cfg.DefaultCardHeight);
         card.InsertOnContainer(this.cfg.divBoard);
         card.EnterEditionMode();
+        return false;
+    },
+    btnAddRegion_Click: function (evt) {
+        evt.preventDefault();
+        var pos = { x: 0, y: 0 };
+        pos.x += this.divToolbox.offsetLeft;
+        pos.y += this.divToolbox.offsetTop + this.divToolbox.offsetHeight;
+        var region = new Region(this.cfg, 0, "", pos.x, pos.y, this.cfg.DefaultRegionWidth, this.cfg.DefaultRegionHeight);
+        region.InsertOnContainer(this.cfg.divBoard);
+        region.EnterEditionMode();
         return false;
     },
     btnEditBoard_Click: function (evt) {
@@ -254,6 +268,12 @@ Card.prototype = {
         text = text.split("\n").join("<br />");
         return text;
     },
+    CosineInterpolation: function (f) {
+        f = 1.0 - (Math.cos(f * Math.PI) + 1.0) / 2.0;
+        f = 1.0 - (Math.cos(f * Math.PI) + 1.0) / 2.0;
+        f = 1.0 - (Math.cos(f * Math.PI) + 1.0) / 2.0;
+        return f;
+    },
     InsertOnContainer: function (container) {
         this.container = container;
         this.container.appendChild(this.divCard);
@@ -266,9 +286,7 @@ Card.prototype = {
         if (this.animData) {
             var f = (+new Date() - this.animData.startTime) / this.animData.time;
             if (f < 1.0) {
-                f = CosineInterpolation(f);
-                f = CosineInterpolation(f);
-                f = CosineInterpolation(f);
+                f = this.CosineInterpolation(f);
                 var f2 = 1 - f;
                 var x = this.animData.X1 * f + this.animData.X0 * f2;
                 var y = this.animData.Y1 * f + this.animData.Y0 * f2;
@@ -286,9 +304,7 @@ Card.prototype = {
         if (this.animData) {
             var f = (+new Date() - this.animData.startTime) / this.animData.time;
             if (f < 1.0) {
-                f = CosineInterpolation(f);
-                f = CosineInterpolation(f);
-                f = CosineInterpolation(f);
+                f = this.CosineInterpolation(f);
                 var f2 = 1 - f;
                 var width = this.animData.Width1 * f + this.animData.Width0 * f2;
                 var height = this.animData.Height1 * f + this.animData.Height0 * f2;
@@ -397,7 +413,7 @@ Card.prototype = {
         }
         var data = {
             "IDBoard": this.cfg.IDBoard,
-            "Command": "Move",
+            "Command": "CardMove",
             "IDCard": this.IDCard,
             "X": this.newX,
             "Y": this.newY,
@@ -433,7 +449,7 @@ Card.prototype = {
         }
         var data = {
             "IDBoard": this.cfg.IDBoard,
-            "Command": "Resize",
+            "Command": "CardResize",
             "IDCard": this.IDCard,
             "Width": this.newWidth,
             "Height": this.newHeight,
@@ -462,7 +478,7 @@ Card.prototype = {
             }
             var data = {
                 "IDBoard": this.cfg.IDBoard,
-                "Command": "Edit",
+                "Command": "CardEdit",
                 "IDCard": this.IDCard,
                 "Title": this.newTitle,
                 "Body": this.newBody,
@@ -497,7 +513,7 @@ Card.prototype = {
         }
         var data = {
             "IDBoard": this.cfg.IDBoard,
-            "Command": "Delete",
+            "Command": "CardDelete",
             "IDCard": this.IDCard,
             "TimeStamp": new Date().getTime()
         };
@@ -526,7 +542,7 @@ Card.prototype = {
         }
         var data = {
             "IDBoard": this.cfg.IDBoard,
-            "Command": "Create",
+            "Command": "CardCreate",
             "X": this.X,
             "Y": this.Y,
             "Width": this.Width,
@@ -768,6 +784,588 @@ Card.prototype = {
     }
 };
 
+var Region = function (cfg, idRegion, title, x, y, width, height) {
+    this.cfg = cfg;
+    this.IDRegion = idRegion;
+    this.Title = title;
+    this.X = x;
+    this.Y = y;
+    this.Width = width;
+    this.Height = height;
+
+    // Create DOM
+    this.container = null;
+    this.divRegion = document.createElement("div");
+    this.divRegion.className = "divRegion";
+    this.divRegion.style.left = x + "px";
+    this.divRegion.style.top = y + "px";
+    this.divRegion.style.width = width + "px";
+    this.divRegion.style.height = height + "px";
+
+    this.divTitle = document.createElement("div");
+    this.divRegion.appendChild(this.divTitle);
+    this.divTitle.className = "divTitle";
+
+    this.txtTitle = document.createElement("input");
+    this.txtTitle.className = "txtTitle";
+    this.txtTitle.value = this.Title;
+    this.divTitle.appendChild(this.txtTitle);
+    
+    this.divOverlay = document.createElement("div");
+    this.divRegion.appendChild(this.divOverlay);
+    this.divOverlay.className = "divOverlay";
+    this.divOverlay_MouseDownBinded = Region.prototype.divOverlay_MouseDown.bind(this);
+    this.divOverlay_MouseMoveBinded = Region.prototype.divOverlay_MouseMove.bind(this);
+    this.divOverlay_MouseUpBinded = Region.prototype.divOverlay_MouseUp.bind(this);
+    this.divOverlay.addEventListener("mousedown", this.divOverlay_MouseDownBinded, false);
+    this.divOverlay_TouchStartBinded = Region.prototype.divOverlay_TouchStart.bind(this);
+    this.divOverlay_TouchMoveBinded = Region.prototype.divOverlay_TouchMove.bind(this);
+    this.divOverlay_TouchEndBinded = Region.prototype.divOverlay_TouchEnd.bind(this);
+    this.divOverlay.addEventListener("touchstart", this.divOverlay_TouchStartBinded, false);
+
+    this.btnEdit = document.createElement("button");
+    this.divRegion.appendChild(this.btnEdit);
+    this.btnEdit.className = "btnRegion btnEdit";
+    this.btnEdit.innerHTML = "E";
+    this.btnEdit.addEventListener("click", Region.prototype.btnEdit_Click.bind(this), false);
+
+    this.btnDelete = document.createElement("button");
+    this.divRegion.appendChild(this.btnDelete);
+    this.btnDelete.className = "btnRegion btnDelete";
+    this.btnDelete.innerHTML = "X";
+    this.btnDelete.addEventListener("click", Region.prototype.btnDelete_Click.bind(this), false);
+
+    this.divResize = document.createElement("div");
+    this.divRegion.appendChild(this.divResize);
+    this.divResize.className = "divResize";
+    this.divResize_MouseDownBinded = Region.prototype.divResize_MouseDown.bind(this);
+    this.divResize_MouseMoveBinded = Region.prototype.divResize_MouseMove.bind(this);
+    this.divResize_MouseUpBinded = Region.prototype.divResize_MouseUp.bind(this);
+    this.divResize.addEventListener("mousedown", this.divResize_MouseDownBinded, false);
+    this.divResize_TouchStartBinded = Region.prototype.divResize_TouchStart.bind(this);
+    this.divResize_TouchMoveBinded = Region.prototype.divResize_TouchMove.bind(this);
+    this.divResize_TouchEndBinded = Region.prototype.divResize_TouchEnd.bind(this);
+    this.divResize.addEventListener("touchstart", this.divResize_TouchStartBinded, false);
+
+    // Temporal variables for dragging, editing and deleting
+    this.offsetX = 0;
+    this.offsetY = 0;
+    this.newX = this.X;
+    this.newY = this.Y;
+    this.newWidth = this.Width;
+    this.newHeight = this.Height;
+    this.newTitle = this.Title;
+    this.Editing = false;
+
+    // Selfinsert
+    if (this.IDRegion > 0) {
+        this.cfg.Regions.push(this);
+    }
+    this.InsertOnContainer(this.cfg.divBoard);
+};
+Region.prototype = {
+    FilterText: function (text) {
+        text = text.split("  ").join(" &nbsp;");
+        text = text.split("&nbsp; &nbsp;").join("&nbsp;&nbsp;&nbsp;");
+        text = text.split("\n").join("<br />");
+        return text;
+    },
+    CosineInterpolation: function (f) {
+        f = 1.0 - (Math.cos(f * Math.PI) + 1.0) / 2.0;
+        f = 1.0 - (Math.cos(f * Math.PI) + 1.0) / 2.0;
+        f = 1.0 - (Math.cos(f * Math.PI) + 1.0) / 2.0;
+        return f;
+    },
+    InsertOnContainer: function (container) {
+        this.container = container;
+        this.container.insertBefore(this.divRegion, this.container.firstChild);
+    },
+    RemoveFromContainer: function () {
+        this.container.removeChild(this.divRegion);
+    },
+    MoveFrame: function () {
+        if (this.animData) {
+            var f = (+new Date() - this.animData.startTime) / this.animData.time;
+            if (f < 1.0) {
+                f = this.CosineInterpolation(f);
+                var f2 = 1 - f;
+                var x = this.animData.X1 * f + this.animData.X0 * f2;
+                var y = this.animData.Y1 * f + this.animData.Y0 * f2;
+                this.divRegion.style.left = x + "px";
+                this.divRegion.style.top = y + "px";
+                this.animData.animationID = window.setTimeout(this.bindedMoveFrame, 16);
+                return;
+            }
+        }
+        this.divRegion.style.left = this.X + "px";
+        this.divRegion.style.top = this.Y + "px";
+        this.animData = null;
+    },
+    ResizeFrame: function () {
+        if (this.animData) {
+            var f = (+new Date() - this.animData.startTime) / this.animData.time;
+            if (f < 1.0) {
+                f = this.CosineInterpolation(f);
+                var f2 = 1 - f;
+                var width = this.animData.Width1 * f + this.animData.Width0 * f2;
+                var height = this.animData.Height1 * f + this.animData.Height0 * f2;
+                this.divRegion.style.width = width + "px";
+                this.divRegion.style.height = height + "px";
+                this.animData.animationID = window.setTimeout(this.bindedResizeFrame, 16);
+                return;
+            }
+        }
+        this.divRegion.style.width = this.Width + "px";
+        this.divRegion.style.height = this.Height + "px";
+        this.animData = null;
+    },
+    Move: function (x, y) {
+        if (x < 0) { x = 0; }
+        if (y < 0) { y = 0; }
+        this.OnMoveStart();
+        this.X = x;
+        this.Y = y;
+        this.newX = x;
+        this.newY = y;
+        this.animData = {
+            X0: parseInt(this.divRegion.style.left),
+            Y0: parseInt(this.divRegion.style.top),
+            X1: x,
+            Y1: y,
+            time: this.cfg.TimeMoveAnimation,
+            startTime: +new Date(),
+            animationID: 0
+        };
+        this.bindedMoveFrame = Region.prototype.MoveFrame.bind(this);
+        this.animData.animationID = window.setTimeout(this.bindedMoveFrame, 16);
+    },
+    Resize: function (width, height) {
+        if (width < 100) { x = 100; }
+        if (height < 100) { y = 100; }
+        this.OnResizeStart();
+        this.Width = width;
+        this.Height = height;
+        this.newWidth = width;
+        this.newHeight = height;
+        this.animData = {
+            Width0: parseInt(this.divRegion.style.width),
+            Height0: parseInt(this.divRegion.style.height),
+            Width1: width,
+            Height1: height,
+            time: this.cfg.TimeMoveAnimation,
+            startTime: +new Date(),
+            animationID: 0
+        };
+        this.bindedResizeFrame = Region.prototype.ResizeFrame.bind(this);
+        this.animData.animationID = window.setTimeout(this.bindedResizeFrame, 16);
+    },
+    Edit: function (title) {
+        if (this.Editing) {
+            this.ExitEditionMode();
+        }
+        this.Title = title;
+        this.newTitle = title;
+        this.txtTitle.value = this.Title;
+    },
+    Reset: function () {
+        this.newX = this.X;
+        this.newY = this.Y;
+        this.newTitle = this.Title;
+        this.divRegion.style.left = this.X + "px";
+        this.divRegion.style.top = this.Y + "px";
+        this.txtTitle.value = this.Title;
+    },
+    SetNew: function () {
+        this.X = this.newX;
+        this.Y = this.newY;
+        this.Title = this.newTitle;
+        this.divRegion.style.left = this.X + "px";
+        this.divRegion.style.top = this.Y + "px";
+        this.txtTitle.value = this.Title;
+    },
+    Hide: function () {
+        this.divRegion.style.display = "none";
+    },
+    Show: function () {
+        this.divRegion.style.display = "";
+    },
+    OnMoveStart: function () {
+        if (this.animData) {
+            window.clearTimeout(this.animData.animationID);
+            this.animData = null;
+        }
+    },
+    OnMove: function () {
+        var Region = this;
+        if (this.cfg.Connected === false) {
+            Region.Reset();
+            return;
+        }
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "RegionMove",
+            "IDRegion": this.IDRegion,
+            "X": this.newX,
+            "Y": this.newY,
+            "TimeStamp": new Date().getTime()
+        };
+        SendData(this.cfg.ServiceUrl, data,
+            function (responseText) {
+                try {
+                    var recvData = JSON.parse(responseText);
+                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
+                        Region.SetNew();
+                    } else {
+                        Region.Reset();
+                    }
+                } catch (e) { /* Empty */ }
+            }, function () {
+                Region.Reset();
+            });
+    },
+    OnResizeStart: function () {
+        if (this.animData) {
+            window.clearTimeout(this.animData.animationID);
+            this.animData = null;
+        }
+    },
+    OnResize: function () {
+        var Region = this;
+        if (this.cfg.Connected === false) {
+            Region.Reset();
+            return;
+        }
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "RegionResize",
+            "IDRegion": this.IDRegion,
+            "Width": this.newWidth,
+            "Height": this.newHeight,
+            "TimeStamp": new Date().getTime()
+        };
+        SendData(this.cfg.ServiceUrl, data,
+            function (responseText) {
+                try {
+                    var recvData = JSON.parse(responseText);
+                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
+                        Region.SetNew();
+                    } else {
+                        Region.Reset();
+                    }
+                } catch (e) { /* Empty */ }
+            }, function () {
+                Region.Reset();
+            });
+    },
+    OnEdit: function () {
+        if (this.Title !== this.newTitle) {
+            var Region = this;
+            if (this.cfg.Connected === false) {
+                Region.Reset();
+                return;
+            }
+            var data = {
+                "IDBoard": this.cfg.IDBoard,
+                "Command": "RegionEdit",
+                "IDRegion": this.IDRegion,
+                "Title": this.newTitle,
+                "TimeStamp": new Date().getTime()
+            };
+            SendData(this.cfg.ServiceUrl, data,
+                function (responseText) {
+                    try {
+                        var recvData = JSON.parse(responseText);
+                        if (recvData && recvData instanceof Object && recvData.IsOK === true) {
+                            Region.SetNew();
+                        } else {
+                            Region.Reset();
+                        }
+                    } catch (e) { /* Empty */ }
+                }, function () {
+                    Region.Reset();
+                });
+        }
+    },
+    OnDelete: function () {
+        var Region = this;
+        this.Hide();
+        if (this.cfg.Connected === false) {
+            this.Show();
+            return;
+        }
+        if (this.IDRegion === 0) {
+            this.RemoveFromContainer();
+            this.cfg.RemoveRegionByID(Region.IDRegion);
+            return;
+        }
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "RegionDelete",
+            "IDRegion": this.IDRegion,
+            "TimeStamp": new Date().getTime()
+        };
+        SendData(this.cfg.ServiceUrl, data,
+            function (responseText) {
+                try {
+                    var recvData = JSON.parse(responseText);
+                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
+                        Region.RemoveFromContainer();
+                        if (Region.IDRegion > 0) {
+                            Region.cfg.RemoveRegionByID(Region.IDRegion);
+                        }
+                    } else {
+                        Region.Show();
+                    }
+                } catch (e) { /* Empty */ }
+            }, function () {
+                Region.Show();
+            });
+    },
+    OnCreate: function () {
+        var Region = this;
+        if (this.cfg.Connected === false) {
+            Region.OnDelete();
+            return;
+        }
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "RegionCreate",
+            "X": this.X,
+            "Y": this.Y,
+            "Width": this.Width,
+            "Height": this.Height,
+            "Title": this.Title,
+            "TimeStamp": new Date().getTime()
+        };
+        SendData(this.cfg.ServiceUrl, data,
+            function (responseText) {
+                try {
+                    var recvData = JSON.parse(responseText);
+                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
+                        //Region.IDRegion = parseInt(recvData.ReturnValue);
+                        Region.OnDelete();
+                    } else {
+                        Region.OnDelete();
+                    }
+                } catch (e) { /* Empty */ }
+            }, function () {
+                Region.OnDelete();
+            });
+    },
+    GetRelativePosToContainer: function (pos) {
+        var tempElem = this.container;
+        var relPos = { x: pos.x, y: pos.y };
+        while (tempElem) {
+            relPos.x -= tempElem.offsetLeft;
+            relPos.y -= tempElem.offsetTop;
+            tempElem = tempElem.offsetParent;
+        }
+        return relPos;
+    },
+    divOverlay_MouseDown: function (evt) {
+        evt.preventDefault();
+
+        this.OnMoveStart();
+
+        var pos = this.GetRelativePosToContainer({ x: evt.clientX, y: evt.clientY });
+        this.offsetX = pos.x - this.divRegion.offsetLeft;
+        this.offsetY = pos.y - this.divRegion.offsetTop;
+
+        document.addEventListener("mouseup", this.divOverlay_MouseUpBinded, false);
+        document.addEventListener("mousemove", this.divOverlay_MouseMoveBinded, false);
+
+        return false;
+    },
+    divOverlay_MouseMove: function (evt) {
+        evt.preventDefault();
+
+        var pos = this.GetRelativePosToContainer({ x: evt.clientX, y: evt.clientY });
+        this.newX = parseInt(pos.x - this.offsetX);
+        this.newY = parseInt(pos.y - this.offsetY);
+        if (this.newX < 0) { this.newX = 0; }
+        if (this.newY < 0) { this.newY = 0; }
+        this.divRegion.style.left = this.newX + "px";
+        this.divRegion.style.top = this.newY + "px";
+
+        return false;
+    },
+    divOverlay_MouseUp: function (evt) {
+        evt.preventDefault();
+
+        document.removeEventListener("mouseup", this.divOverlay_MouseUpBinded, false);
+        document.removeEventListener("mousemove", this.divOverlay_MouseMoveBinded, false);
+
+        this.OnMove();
+
+        return false;
+    },
+    divOverlay_TouchStart: function (evt) {
+        evt.preventDefault();
+
+        this.OnMoveStart();
+
+        var pos = this.GetRelativePosToContainer({ x: evt.touches[0].clientX, y: evt.touches[0].clientY });
+        this.offsetX = pos.x - this.divRegion.offsetLeft;
+        this.offsetY = pos.y - this.divRegion.offsetTop;
+
+        document.addEventListener("touchend", this.divOverlay_TouchEndBinded, false);
+        document.addEventListener("touchcancel", this.divOverlay_TouchEndBinded, false);
+        document.addEventListener("touchmove", this.divOverlay_TouchMoveBinded, false);
+
+        return false;
+    },
+    divOverlay_TouchMove: function (evt) {
+        evt.preventDefault();
+
+        var pos = this.GetRelativePosToContainer({ x: evt.touches[0].clientX, y: evt.touches[0].clientY });
+        this.newX = parseInt(pos.x - this.offsetX);
+        this.newY = parseInt(pos.y - this.offsetY);
+        if (this.newX < 0) { this.newX = 0; }
+        if (this.newY < 0) { this.newY = 0; }
+        this.divRegion.style.left = this.newX + "px";
+        this.divRegion.style.top = this.newY + "px";
+
+        return false;
+    },
+    divOverlay_TouchEnd: function (evt) {
+        evt.preventDefault();
+
+        document.removeEventListener("touchend", this.divOverlay_TouchEndBinded, false);
+        document.removeEventListener("touchcancel", this.divOverlay_TouchEndBinded, false);
+        document.removeEventListener("touchmove", this.divOverlay_TouchMoveBinded, false);
+
+        this.OnMove();
+
+        return false;
+    },
+    divResize_MouseDown: function (evt) {
+        evt.preventDefault();
+
+        this.OnResizeStart();
+
+        this.offsetX = evt.clientX;
+        this.offsetY = evt.clientY;
+
+        document.addEventListener("mouseup", this.divResize_MouseUpBinded, false);
+        document.addEventListener("mousemove", this.divResize_MouseMoveBinded, false);
+
+        return false;
+    },
+    divResize_MouseMove: function (evt) {
+        evt.preventDefault();
+
+        this.newWidth = this.Width + (evt.clientX - this.offsetX);
+        this.newHeight = this.Height + (evt.clientY - this.offsetY);
+        if (this.newWidth < 100) { this.newWidth = 100; }
+        if (this.newHeight < 100) { this.newHeight = 100; }
+        this.divRegion.style.width = this.newWidth + "px";
+        this.divRegion.style.height = this.newHeight + "px";
+
+        return false;
+    },
+    divResize_MouseUp: function (evt) {
+        evt.preventDefault();
+
+        document.removeEventListener("mouseup", this.divResize_MouseUpBinded, false);
+        document.removeEventListener("mousemove", this.divResize_MouseMoveBinded, false);
+
+        this.OnResize();
+
+        return false;
+    },
+    divResize_TouchStart: function (evt) {
+        evt.preventDefault();
+
+        this.OnResizeStart();
+
+        this.offsetX = evt.touches[0].clientX;
+        this.offsetY = evt.touches[0].clientY;
+
+        document.addEventListener("touchend", this.divResize_TouchEndBinded, false);
+        document.addEventListener("touchcancel", this.divResize_TouchEndBinded, false);
+        document.addEventListener("touchmove", this.divResize_TouchMoveBinded, false);
+
+        return false;
+    },
+    divResize_TouchMove: function (evt) {
+        evt.preventDefault();
+
+        this.newWidth = this.Width + (evt.touches[0].clientX - this.offsetX);
+        this.newHeight = this.Height + (evt.touches[0].clientY - this.offsetY);
+        if (this.newWidth < 100) { this.newWidth = 100; }
+        if (this.newHeight < 100) { this.newHeight = 100; }
+        this.divRegion.style.width = this.newWidth + "px";
+        this.divRegion.style.height = this.newHeight + "px";
+
+        return false;
+    },
+    divResize_TouchEnd: function (evt) {
+        evt.preventDefault();
+
+        document.removeEventListener("touchend", this.divResize_TouchEndBinded, false);
+        document.removeEventListener("touchcancel", this.divResize_TouchEndBinded, false);
+        document.removeEventListener("touchmove", this.divResize_TouchMoveBinded, false);
+
+        this.OnResize();
+
+        return false;
+    },
+    EnterEditionMode: function () {
+        this.RemoveFromContainer();
+        this.InsertOnContainer(this.cfg.divBoard);
+
+        this.txtTitle.value = this.Title;
+
+        this.divOverlay.style.display = "none";
+        this.divResize.style.display = "none";
+        this.Editing = true;
+
+        this.divEditBackground = document.createElement("div");
+        this.divEditBackground.className = "divEditBackground";
+        this.divEditBackground.addEventListener("click", Region.prototype.btnEdit_Click.bind(this), false);
+        this.divRegion.parentElement.insertBefore(this.divEditBackground, this.divRegion);
+
+    },
+    ExitEditionMode: function () {
+        this.divOverlay.style.display = "";
+        this.divResize.style.display = "";
+        this.Editing = false;
+        this.divEditBackground.className = ""; // Needed to remove "position: fixed" that causes to be not found on parentElement.
+        this.divEditBackground.parentElement.removeChild(this.divEditBackground);
+    },
+    btnEdit_Click: function (evt) {
+        evt.preventDefault();
+        if (this.Editing === false) {
+            this.EnterEditionMode();
+        } else {
+            this.newTitle = this.txtTitle.value;
+            this.ExitEditionMode();
+            this.txtTitle.value = this.newTitle;
+            if (this.IDRegion > 0) {
+                this.OnEdit();
+            } else {
+                this.Title = this.newTitle;
+                this.OnCreate();
+            }
+        }
+        return false;
+    },
+    btnDelete_Click: function (evt) {
+        evt.preventDefault();
+        if (this.Editing === true) {
+            this.ExitEditionMode();
+            this.Reset();
+            if (this.IDRegion > 0) {
+                return false;
+            }
+        }
+        if (this.IDRegion === 0 || confirm(this.cfg.Texts.ConfirmDelete)) {
+            this.OnDelete();
+        }
+        return false;
+    }
+};
+
 function RunCardBoard(cfg) {
     cfg.divBoard = GetElement(cfg.divBoard);
 
@@ -776,6 +1374,8 @@ function RunCardBoard(cfg) {
     cfg.Connected = false;
 
     cfg.Cards = [];
+
+    cfg.Regions = [];
 
     cfg.GetCardByID = function (idCard) {
         for (var i = 0, n = this.Cards.length; i < n; i++) {
@@ -791,6 +1391,25 @@ function RunCardBoard(cfg) {
             var card = this.Cards[i];
             if (card.IDCard === idCard) {
                 this.Cards.splice(i, 1);
+            }
+        }
+        return false;
+    };
+
+    cfg.GetRegionByID = function (idRegion) {
+        for (var i = 0, n = this.Regions.length; i < n; i++) {
+            var region = this.Regions[i];
+            if (region.IDRegion === idRegion) {
+                return region;
+            }
+        }
+        return null;
+    };
+    cfg.RemoveRegionByID = function (idRegion) {
+        for (var i = 0, n = this.Regions.length; i < n; i++) {
+            var region = this.Regions[i];
+            if (region.IDRegion === idRegion) {
+                this.Regions.splice(i, 1);
             }
         }
         return false;
@@ -824,6 +1443,34 @@ function RunCardBoard(cfg) {
         card.RemoveFromContainer(cfg.divBoard);
     };
 
+    var ProcessRegionCreateEvent = function (cardEvent) {
+        var region = new Region(cfg, cardEvent.IDRegion, cardEvent.Title, cardEvent.X, cardEvent.Y, cardEvent.Width, cardEvent.Height);
+    };
+
+    var ProcessRegionMoveEvent = function (cardEvent) {
+        var region = cfg.GetRegionByID(cardEvent.IDRegion);
+        if (region === null) { return; }
+        region.Move(cardEvent.X, cardEvent.Y);
+    };
+
+    var ProcessRegionResizeEvent = function (cardEvent) {
+        var region = cfg.GetRegionByID(cardEvent.IDRegion);
+        if (region === null) { return; }
+        region.Resize(cardEvent.Width, cardEvent.Height);
+    };
+
+    var ProcessRegionEditEvent = function (cardEvent) {
+        var region = cfg.GetRegionByID(cardEvent.IDRegion);
+        if (region === null) { return; }
+        region.Edit(cardEvent.Title);
+    };
+
+    var ProcessRegionDeleteEvent = function (cardEvent) {
+        var region = cfg.GetRegionByID(cardEvent.IDRegion);
+        if (region === null) { return; }
+        region.RemoveFromContainer(cfg.divBoard);
+    };
+
     var RequestCardEventData = function () {
         var ReciveCardEventData = function (responseText) {
             cfg.Connected = true;
@@ -849,6 +1496,21 @@ function RunCardBoard(cfg) {
                     }
                     if (cardEvent.EventType === "CardDelete") {
                         ProcessCardDeleteEvent(cardEvent);
+                    }
+                    if (cardEvent.EventType === "RegionCreate") {
+                        ProcessRegionCreateEvent(cardEvent);
+                    }
+                    if (cardEvent.EventType === "RegionMove") {
+                        ProcessRegionMoveEvent(cardEvent);
+                    }
+                    if (cardEvent.EventType === "RegionResize") {
+                        ProcessRegionResizeEvent(cardEvent);
+                    }
+                    if (cardEvent.EventType === "RegionEdit") {
+                        ProcessRegionEditEvent(cardEvent);
+                    }
+                    if (cardEvent.EventType === "RegionDelete") {
+                        ProcessRegionDeleteEvent(cardEvent);
                     }
                 }
             }
