@@ -161,7 +161,8 @@ namespace VAR.Focus.Web.Controls
                     int y = Convert.ToInt32(context.GetRequestParm("Y"));
                     int width = Convert.ToInt32(context.GetRequestParm("Width"));
                     int height = Convert.ToInt32(context.GetRequestParm("Height"));
-                    idCard = cardBoard.Card_Create(title, body, x, y, width, height, currentUserName);
+                    int locked = Convert.ToInt32(context.GetRequestParm("Locked"));
+                    idCard = cardBoard.Card_Create(title, body, x, y, width, height, locked != 0, currentUserName);
                     done = true;
                 }
                 if (command == "CardMove")
@@ -188,6 +189,13 @@ namespace VAR.Focus.Web.Controls
                     cardBoard.Card_Edit(idCard, title, body, currentUserName);
                     done = true;
                 }
+                if (command == "CardLock")
+                {
+                    idCard = Convert.ToInt32(context.GetRequestParm("IDCard"));
+                    int locked = Convert.ToInt32(context.GetRequestParm("Locked"));
+                    cardBoard.Card_Lock(idCard, locked != 0, currentUserName);
+                    done = true;
+                }
                 if (command == "CardDelete")
                 {
                     idCard = Convert.ToInt32(context.GetRequestParm("IDCard"));
@@ -201,7 +209,8 @@ namespace VAR.Focus.Web.Controls
                     int y = Convert.ToInt32(context.GetRequestParm("Y"));
                     int width = Convert.ToInt32(context.GetRequestParm("Width"));
                     int height = Convert.ToInt32(context.GetRequestParm("Height"));
-                    idRegion = cardBoard.Region_Create(title, x, y, width, height, currentUserName);
+                    int locked = Convert.ToInt32(context.GetRequestParm("Locked"));
+                    idRegion = cardBoard.Region_Create(title, x, y, width, height, locked != 0, currentUserName);
                     done = true;
                 }
                 if (command == "RegionMove")
@@ -225,6 +234,13 @@ namespace VAR.Focus.Web.Controls
                     idRegion = Convert.ToInt32(context.GetRequestParm("IDRegion"));
                     string title = context.GetRequestParm("Title");
                     cardBoard.Region_Edit(idRegion, title, currentUserName);
+                    done = true;
+                }
+                if (command == "RegionLock")
+                {
+                    idRegion = Convert.ToInt32(context.GetRequestParm("IDRegion"));
+                    int locked = Convert.ToInt32(context.GetRequestParm("Locked"));
+                    cardBoard.Region_Lock(idRegion, locked != 0, currentUserName);
                     done = true;
                 }
                 if (command == "RegionDelete")

@@ -171,7 +171,7 @@ Toolbox.prototype = {
     empty: null
 };
 
-var Card = function (cfg, idCard, title, body, x, y, width, height) {
+var Card = function (cfg, idCard, title, body, x, y, width, height, locked) {
     this.cfg = cfg;
     this.IDCard = idCard;
     this.Title = title;
@@ -180,6 +180,7 @@ var Card = function (cfg, idCard, title, body, x, y, width, height) {
     this.Y = y;
     this.Width = width;
     this.Height = height;
+    this.Locked = locked;
 
     // Create DOM
     this.container = null;
@@ -232,6 +233,19 @@ var Card = function (cfg, idCard, title, body, x, y, width, height) {
     this.btnDelete.innerHTML = "X";
     this.btnDelete.addEventListener("click", Card.prototype.btnDelete_Click.bind(this), false);
 
+    this.btnLock = document.createElement("button");
+    this.divCard.appendChild(this.btnLock);
+    this.btnLock.className = "btnCard btnLock";
+    this.btnLock.innerHTML = "L";
+    this.btnLock.addEventListener("click", Region.prototype.btnLock_Click.bind(this), false);
+
+    this.btnUnlock = document.createElement("button");
+    this.divCard.appendChild(this.btnUnlock);
+    this.btnUnlock.className = "btnCard btnUnlock";
+    this.btnUnlock.innerHTML = "U";
+    this.btnUnlock.style.display = "none";
+    this.btnUnlock.addEventListener("click", Region.prototype.btnUnlock_Click.bind(this), false);
+
     this.divResize = document.createElement("div");
     this.divCard.appendChild(this.divResize);
     this.divResize.className = "divResize";
@@ -244,7 +258,7 @@ var Card = function (cfg, idCard, title, body, x, y, width, height) {
     this.divResize_TouchEndBinded = Card.prototype.divResize_TouchEnd.bind(this);
     this.divResize.addEventListener("touchstart", this.divResize_TouchStartBinded, false);
 
-    // Temporal variables for dragging, editing and deleting
+    // Temporal variables for actions
     this.offsetX = 0;
     this.offsetY = 0;
     this.newX = this.X;
@@ -253,13 +267,16 @@ var Card = function (cfg, idCard, title, body, x, y, width, height) {
     this.newHeight = this.Height;
     this.newTitle = this.Title;
     this.newBody = this.Body;
+    this.newLocked = locked;
     this.Editing = false;
 
-    // Selfinsert
+    // SelfInsert
     if (this.IDCard > 0) {
         this.cfg.Cards.push(this);
     }
     this.InsertOnContainer(this.cfg.divBoard);
+
+    this.SetLock(this.Locked);
 };
 Card.prototype = {
     FilterText: function (text) {
@@ -371,31 +388,95 @@ Card.prototype = {
         this.RemoveFromContainer();
         this.InsertOnContainer(this.cfg.divBoard);
     },
+    Lock: function (locked) {
+        this.newLocked = locked
+        this.SetLock(locked);
+    },
+    SetLock: function (locked) {
+        if (locked) {
+            this.btnEdit.style.display = "none";
+            this.btnDelete.style.display = "none";
+            this.btnLock.style.display = "none";
+            this.btnUnlock.style.display = "";
+            this.divOverlay.removeEventListener("mousedown", this.divOverlay_MouseDownBinded, false);
+            this.divOverlay.removeEventListener("touchstart", this.divOverlay_TouchStartBinded, false);
+            this.divResize.style.display = "none";
+        } else {
+            this.btnEdit.style.display = "";
+            this.btnDelete.style.display = "";
+            this.btnLock.style.display = "";
+            this.btnUnlock.style.display = "none";
+            this.divOverlay.addEventListener("mousedown", this.divOverlay_MouseDownBinded, false);
+            this.divOverlay.addEventListener("touchstart", this.divOverlay_TouchStartBinded, false);
+            this.divResize.style.display = "";
+        }
+    },
     Reset: function () {
         this.newX = this.X;
         this.newY = this.Y;
+        this.newWidth = this.Width;
+        this.newHeight = this.Height;
         this.newTitle = this.Title;
         this.newBody = this.Body;
+        this.newLocked = this.Locked;
+
         this.divCard.style.left = this.X + "px";
         this.divCard.style.top = this.Y + "px";
         this.txtTitle.value = this.Title;
+        this.SetLock(this.Locked);
         this.txtBody.value = this.Body;
     },
     SetNew: function () {
         this.X = this.newX;
         this.Y = this.newY;
+        this.Width = this.newWidth;
+        this.Height = this.newHeight;
         this.Title = this.newTitle;
         this.Body = this.newBody;
-        this.divCard.style.left = this.X + "px";
-        this.divCard.style.top = this.Y + "px";
-        this.txtTitle.value = this.Title;
-        this.txtBody.value = this.Body;
+        this.Locked = this.newLocked;
+        this.Reset();
     },
     Hide: function () {
         this.divCard.style.display = "none";
     },
     Show: function () {
         this.divCard.style.display = "";
+    },
+    SendEvent: function (eventData) {
+        var card = this;
+        SendData(this.cfg.ServiceUrl, eventData,
+            function (responseText) {
+                try {
+                    var recvData = JSON.parse(responseText);
+                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
+                        card.SetNew();
+                    } else {
+                        card.Reset();
+                    }
+                } catch (e) { /* Empty */ }
+            }, function () {
+                card.Reset();
+            });
+    },
+    OnCreate: function () {
+        if (this.cfg.Connected === false) {
+            this.OnDelete();
+            return;
+        }
+        this.RemoveFromContainer();
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "CardCreate",
+            "X": this.X,
+            "Y": this.Y,
+            "Width": this.Width,
+            "Height": this.Height,
+            "Title": this.Title,
+            "Body": this.Body,
+            "Locked": this.Locked ? 1 : 0,
+            "TimeStamp": new Date().getTime()
+        };
+        this.SendEvent(data);
     },
     OnMoveStart: function () {
         if (this.animData) {
@@ -406,9 +487,8 @@ Card.prototype = {
         this.InsertOnContainer(this.cfg.divBoard);
     },
     OnMove: function () {
-        var card = this;
         if (this.cfg.Connected === false) {
-            card.Reset();
+            this.Reset();
             return;
         }
         var data = {
@@ -419,19 +499,7 @@ Card.prototype = {
             "Y": this.newY,
             "TimeStamp": new Date().getTime()
         };
-        SendData(this.cfg.ServiceUrl, data,
-            function (responseText) {
-                try {
-                    var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
-                        card.SetNew();
-                    } else {
-                        card.Reset();
-                    }
-                } catch (e) { /* Empty */ }
-            }, function () {
-                card.Reset();
-            });
+        this.SendEvent(data);
     },
     OnResizeStart: function () {
         if (this.animData) {
@@ -442,9 +510,8 @@ Card.prototype = {
         this.InsertOnContainer(this.cfg.divBoard);
     },
     OnResize: function () {
-        var card = this;
         if (this.cfg.Connected === false) {
-            card.Reset();
+            this.Reset();
             return;
         }
         var data = {
@@ -455,25 +522,12 @@ Card.prototype = {
             "Height": this.newHeight,
             "TimeStamp": new Date().getTime()
         };
-        SendData(this.cfg.ServiceUrl, data,
-            function (responseText) {
-                try {
-                    var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
-                        card.SetNew();
-                    } else {
-                        card.Reset();
-                    }
-                } catch (e) { /* Empty */ }
-            }, function () {
-                card.Reset();
-            });
+        this.SendEvent(data);
     },
     OnEdit: function () {
         if (this.Title !== this.newTitle || this.Body !== this.newBody) {
-            var card = this;
             if (this.cfg.Connected === false) {
-                card.Reset();
+                this.Reset();
                 return;
             }
             var data = {
@@ -484,23 +538,24 @@ Card.prototype = {
                 "Body": this.newBody,
                 "TimeStamp": new Date().getTime()
             };
-            SendData(this.cfg.ServiceUrl, data,
-                function (responseText) {
-                    try {
-                        var recvData = JSON.parse(responseText);
-                        if (recvData && recvData instanceof Object && recvData.IsOK === true) {
-                            card.SetNew();
-                        } else {
-                            card.Reset();
-                        }
-                    } catch (e) { /* Empty */ }
-                }, function () {
-                    card.Reset();
-                });
+            this.SendEvent(data);
         }
     },
+    OnLocked: function () {
+        if (this.cfg.Connected === false) {
+            this.Reset();
+            return;
+        }
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "CardLock",
+            "IDCard": this.IDCard,
+            "Locked": this.newLocked ? 1 : 0,
+            "TimeStamp": new Date().getTime()
+        };
+        this.SendEvent(data);
+    },
     OnDelete: function () {
-        var card = this;
         this.Hide();
         if (this.cfg.Connected === false) {
             this.Show();
@@ -508,7 +563,7 @@ Card.prototype = {
         }
         if (this.IDCard === 0) {
             this.RemoveFromContainer();
-            this.cfg.RemoveCardByID(card.IDCard);
+            this.cfg.RemoveCardByID(this.IDCard);
             return;
         }
         var data = {
@@ -517,54 +572,7 @@ Card.prototype = {
             "IDCard": this.IDCard,
             "TimeStamp": new Date().getTime()
         };
-        SendData(this.cfg.ServiceUrl, data,
-            function (responseText) {
-                try {
-                    var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
-                        card.RemoveFromContainer();
-                        if (card.IDCard > 0) {
-                            card.cfg.RemoveCardByID(card.IDCard);
-                        }
-                    } else {
-                        card.Show();
-                    }
-                } catch (e) { /* Empty */ }
-            }, function () {
-                card.Show();
-            });
-    },
-    OnCreate: function () {
-        var card = this;
-        if (this.cfg.Connected === false) {
-            card.OnDelete();
-            return;
-        }
-        var data = {
-            "IDBoard": this.cfg.IDBoard,
-            "Command": "CardCreate",
-            "X": this.X,
-            "Y": this.Y,
-            "Width": this.Width,
-            "Height": this.Height,
-            "Title": this.Title,
-            "Body": this.Body,
-            "TimeStamp": new Date().getTime()
-        };
-        SendData(this.cfg.ServiceUrl, data,
-            function (responseText) {
-                try {
-                    var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
-                        //card.IDCard = parseInt(recvData.ReturnValue);
-                        card.OnDelete();
-                    } else {
-                        card.OnDelete();
-                    }
-                } catch (e) { /* Empty */ }
-            }, function () {
-                card.OnDelete();
-            });
+        this.SendEvent(data);
     },
     GetRelativePosToContainer: function (pos) {
         var tempElem = this.container;
@@ -656,7 +664,7 @@ Card.prototype = {
         evt.preventDefault();
 
         this.OnResizeStart();
-        
+
         this.offsetX = evt.clientX;
         this.offsetY = evt.clientY;
 
@@ -667,7 +675,7 @@ Card.prototype = {
     },
     divResize_MouseMove: function (evt) {
         evt.preventDefault();
-        
+
         this.newWidth = this.Width + (evt.clientX - this.offsetX);
         this.newHeight = this.Height + (evt.clientY - this.offsetY);
         if (this.newWidth < 100) { this.newWidth = 100; }
@@ -691,7 +699,7 @@ Card.prototype = {
         evt.preventDefault();
 
         this.OnResizeStart();
-        
+
         this.offsetX = evt.touches[0].clientX;
         this.offsetY = evt.touches[0].clientY;
 
@@ -781,10 +789,23 @@ Card.prototype = {
             this.OnDelete();
         }
         return false;
-    }
+    },
+    btnLock_Click: function (evt) {
+        evt.preventDefault();
+        this.Lock(true);
+        this.OnLocked();
+        return false;
+    },
+    btnUnlock_Click: function (evt) {
+        evt.preventDefault();
+        this.Lock(false);
+        this.OnLocked();
+        return false;
+    },
+    empty: null
 };
 
-var Region = function (cfg, idRegion, title, x, y, width, height) {
+var Region = function (cfg, idRegion, title, x, y, width, height, locked) {
     this.cfg = cfg;
     this.IDRegion = idRegion;
     this.Title = title;
@@ -792,6 +813,7 @@ var Region = function (cfg, idRegion, title, x, y, width, height) {
     this.Y = y;
     this.Width = width;
     this.Height = height;
+    this.Locked = locked;
 
     // Create DOM
     this.container = null;
@@ -810,7 +832,7 @@ var Region = function (cfg, idRegion, title, x, y, width, height) {
     this.txtTitle.className = "txtTitle";
     this.txtTitle.value = this.Title;
     this.divTitle.appendChild(this.txtTitle);
-    
+
     this.divOverlay = document.createElement("div");
     this.divRegion.appendChild(this.divOverlay);
     this.divOverlay.className = "divOverlay";
@@ -834,6 +856,19 @@ var Region = function (cfg, idRegion, title, x, y, width, height) {
     this.btnDelete.className = "btnRegion btnDelete";
     this.btnDelete.innerHTML = "X";
     this.btnDelete.addEventListener("click", Region.prototype.btnDelete_Click.bind(this), false);
+    
+    this.btnLock = document.createElement("button");
+    this.divRegion.appendChild(this.btnLock);
+    this.btnLock.className = "btnRegion btnLock";
+    this.btnLock.innerHTML = "L";
+    this.btnLock.addEventListener("click", Region.prototype.btnLock_Click.bind(this), false);
+
+    this.btnUnlock = document.createElement("button");
+    this.divRegion.appendChild(this.btnUnlock);
+    this.btnUnlock.className = "btnRegion btnUnlock";
+    this.btnUnlock.innerHTML = "U";
+    this.btnUnlock.style.display = "none";
+    this.btnUnlock.addEventListener("click", Region.prototype.btnUnlock_Click.bind(this), false);
 
     this.divResize = document.createElement("div");
     this.divRegion.appendChild(this.divResize);
@@ -847,7 +882,7 @@ var Region = function (cfg, idRegion, title, x, y, width, height) {
     this.divResize_TouchEndBinded = Region.prototype.divResize_TouchEnd.bind(this);
     this.divResize.addEventListener("touchstart", this.divResize_TouchStartBinded, false);
 
-    // Temporal variables for dragging, editing and deleting
+    // Temporal variables for actions
     this.offsetX = 0;
     this.offsetY = 0;
     this.newX = this.X;
@@ -855,6 +890,7 @@ var Region = function (cfg, idRegion, title, x, y, width, height) {
     this.newWidth = this.Width;
     this.newHeight = this.Height;
     this.newTitle = this.Title;
+    this.newLocked = this.Locked;
     this.Editing = false;
 
     // Selfinsert
@@ -862,6 +898,8 @@ var Region = function (cfg, idRegion, title, x, y, width, height) {
         this.cfg.Regions.push(this);
     }
     this.InsertOnContainer(this.cfg.divBoard);
+
+    this.SetLock(this.Locked);
 };
 Region.prototype = {
     FilterText: function (text) {
@@ -967,27 +1005,93 @@ Region.prototype = {
         this.newTitle = title;
         this.txtTitle.value = this.Title;
     },
+    Lock: function (locked) {
+        this.newLocked = locked
+        this.SetLock(locked);
+    },
+    SetLock: function (locked) {
+        if (locked) {
+            this.btnEdit.style.display = "none";
+            this.btnDelete.style.display = "none";
+            this.btnLock.style.display = "none";
+            this.btnUnlock.style.display = "";
+            this.divOverlay.removeEventListener("mousedown", this.divOverlay_MouseDownBinded, false);
+            this.divOverlay.removeEventListener("touchstart", this.divOverlay_TouchStartBinded, false);
+            this.divResize.style.display = "none";
+        } else {
+            this.btnEdit.style.display = "";
+            this.btnDelete.style.display = "";
+            this.btnLock.style.display = "";
+            this.btnUnlock.style.display = "none";
+            this.divOverlay.addEventListener("mousedown", this.divOverlay_MouseDownBinded, false);
+            this.divOverlay.addEventListener("touchstart", this.divOverlay_TouchStartBinded, false);
+            this.divResize.style.display = "";
+        }
+    },
     Reset: function () {
         this.newX = this.X;
         this.newY = this.Y;
+        this.newWidth = this.Width;
+        this.newHeight = this.Height;
+        this.newLocked = this.Locked;
         this.newTitle = this.Title;
+
         this.divRegion.style.left = this.X + "px";
         this.divRegion.style.top = this.Y + "px";
+        this.divRegion.style.width = this.Width + "px";
+        this.divRegion.style.height = this.Height + "px";
+        this.SetLock(this.Locked);
         this.txtTitle.value = this.Title;
     },
     SetNew: function () {
         this.X = this.newX;
         this.Y = this.newY;
+        this.Width = this.newWidth;
+        this.Height = this.newHeight;
+        this.Locked = this.newLocked;
         this.Title = this.newTitle;
-        this.divRegion.style.left = this.X + "px";
-        this.divRegion.style.top = this.Y + "px";
-        this.txtTitle.value = this.Title;
+        this.Reset();
     },
     Hide: function () {
         this.divRegion.style.display = "none";
     },
     Show: function () {
         this.divRegion.style.display = "";
+    },
+    SendEvent: function (eventData) {
+        var region = this;
+        SendData(this.cfg.ServiceUrl, eventData,
+            function (responseText) {
+                try {
+                    var recvData = JSON.parse(responseText);
+                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
+                        region.SetNew();
+                    } else {
+                        region.Reset();
+                    }
+                } catch (e) { /* Empty */ }
+            }, function () {
+                region.Reset();
+            });
+    },
+    OnCreate: function () {
+        if (this.cfg.Connected === false) {
+            this.OnDelete();
+            return;
+        }
+        this.RemoveFromContainer();
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "RegionCreate",
+            "X": this.X,
+            "Y": this.Y,
+            "Width": this.Width,
+            "Height": this.Height,
+            "Locked": this.Locked ? 1 : 0,
+            "Title": this.Title,
+            "TimeStamp": new Date().getTime()
+        };
+        this.SendEvent(data);
     },
     OnMoveStart: function () {
         if (this.animData) {
@@ -1009,19 +1113,7 @@ Region.prototype = {
             "Y": this.newY,
             "TimeStamp": new Date().getTime()
         };
-        SendData(this.cfg.ServiceUrl, data,
-            function (responseText) {
-                try {
-                    var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
-                        Region.SetNew();
-                    } else {
-                        Region.Reset();
-                    }
-                } catch (e) { /* Empty */ }
-            }, function () {
-                Region.Reset();
-            });
+        this.SendEvent(data);
     },
     OnResizeStart: function () {
         if (this.animData) {
@@ -1030,9 +1122,8 @@ Region.prototype = {
         }
     },
     OnResize: function () {
-        var Region = this;
         if (this.cfg.Connected === false) {
-            Region.Reset();
+            this.Reset();
             return;
         }
         var data = {
@@ -1043,25 +1134,12 @@ Region.prototype = {
             "Height": this.newHeight,
             "TimeStamp": new Date().getTime()
         };
-        SendData(this.cfg.ServiceUrl, data,
-            function (responseText) {
-                try {
-                    var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
-                        Region.SetNew();
-                    } else {
-                        Region.Reset();
-                    }
-                } catch (e) { /* Empty */ }
-            }, function () {
-                Region.Reset();
-            });
+        this.SendEvent(data);
     },
     OnEdit: function () {
         if (this.Title !== this.newTitle) {
-            var Region = this;
             if (this.cfg.Connected === false) {
-                Region.Reset();
+                this.Reset();
                 return;
             }
             var data = {
@@ -1071,23 +1149,24 @@ Region.prototype = {
                 "Title": this.newTitle,
                 "TimeStamp": new Date().getTime()
             };
-            SendData(this.cfg.ServiceUrl, data,
-                function (responseText) {
-                    try {
-                        var recvData = JSON.parse(responseText);
-                        if (recvData && recvData instanceof Object && recvData.IsOK === true) {
-                            Region.SetNew();
-                        } else {
-                            Region.Reset();
-                        }
-                    } catch (e) { /* Empty */ }
-                }, function () {
-                    Region.Reset();
-                });
+            this.SendEvent(data);
         }
     },
+    OnLocked: function () {
+        if (this.cfg.Connected === false) {
+            this.Reset();
+            return;
+        }
+        var data = {
+            "IDBoard": this.cfg.IDBoard,
+            "Command": "RegionLock",
+            "IDRegion": this.IDRegion,
+            "Locked": this.newLocked ? 1 : 0,
+            "TimeStamp": new Date().getTime()
+        };
+        this.SendEvent(data);
+    },
     OnDelete: function () {
-        var Region = this;
         this.Hide();
         if (this.cfg.Connected === false) {
             this.Show();
@@ -1095,7 +1174,7 @@ Region.prototype = {
         }
         if (this.IDRegion === 0) {
             this.RemoveFromContainer();
-            this.cfg.RemoveRegionByID(Region.IDRegion);
+            this.cfg.RemoveRegionByID(this.IDRegion);
             return;
         }
         var data = {
@@ -1104,53 +1183,7 @@ Region.prototype = {
             "IDRegion": this.IDRegion,
             "TimeStamp": new Date().getTime()
         };
-        SendData(this.cfg.ServiceUrl, data,
-            function (responseText) {
-                try {
-                    var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
-                        Region.RemoveFromContainer();
-                        if (Region.IDRegion > 0) {
-                            Region.cfg.RemoveRegionByID(Region.IDRegion);
-                        }
-                    } else {
-                        Region.Show();
-                    }
-                } catch (e) { /* Empty */ }
-            }, function () {
-                Region.Show();
-            });
-    },
-    OnCreate: function () {
-        var Region = this;
-        if (this.cfg.Connected === false) {
-            Region.OnDelete();
-            return;
-        }
-        var data = {
-            "IDBoard": this.cfg.IDBoard,
-            "Command": "RegionCreate",
-            "X": this.X,
-            "Y": this.Y,
-            "Width": this.Width,
-            "Height": this.Height,
-            "Title": this.Title,
-            "TimeStamp": new Date().getTime()
-        };
-        SendData(this.cfg.ServiceUrl, data,
-            function (responseText) {
-                try {
-                    var recvData = JSON.parse(responseText);
-                    if (recvData && recvData instanceof Object && recvData.IsOK === true) {
-                        //Region.IDRegion = parseInt(recvData.ReturnValue);
-                        Region.OnDelete();
-                    } else {
-                        Region.OnDelete();
-                    }
-                } catch (e) { /* Empty */ }
-            }, function () {
-                Region.OnDelete();
-            });
+        this.SendEvent(data);
     },
     GetRelativePosToContainer: function (pos) {
         var tempElem = this.container;
@@ -1363,7 +1396,20 @@ Region.prototype = {
             this.OnDelete();
         }
         return false;
-    }
+    },
+    btnLock_Click: function (evt) {
+        evt.preventDefault();
+        this.Lock(true);
+        this.OnLocked();
+        return false;
+    },
+    btnUnlock_Click: function (evt) {
+        evt.preventDefault();
+        this.Lock(false);
+        this.OnLocked();
+        return false;
+    },
+    empty: null
 };
 
 function RunCardBoard(cfg) {
@@ -1416,7 +1462,7 @@ function RunCardBoard(cfg) {
     };
 
     var ProcessCardCreateEvent = function (cardEvent) {
-        var card = new Card(cfg, cardEvent.IDCard, cardEvent.Title, cardEvent.Body, cardEvent.X, cardEvent.Y, cardEvent.Width, cardEvent.Height);
+        var card = new Card(cfg, cardEvent.IDCard, cardEvent.Title, cardEvent.Body, cardEvent.X, cardEvent.Y, cardEvent.Width, cardEvent.Height, cardEvent.Locked);
     };
 
     var ProcessCardMoveEvent = function (cardEvent) {
@@ -1437,6 +1483,12 @@ function RunCardBoard(cfg) {
         card.Edit(cardEvent.Title, cardEvent.Body);
     };
 
+    var ProcessCardLockEvent = function (cardEvent) {
+        var card = cfg.GetCardByID(cardEvent.IDCard);
+        if (card === null) { return; }
+        card.Lock(cardEvent.Locked);
+    };
+
     var ProcessCardDeleteEvent = function (cardEvent) {
         var card = cfg.GetCardByID(cardEvent.IDCard);
         if (card === null) { return; }
@@ -1444,7 +1496,7 @@ function RunCardBoard(cfg) {
     };
 
     var ProcessRegionCreateEvent = function (cardEvent) {
-        var region = new Region(cfg, cardEvent.IDRegion, cardEvent.Title, cardEvent.X, cardEvent.Y, cardEvent.Width, cardEvent.Height);
+        var region = new Region(cfg, cardEvent.IDRegion, cardEvent.Title, cardEvent.X, cardEvent.Y, cardEvent.Width, cardEvent.Height, cardEvent.Locked);
     };
 
     var ProcessRegionMoveEvent = function (cardEvent) {
@@ -1463,6 +1515,12 @@ function RunCardBoard(cfg) {
         var region = cfg.GetRegionByID(cardEvent.IDRegion);
         if (region === null) { return; }
         region.Edit(cardEvent.Title);
+    };
+
+    var ProcessRegionLockEvent = function (cardEvent) {
+        var region = cfg.GetRegionByID(cardEvent.IDRegion);
+        if (region === null) { return; }
+        region.Lock(cardEvent.Locked);
     };
 
     var ProcessRegionDeleteEvent = function (cardEvent) {
@@ -1494,6 +1552,9 @@ function RunCardBoard(cfg) {
                     if (cardEvent.EventType === "CardEdit") {
                         ProcessCardEditEvent(cardEvent);
                     }
+                    if (cardEvent.EventType === "CardLock") {
+                        ProcessCardLockEvent(cardEvent);
+                    }
                     if (cardEvent.EventType === "CardDelete") {
                         ProcessCardDeleteEvent(cardEvent);
                     }
@@ -1508,6 +1569,9 @@ function RunCardBoard(cfg) {
                     }
                     if (cardEvent.EventType === "RegionEdit") {
                         ProcessRegionEditEvent(cardEvent);
+                    }
+                    if (cardEvent.EventType === "RegionLock") {
+                        ProcessRegionLockEvent(cardEvent);
                     }
                     if (cardEvent.EventType === "RegionDelete") {
                         ProcessRegionDeleteEvent(cardEvent);

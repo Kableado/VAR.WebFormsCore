@@ -177,6 +177,22 @@
         right: 4px;
     }
 
+    .divCard .btnLock {
+        margin: 0;
+        top: 4px;
+        position: absolute;
+        width: 16px;
+        right: 44px;
+    }
+
+    .divCard .btnUnlock {
+        margin: 0;
+        top: 4px;
+        position: absolute;
+        width: 16px;
+        right: 4px;
+    }
+
 .divRegion {
     position: absolute;
     background-color: rgba(0,0,0,0.5);
@@ -266,6 +282,22 @@
     }
 
     .divRegion .btnDelete {
+        margin: 0;
+        top: 4px;
+        position: absolute;
+        width: 16px;
+        right: 4px;
+    }
+
+    .divRegion .btnLock {
+        margin: 0;
+        top: 4px;
+        position: absolute;
+        width: 16px;
+        right: 44px;
+    }
+
+    .divRegion .btnUnlock {
         margin: 0;
         top: 4px;
         position: absolute;
