@@ -224,25 +224,25 @@ var Card = function (cfg, idCard, title, body, x, y, width, height, locked) {
     this.btnEdit = document.createElement("button");
     this.divCard.appendChild(this.btnEdit);
     this.btnEdit.className = "btnCard btnEdit";
-    this.btnEdit.innerHTML = "E";
+    this.btnEdit.innerHTML = "&#x270E;"; // Unicode "Lower Right Pencil"
     this.btnEdit.addEventListener("click", Card.prototype.btnEdit_Click.bind(this), false);
 
     this.btnDelete = document.createElement("button");
     this.divCard.appendChild(this.btnDelete);
     this.btnDelete.className = "btnCard btnDelete";
-    this.btnDelete.innerHTML = "X";
+    this.btnDelete.innerHTML = "X"; 
     this.btnDelete.addEventListener("click", Card.prototype.btnDelete_Click.bind(this), false);
 
     this.btnLock = document.createElement("button");
     this.divCard.appendChild(this.btnLock);
     this.btnLock.className = "btnCard btnLock";
-    this.btnLock.innerHTML = "L";
+    this.btnLock.innerHTML = "&#x1F512;"; // Unicode "Lock"
     this.btnLock.addEventListener("click", Region.prototype.btnLock_Click.bind(this), false);
 
     this.btnUnlock = document.createElement("button");
     this.divCard.appendChild(this.btnUnlock);
     this.btnUnlock.className = "btnCard btnUnlock";
-    this.btnUnlock.innerHTML = "U";
+    this.btnUnlock.innerHTML = "&#x1F513;"; // Unicode "Open Lock"
     this.btnUnlock.style.display = "none";
     this.btnUnlock.addEventListener("click", Region.prototype.btnUnlock_Click.bind(this), false);
 
@@ -848,25 +848,25 @@ var Region = function (cfg, idRegion, title, x, y, width, height, locked) {
     this.btnEdit = document.createElement("button");
     this.divRegion.appendChild(this.btnEdit);
     this.btnEdit.className = "btnRegion btnEdit";
-    this.btnEdit.innerHTML = "E";
+    this.btnEdit.innerHTML = "&#x270E;"; // Unicode "Lower Right Pencil"
     this.btnEdit.addEventListener("click", Region.prototype.btnEdit_Click.bind(this), false);
 
     this.btnDelete = document.createElement("button");
     this.divRegion.appendChild(this.btnDelete);
     this.btnDelete.className = "btnRegion btnDelete";
-    this.btnDelete.innerHTML = "X";
+    this.btnDelete.innerHTML = "X"; 
     this.btnDelete.addEventListener("click", Region.prototype.btnDelete_Click.bind(this), false);
     
     this.btnLock = document.createElement("button");
     this.divRegion.appendChild(this.btnLock);
     this.btnLock.className = "btnRegion btnLock";
-    this.btnLock.innerHTML = "L";
+    this.btnLock.innerHTML = "&#x1F512;"; // Unicode "Lock"
     this.btnLock.addEventListener("click", Region.prototype.btnLock_Click.bind(this), false);
 
     this.btnUnlock = document.createElement("button");
     this.divRegion.appendChild(this.btnUnlock);
     this.btnUnlock.className = "btnRegion btnUnlock";
-    this.btnUnlock.innerHTML = "U";
+    this.btnUnlock.innerHTML = "&#x1F513;"; // Unicode "Open Lock"
     this.btnUnlock.style.display = "none";
     this.btnUnlock.addEventListener("click", Region.prototype.btnUnlock_Click.bind(this), false);
 
