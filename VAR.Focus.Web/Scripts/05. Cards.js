@@ -398,6 +398,7 @@ Card.prototype = {
             this.btnDelete.style.display = "none";
             this.btnLock.style.display = "none";
             this.btnUnlock.style.display = "";
+            this.divOverlay.className = "divOverlayTouchable";
             this.divOverlay.removeEventListener("mousedown", this.divOverlay_MouseDownBinded, false);
             this.divOverlay.removeEventListener("touchstart", this.divOverlay_TouchStartBinded, false);
             this.divResize.style.display = "none";
@@ -406,6 +407,7 @@ Card.prototype = {
             this.btnDelete.style.display = "";
             this.btnLock.style.display = "";
             this.btnUnlock.style.display = "none";
+            this.divOverlay.className = "divOverlay";
             this.divOverlay.addEventListener("mousedown", this.divOverlay_MouseDownBinded, false);
             this.divOverlay.addEventListener("touchstart", this.divOverlay_TouchStartBinded, false);
             this.divResize.style.display = "";
@@ -1015,6 +1017,7 @@ Region.prototype = {
             this.btnDelete.style.display = "none";
             this.btnLock.style.display = "none";
             this.btnUnlock.style.display = "";
+            this.divOverlay.className = "divOverlayTouchable";
             this.divOverlay.removeEventListener("mousedown", this.divOverlay_MouseDownBinded, false);
             this.divOverlay.removeEventListener("touchstart", this.divOverlay_TouchStartBinded, false);
             this.divResize.style.display = "none";
@@ -1023,6 +1026,7 @@ Region.prototype = {
             this.btnDelete.style.display = "";
             this.btnLock.style.display = "";
             this.btnUnlock.style.display = "none";
+            this.divOverlay.className = "divOverlay";
             this.divOverlay.addEventListener("mousedown", this.divOverlay_MouseDownBinded, false);
             this.divOverlay.addEventListener("touchstart", this.divOverlay_TouchStartBinded, false);
             this.divResize.style.display = "";
