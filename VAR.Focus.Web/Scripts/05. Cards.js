@@ -565,7 +565,7 @@ Card.prototype = {
         }
         if (this.IDCard === 0) {
             this.RemoveFromContainer();
-            this.cfg.RemoveCardByID(this.IDCard);
+            this.cfg.RemoveCard(this);
             return;
         }
         var data = {
@@ -1178,7 +1178,7 @@ Region.prototype = {
         }
         if (this.IDRegion === 0) {
             this.RemoveFromContainer();
-            this.cfg.RemoveRegionByID(this.IDRegion);
+            this.cfg.RemoveRegion(this);
             return;
         }
         var data = {
@@ -1436,11 +1436,12 @@ function RunCardBoard(cfg) {
         }
         return null;
     };
-    cfg.RemoveCardByID = function (idCard) {
+    cfg.RemoveCard = function (card) {
         for (var i = 0, n = this.Cards.length; i < n; i++) {
-            var card = this.Cards[i];
-            if (card.IDCard === idCard) {
+            var auxCard = this.Cards[i];
+            if (auxCard === card) {
                 this.Cards.splice(i, 1);
+                return true;
             }
         }
         return false;
@@ -1455,11 +1456,12 @@ function RunCardBoard(cfg) {
         }
         return null;
     };
-    cfg.RemoveRegionByID = function (idRegion) {
+    cfg.RemoveRegion = function (region) {
         for (var i = 0, n = this.Regions.length; i < n; i++) {
-            var region = this.Regions[i];
-            if (region.IDRegion === idRegion) {
+            var auxRegion = this.Regions[i];
+            if (auxRegion === region) {
                 this.Regions.splice(i, 1);
+                return true;
             }
         }
         return false;
@@ -1494,9 +1496,12 @@ function RunCardBoard(cfg) {
     };
 
     var ProcessCardDeleteEvent = function (cardEvent) {
-        var card = cfg.GetCardByID(cardEvent.IDCard);
-        if (card === null) { return; }
-        card.RemoveFromContainer(cfg.divBoard);
+        do {
+            var card = cfg.GetCardByID(cardEvent.IDCard);
+            if (card === null) { return; }
+            card.RemoveFromContainer(cfg.divBoard);
+            cfg.RemoveCard(card);
+        } while (true);
     };
 
     var ProcessRegionCreateEvent = function (cardEvent) {
@@ -1528,9 +1533,12 @@ function RunCardBoard(cfg) {
     };
 
     var ProcessRegionDeleteEvent = function (cardEvent) {
-        var region = cfg.GetRegionByID(cardEvent.IDRegion);
-        if (region === null) { return; }
-        region.RemoveFromContainer(cfg.divBoard);
+        do {
+            var region = cfg.GetRegionByID(cardEvent.IDRegion);
+            if (region === null) { return; }
+            region.RemoveFromContainer(cfg.divBoard);
+            cfg.RemoveRegion(region);
+        } while (true);
     };
 
     var RequestCardEventData = function () {
