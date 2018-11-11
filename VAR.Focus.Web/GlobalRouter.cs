@@ -119,7 +119,7 @@ namespace VAR.Focus.Web
             string extension = Path.GetExtension(context.Request.FilePath).ToLower();
             if (Globals.AllowedExtensions.Contains(extension))
             {
-                string filePath = context.Server.MapPath(string.Format("~/{0}", context.Request.FilePath));
+                string filePath = context.Request.PhysicalPath;
                 if (File.Exists(filePath))
                 {
                     StaticFileHelper.ResponseStaticFile(context, filePath);
