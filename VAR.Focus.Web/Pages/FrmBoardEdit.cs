@@ -58,12 +58,12 @@ namespace VAR.Focus.Web.Pages
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (FormUtils.Controls_AreValid(Controls) == false) { return; }
-            
+
             Board board = Boards.Current.Boards_SetBoard(
-                _idBoard, 
-                _txtTitle.Text, 
-                _txtDescription.Text, 
-                _txtDescription.GetClientsideHeight(), 
+                _idBoard,
+                _txtTitle.Text,
+                _txtDescription.Text,
+                _txtDescription.GetClientsideHeight(),
                 CurrentUser.Name);
 
             // FIXME: Notify User of "Save Succesfully"
