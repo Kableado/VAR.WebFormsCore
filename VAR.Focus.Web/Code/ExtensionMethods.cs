@@ -37,6 +37,14 @@ namespace VAR.Focus.Web.Code
             response.Cache.SetMaxAge(new TimeSpan(0, 0, secondsInDay));
         }
 
+        public static void PrepareUncacheableResponse(this HttpResponse response)
+        {
+            response.ExpiresAbsolute = DateTime.Now.AddDays(-2d);
+            response.Expires = -1500;
+            response.AddHeader("Cache-Control", "max-age=0, no-cache, no-store");
+            response.BufferOutput = true;
+        }
+
         #endregion HttpContext
     }
 }

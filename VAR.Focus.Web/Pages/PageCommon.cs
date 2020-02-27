@@ -58,6 +58,8 @@ namespace VAR.Focus.Web.Pages
 
         private void PageCommon_PreInit(object sender, EventArgs e)
         {
+            Context.Response.PrepareUncacheableResponse();
+
             Session session = WebSessions.Current.Session_GetCurrent(Context);
             if (session != null)
             {
