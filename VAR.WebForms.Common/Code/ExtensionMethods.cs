@@ -2,7 +2,7 @@
 using System.Web;
 using VAR.Json;
 
-namespace VAR.Focus.Web.Code
+namespace VAR.WebForms.Common.Code
 {
     public static class ExtensionMethods
     {
@@ -22,7 +22,7 @@ namespace VAR.Focus.Web.Code
 
         public static void ResponseObject(this HttpContext context, object obj)
         {
-            var jsonWritter = new JsonWriter(true);
+            var jsonWritter = new JsonWriter();
             context.Response.ContentType = "text/json";
             string strObject = jsonWritter.Write(obj);
             context.Response.Write(strObject);

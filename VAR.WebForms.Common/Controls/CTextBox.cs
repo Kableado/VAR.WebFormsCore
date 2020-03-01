@@ -5,7 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using VAR.Json;
 
-namespace VAR.Focus.Web.Controls
+namespace VAR.WebForms.Common.Controls
 {
     public class CTextBox : Control, INamingContainer, IValidableControl
     {

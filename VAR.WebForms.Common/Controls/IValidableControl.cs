@@ -1,4 +1,4 @@
-﻿namespace VAR.Focus.Web.Controls
+﻿namespace VAR.WebForms.Common.Controls
 {
     public interface IValidableControl
     {

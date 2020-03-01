@@ -45,9 +45,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Web" />
-    <Reference Include="VAR.Json, Version=1.0.6252.27492, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VAR.Json.1.0.6252.27492\lib\net461\VAR.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="VAR.Json, Version=1.1.1.36534, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VAR.Json.1.1.1.36534\lib\net461\VAR.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -82,51 +81,34 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\Bundler.cs" />
-    <Compile Include="Code\ExtensionMethods.cs" />
-    <Compile Include="Code\MultiLang.cs" />
-    <Compile Include="Code\StaticFileHelper.cs" />
     <Compile Include="Code\WebSessions.cs" />
     <Compile Include="Controls\CtrCardBoard.cs" />
     <Compile Include="Controls\HndCardBoard.cs" />
-    <Compile Include="Controls\CButton.cs" />
     <Compile Include="Controls\CtrChat.cs" />
     <Compile Include="Controls\HndChat.cs" />
-    <Compile Include="Controls\CLabel.cs" />
-    <Compile Include="Controls\CTextBox.cs" />
-    <Compile Include="Controls\IValidableControl.cs" />
-    <Compile Include="Code\GlobalErrorHandler.cs" />
-    <Compile Include="GlobalModule.cs" />
-    <Compile Include="Pages\FormUtils.cs" />
     <Compile Include="Pages\FrmBoard.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\FrmBoardEdit.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\FrmEcho.cs" />
     <Compile Include="Pages\FrmLogin.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\FrmRegister.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\PageCommon.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Code\ScriptsBundler.cs" />
-    <Compile Include="Code\StylesBundler.cs" />
-    <Compile Include="GlobalRouter.cs" />
-    <Compile Include="Pages\FrmError.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Globals.cs" />
+    <Compile Include="FocusGlobalConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VAR.Focus.BusinessLogic\VAR.Focus.BusinessLogic.csproj">
       <Project>{d88af21d-1c60-4b27-abff-a133d6afc51c}</Project>
       <Name>VAR.Focus.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VAR.WebForms.Common\VAR.WebForms.Common.csproj">
+      <Project>{328bb4e2-58f2-4beb-a619-ce3fa842ef43}</Project>
+      <Name>VAR.WebForms.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -4,10 +4,9 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Web;
-using VAR.Focus.BusinessLogic.Utils;
-using VAR.Focus.Web.Code;
+using VAR.WebForms.Common.Code;
 
-namespace VAR.Focus.Web
+namespace VAR.WebForms.Common
 {
     public class GlobalRouter : IHttpHandler
     {
@@ -112,12 +111,12 @@ namespace VAR.Focus.Web
             string file = Path.GetFileName(context.Request.FilePath);
             if (string.IsNullOrEmpty(file))
             {
-                file = Globals.DefaultHandler;
+                file = GlobalConfig.Get().DefaultHandler;
             }
 
             // Pass allowed extensions requests
             string extension = Path.GetExtension(context.Request.FilePath).ToLower();
-            if (Globals.AllowedExtensions.Contains(extension))
+            if (GlobalConfig.Get().AllowedExtensions.Contains(extension))
             {
                 string filePath = context.Request.PhysicalPath;
                 if (File.Exists(filePath))

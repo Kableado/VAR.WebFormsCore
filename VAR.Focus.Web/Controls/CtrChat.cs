@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using VAR.Focus.Web.Code;
 using VAR.Json;
+using VAR.WebForms.Common.Code;
+using VAR.WebForms.Common.Controls;
 
 namespace VAR.Focus.Web.Controls
 {

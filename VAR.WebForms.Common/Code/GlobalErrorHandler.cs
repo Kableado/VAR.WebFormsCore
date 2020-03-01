@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 using System.Web;
-using VAR.Focus.Web.Pages;
+using VAR.WebForms.Common.Pages;
 
-namespace VAR.Focus.Web.Code
+namespace VAR.WebForms.Common.Code
 {
     public static class GlobalErrorHandler
     {

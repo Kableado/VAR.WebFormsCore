@@ -4,7 +4,9 @@ using System.Web.UI.WebControls;
 using VAR.Focus.BusinessLogic;
 using VAR.Focus.BusinessLogic.Entities;
 using VAR.Focus.Web.Code;
-using VAR.Focus.Web.Controls;
+using VAR.WebForms.Common.Code;
+using VAR.WebForms.Common.Controls;
+using VAR.WebForms.Common.Pages;
 
 namespace VAR.Focus.Web.Pages
 {
@@ -59,12 +61,13 @@ namespace VAR.Focus.Web.Pages
         {
             if (FormUtils.Controls_AreValid(Controls) == false) { return; }
 
+            User user = WebSessions.Current.Session_GetCurrentUser(Context);
             Board board = Boards.Current.Boards_SetBoard(
                 _idBoard,
                 _txtTitle.Text,
                 _txtDescription.Text,
                 _txtDescription.GetClientsideHeight(),
-                CurrentUser.Name);
+                user.Name);
 
             // FIXME: Notify User of "Save Succesfully"
         }

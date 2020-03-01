@@ -2,8 +2,9 @@
 using System.Web.UI.WebControls;
 using VAR.Focus.BusinessLogic;
 using VAR.Focus.BusinessLogic.Entities;
-using VAR.Focus.Web.Code;
-using VAR.Focus.Web.Controls;
+using VAR.WebForms.Common.Code;
+using VAR.WebForms.Common.Controls;
+using VAR.WebForms.Common.Pages;
 
 namespace VAR.Focus.Web.Pages
 {
@@ -66,7 +67,7 @@ namespace VAR.Focus.Web.Pages
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Globals.DefaultHandler);
+            Response.Redirect(GlobalConfig.Get().DefaultHandler);
         }
 
         #endregion UI Events

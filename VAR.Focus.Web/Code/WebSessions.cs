@@ -84,6 +84,26 @@ namespace VAR.Focus.Web.Code
             return true;
         }
 
+        public bool Session_IsUserAuthenticated(HttpContext context)
+        {
+            Session session = Session_GetCurrent(context);
+            if (session == null) { return false; }
+            User user = Users.Current.User_GetByName(session.UserName);
+            if (user == null) { return false; }
+            return true;
+        }
+
+        public User Session_GetCurrentUser(HttpContext context)
+        {
+            Session session = Session_GetCurrent(context);
+            if (session == null)
+            {
+                return null;
+            }
+            User user = Users.Current.User_GetByName(session.UserName);
+            return user;
+        }
+
         #endregion Public methods
     }
 }

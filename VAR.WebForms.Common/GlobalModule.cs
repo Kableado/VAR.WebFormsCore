@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-namespace VAR.Focus.Web
+namespace VAR.WebForms.Common
 {
     public class GlobalModule : IHttpModule
     {

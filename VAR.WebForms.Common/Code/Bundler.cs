@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace VAR.Focus.Web.Code
+namespace VAR.WebForms.Common.Code
 {
     public class Bundler
     {

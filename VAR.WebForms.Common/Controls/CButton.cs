@@ -1,6 +1,6 @@
 ﻿using System.Web.UI.WebControls;
 
-namespace VAR.Focus.Web.Controls
+namespace VAR.WebForms.Common.Controls
 {
     public class CButton : Button
     {

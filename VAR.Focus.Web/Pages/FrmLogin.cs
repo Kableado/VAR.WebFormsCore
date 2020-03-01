@@ -2,7 +2,9 @@
 using System.Web.UI.WebControls;
 using VAR.Focus.BusinessLogic;
 using VAR.Focus.Web.Code;
-using VAR.Focus.Web.Controls;
+using VAR.WebForms.Common.Code;
+using VAR.WebForms.Common.Controls;
+using VAR.WebForms.Common.Pages;
 
 namespace VAR.Focus.Web.Pages
 {
@@ -44,7 +46,7 @@ namespace VAR.Focus.Web.Pages
             }
 
             WebSessions.Current.Session_Init(Context, _txtNameEmail.Text);
-            Response.Redirect(Globals.DefaultHandler);
+            Response.Redirect(GlobalConfig.Get().DefaultHandler);
         }
 
         #endregion UI Events

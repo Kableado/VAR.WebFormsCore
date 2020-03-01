@@ -4,12 +4,10 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using VAR.Focus.BusinessLogic;
-using VAR.Focus.BusinessLogic.Entities;
-using VAR.Focus.Web.Code;
-using VAR.Focus.Web.Controls;
+using VAR.WebForms.Common.Code;
+using VAR.WebForms.Common.Controls;
 
-namespace VAR.Focus.Web.Pages
+namespace VAR.WebForms.Common.Pages
 {
     public class PageCommon : Page
     {
@@ -23,7 +21,7 @@ namespace VAR.Focus.Web.Pages
         private CButton _btnLogout = new CButton();
 
         private bool _mustBeAutenticated = true;
-        private User _currentUser = null;
+        private bool _isAuthenticated = false;
 
         #endregion Declarations
 
@@ -38,11 +36,6 @@ namespace VAR.Focus.Web.Pages
         {
             get { return _mustBeAutenticated; }
             set { _mustBeAutenticated = value; }
-        }
-
-        public User CurrentUser
-        {
-            get { return _currentUser; }
         }
 
         #endregion Properties
@@ -60,18 +53,10 @@ namespace VAR.Focus.Web.Pages
         {
             Context.Response.PrepareUncacheableResponse();
 
-            Session session = WebSessions.Current.Session_GetCurrent(Context);
-            if (session != null)
+            _isAuthenticated = GlobalConfig.Get().IsUserAuthenticated(Context);
+            if (_mustBeAutenticated && _isAuthenticated == false)
             {
-                _currentUser = Users.Current.User_GetByName(session.UserName);
-                if (_mustBeAutenticated)
-                {
-                    WebSessions.Current.Session_SetCookie(Context, session);
-                }
-            }
-            if (_currentUser == null && _mustBeAutenticated)
-            {
-                Response.Redirect(nameof(FrmLogin));
+                Response.Redirect(GlobalConfig.Get().LoginHandler);
             }
         }
 
@@ -82,8 +67,8 @@ namespace VAR.Focus.Web.Pages
 
         private void PageCommon_PreRender(object sender, EventArgs e)
         {
-            _head.Title = string.IsNullOrEmpty(Title) ? Globals.Title : string.Format("{0}{1}{2}", Title, Globals.TitleSeparator, Globals.Title);
-            _btnLogout.Visible = (_currentUser != null);
+            _head.Title = string.IsNullOrEmpty(Title) ? GlobalConfig.Get().Title : string.Concat(Title, GlobalConfig.Get().TitleSeparator, GlobalConfig.Get().Title);
+            _btnLogout.Visible = _isAuthenticated;
         }
 
         #endregion Life cycle
@@ -92,11 +77,10 @@ namespace VAR.Focus.Web.Pages
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            WebSessions.Current.Session_FinalizeCurrent(Context);
-            _currentUser = null;
+            GlobalConfig.Get().UserUnauthenticate(Context);
             if (_mustBeAutenticated)
             {
-                Response.Redirect(nameof(FrmLogin));
+                Response.Redirect(GlobalConfig.Get().LoginHandler);
             }
         }
 
@@ -119,8 +103,8 @@ namespace VAR.Focus.Web.Pages
 
             _head.Controls.Add(new HtmlMeta { HttpEquiv = "X-UA-Compatible", Content = "IE=Edge" });
             _head.Controls.Add(new HtmlMeta { HttpEquiv = "content-type", Content = "text/html; charset=utf-8" });
-            _head.Controls.Add(new HtmlMeta { Name = "author", Content = Globals.Author });
-            _head.Controls.Add(new HtmlMeta { Name = "Copyright", Content = Globals.Copyright });
+            _head.Controls.Add(new HtmlMeta { Name = "author", Content = GlobalConfig.Get().Author });
+            _head.Controls.Add(new HtmlMeta { Name = "Copyright", Content = GlobalConfig.Get().Copyright });
             _head.Controls.Add(new HtmlMeta { Name = "viewport", Content = "width=device-width, initial-scale=1, maximum-scale=4, user-scalable=1" });
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -139,7 +123,7 @@ namespace VAR.Focus.Web.Pages
             lnkTitle.NavigateUrl = ".";
             pnlHeader.Controls.Add(lnkTitle);
 
-            var lblTitle = new CLabel { Text = Globals.Title, Tag = "h1" };
+            var lblTitle = new CLabel { Text = GlobalConfig.Get().Title, Tag = "h1" };
             lnkTitle.Controls.Add(lblTitle);
 
             _btnPostback.ID = "btnPostback";

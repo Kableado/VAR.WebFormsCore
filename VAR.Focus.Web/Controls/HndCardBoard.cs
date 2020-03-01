@@ -6,6 +6,7 @@ using VAR.Focus.BusinessLogic;
 using VAR.Focus.BusinessLogic.Entities;
 using VAR.Focus.BusinessLogic.Persistence;
 using VAR.Focus.Web.Code;
+using VAR.WebForms.Common.Code;
 
 namespace VAR.Focus.Web.Controls
 {

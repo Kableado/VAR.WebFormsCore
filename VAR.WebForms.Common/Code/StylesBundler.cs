@@ -1,8 +1,8 @@
 ﻿using System.Web;
 
-namespace VAR.Focus.Web.Code
+namespace VAR.WebForms.Common.Code
 {
-    public class ScriptsBundler : IHttpHandler
+    public class StylesBundler : IHttpHandler
     {
         #region IHttpHandler
 
@@ -10,9 +10,9 @@ namespace VAR.Focus.Web.Code
 
         public void ProcessRequest(HttpContext context)
         {
-            Bundler bundler = new Bundler(context.Server.MapPath("~/Scripts/"));
+            Bundler bundler = new Bundler(context.Server.MapPath("~/Styles/"));
             context.Response.PrepareCacheableResponse();
-            bundler.WriteResponse(context.Response, "text/javascript");
+            bundler.WriteResponse(context.Response, "text/css");
         }
 
         #endregion IHttpHandler

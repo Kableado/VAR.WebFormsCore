@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using VAR.Focus.Web.Code;
 using VAR.Focus.Web.Pages;
 using VAR.Json;
+using VAR.WebForms.Common.Code;
 
 namespace VAR.Focus.Web.Controls
 {
@@ -146,7 +146,7 @@ namespace VAR.Focus.Web.Controls
                 {"DefaultRegionWidth", _defaultRegionWidth},
                 {"DefaultRegionHeight", _defaultRegionHeight},
                 {"Texts", new Dictionary<string, object> {
-                    {"Toolbox",MultiLang.GetLiteral( "Toolbox")},
+                    {"Toolbox", MultiLang.GetLiteral( "Toolbox")},
                     {"AddCard", MultiLang.GetLiteral("AddCard")},
                     {"AddRegion", MultiLang.GetLiteral("AddRegion")},
                     {"EditBoard", MultiLang.GetLiteral("Config")},

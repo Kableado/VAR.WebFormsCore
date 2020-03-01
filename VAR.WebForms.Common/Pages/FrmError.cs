@@ -2,9 +2,9 @@
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using VAR.Focus.Web.Controls;
+using VAR.WebForms.Common.Controls;
 
-namespace VAR.Focus.Web.Pages
+namespace VAR.WebForms.Common.Pages
 {
     public class FrmError : PageCommon
     {

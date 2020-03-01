@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Web;
 using VAR.Json;
 
-namespace VAR.Focus.Web.Code
+namespace VAR.WebForms.Common.Code
 {
     public class MultiLang
     {
@@ -38,9 +38,9 @@ namespace VAR.Focus.Web.Code
         private static string GetUserLanguage()
         {
             HttpContext ctx = HttpContext.Current;
-            if(ctx != null)
+            if (ctx != null)
             {
-                if(ctx.Items["UserLang"] != null)
+                if (ctx.Items["UserLang"] != null)
                 {
                     return (string)ctx.Items["UserLang"];
                 }

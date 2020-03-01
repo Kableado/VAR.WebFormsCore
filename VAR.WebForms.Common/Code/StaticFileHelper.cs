@@ -2,7 +2,7 @@
 using System.IO;
 using System.Web;
 
-namespace VAR.Focus.Web.Code
+namespace VAR.WebForms.Common.Code
 {
     public class StaticFileHelper
     {

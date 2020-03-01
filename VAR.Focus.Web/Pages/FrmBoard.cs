@@ -6,6 +6,9 @@ using VAR.Focus.BusinessLogic;
 using VAR.Focus.BusinessLogic.Entities;
 using VAR.Focus.Web.Code;
 using VAR.Focus.Web.Controls;
+using VAR.WebForms.Common.Code;
+using VAR.WebForms.Common.Controls;
+using VAR.WebForms.Common.Pages;
 
 namespace VAR.Focus.Web.Pages
 {
@@ -52,7 +55,8 @@ namespace VAR.Focus.Web.Pages
         {
             if (FormUtils.Controls_AreValid(Controls) == false) { return; }
 
-            Board board = Boards.Current.Boards_SetBoard(0, _txtTitle.Text, _txtDescription.Text, null, CurrentUser.Name);
+            User user = WebSessions.Current.Session_GetCurrentUser(Context);
+            Board board = Boards.Current.Boards_SetBoard(0, _txtTitle.Text, _txtDescription.Text, null, user.Name);
             _idBoard = board.IDBoard;
 
             Response.Redirect(GetUrl(_idBoard));
@@ -77,7 +81,8 @@ namespace VAR.Focus.Web.Pages
             CButton btnEdit = (CButton)sender;
             int idBoard = Convert.ToInt32(btnEdit.CommandArgument);
 
-            if (Boards.Current.Boards_DelBoard(idBoard, CurrentUser.Name))
+            User user = WebSessions.Current.Session_GetCurrentUser(Context);
+            if (Boards.Current.Boards_DelBoard(idBoard, user.Name))
             {
                 Controls.Clear();
                 FrmBoard_InitIndex();
@@ -146,7 +151,8 @@ namespace VAR.Focus.Web.Pages
         {
             Title = "Boards";
 
-            List<Board> boards = Boards.Current.Boards_GetListForUser(CurrentUser.Name);
+            User user = WebSessions.Current.Session_GetCurrentUser(Context);
+            List<Board> boards = Boards.Current.Boards_GetListForUser(user?.Name);
             foreach (Board board in boards)
             {
                 Panel pnlBoardSelector = BoardSelector_Create(board);
@@ -167,6 +173,7 @@ namespace VAR.Focus.Web.Pages
 
         private void FrmBoard_InitBoard()
         {
+            User user = WebSessions.Current.Session_GetCurrentUser(Context);
             Board board = Boards.Current.Board_GetByIDBoard(_idBoard);
 
             Title = board.Title;
@@ -175,7 +182,7 @@ namespace VAR.Focus.Web.Pages
             {
                 ID = "ctrCardBoard",
                 IDBoard = board.IDBoard,
-                UserName = CurrentUser.Name,
+                UserName = user.Name,
             };
             Controls.Add(cardBoardControl);
 
@@ -183,7 +190,7 @@ namespace VAR.Focus.Web.Pages
             {
                 ID = "ctrChat",
                 IDMessageBoard = string.Format("CardBoard_{0}", board.IDBoard),
-                UserName = CurrentUser.Name,
+                UserName = user.Name,
             };
             Controls.Add(chatControl);
         }
