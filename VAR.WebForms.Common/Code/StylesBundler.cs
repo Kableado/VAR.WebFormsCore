@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Reflection;
+using System.Web;
 
 namespace VAR.WebForms.Common.Code
 {
@@ -10,7 +11,10 @@ namespace VAR.WebForms.Common.Code
 
         public void ProcessRequest(HttpContext context)
         {
-            Bundler bundler = new Bundler(context.Server.MapPath("~/Styles/"));
+            Bundler bundler = new Bundler(
+                assembly: Assembly.GetExecutingAssembly(),
+                assemblyNamespace: "Styles",
+                absolutePath: context.Server.MapPath("~/Styles/"));
             context.Response.PrepareCacheableResponse();
             bundler.WriteResponse(context.Response, "text/css");
         }

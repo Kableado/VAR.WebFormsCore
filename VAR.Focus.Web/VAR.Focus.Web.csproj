@@ -52,7 +52,6 @@
   <ItemGroup>
     <Content Include="Images\BGCork.png" />
     <Content Include="priv\keep.txt" />
-    <Content Include="Scripts\01. Base.js" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Resources\Literals.en.json" />
@@ -67,12 +66,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\02. Ajax.js" />
-    <Content Include="Scripts\03. Controls.js" />
     <Content Include="Scripts\05. Cards.js" />
     <Content Include="Scripts\10. Chat.js" />
-    <Content Include="Styles\00. Reset.css" />
-    <Content Include="Styles\01. base.css" />
     <Content Include="Styles\02. Boards.css" />
     <Content Include="Styles\05. Cards.css" />
     <Content Include="Styles\10. Chat.css" />

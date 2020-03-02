@@ -74,5 +74,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\01. Base.js" />
+    <EmbeddedResource Include="Scripts\02. Ajax.js" />
+    <EmbeddedResource Include="Scripts\03. Controls.js" />
+    <EmbeddedResource Include="Styles\00. Reset.css" />
+    <EmbeddedResource Include="Styles\01. base.css" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
