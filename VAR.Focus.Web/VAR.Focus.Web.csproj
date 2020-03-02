@@ -54,7 +54,7 @@
     <Content Include="priv\keep.txt" />
     <Content Include="Scripts\01. Base.js" />
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\VARFocus - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Resources\Literals.en.json" />
     <Content Include="Resources\Literals.es.json" />
     <None Include="web.Debug.config">
@@ -126,7 +126,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>31337</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:31337</IISUrl>
+          <IISUrl>http://localhost:31337/VAR.Focus/</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
           <IISAppRootUrl>http://localhost:31337/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
