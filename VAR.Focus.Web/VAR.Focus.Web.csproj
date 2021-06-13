@@ -45,8 +45,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Web" />
-    <Reference Include="VAR.Json, Version=1.1.1.36534, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VAR.Json.1.1.1.36534\lib\net461\VAR.Json.dll</HintPath>
+    <Reference Include="VAR.Json, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VAR.Json.1.2.2\lib\netstandard2.0\VAR.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

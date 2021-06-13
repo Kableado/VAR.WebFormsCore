@@ -22,9 +22,8 @@ namespace VAR.WebForms.Common.Code
 
         public static void ResponseObject(this HttpContext context, object obj)
         {
-            var jsonWritter = new JsonWriter();
             context.Response.ContentType = "text/json";
-            string strObject = jsonWritter.Write(obj);
+            string strObject = JsonWriter.WriteObject(obj);
             context.Response.Write(strObject);
         }
 

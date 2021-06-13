@@ -155,10 +155,9 @@ namespace VAR.Focus.Web.Controls
                     {"ConfirmDelete", MultiLang.GetLiteral("ConfirmDelete")},
                 } },
             };
-            JsonWriter jsonWriter = new JsonWriter();
             StringBuilder sbCfg = new StringBuilder();
             sbCfg.AppendFormat("<script>\n");
-            sbCfg.AppendFormat("var {0} = {1};\n", strCfgName, jsonWriter.Write(cfg));
+            sbCfg.AppendFormat("var {0} = {1};\n", strCfgName, JsonWriter.WriteObject(cfg));
             sbCfg.AppendFormat("RunCardBoard({0});\n", strCfgName);
             sbCfg.AppendFormat("</script>\n");
             LiteralControl liScript = new LiteralControl(sbCfg.ToString());

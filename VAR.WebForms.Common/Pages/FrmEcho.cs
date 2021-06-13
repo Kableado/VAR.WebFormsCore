@@ -14,9 +14,8 @@ namespace VAR.WebForms.Common.Pages
 
         public void ProcessRequest(HttpContext context)
         {
-            var jsonWritter = new JsonWriter(new JsonWriterConfiguration(indent: true));
             context.Response.Write("<pre><code>");
-            context.Response.Write(jsonWritter.Write(context.Request));
+            context.Response.Write(JsonWriter.WriteObject(context.Request, indent: true));
             context.Response.Write("</code></pre>");
         }
 

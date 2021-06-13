@@ -109,10 +109,9 @@ namespace VAR.WebForms.Common.Controls
                     {"hidSize", _hidSize.ClientID},
                     {"keepSize", _keepSize },
                 };
-                JsonWriter jsonWriter = new JsonWriter();
                 StringBuilder sbCfg = new StringBuilder();
                 sbCfg.AppendFormat("<script>\n");
-                sbCfg.AppendFormat("var {0} = {1};\n", strCfgName, jsonWriter.Write(cfg));
+                sbCfg.AppendFormat("var {0} = {1};\n", strCfgName, JsonWriter.WriteObject(cfg));
                 sbCfg.AppendFormat("CTextBox_Multiline_Init({0});\n", strCfgName);
                 sbCfg.AppendFormat("</script>\n");
                 LiteralControl liScript = new LiteralControl(sbCfg.ToString());
@@ -182,7 +181,7 @@ namespace VAR.WebForms.Common.Controls
 
         public void SetClientsideHeight(int? height)
         {
-            if(height == null)
+            if (height == null)
             {
                 _hidSize.Value = string.Empty;
                 return;
@@ -201,10 +200,9 @@ namespace VAR.WebForms.Common.Controls
                     { "scrollTop", null },
                 };
             }
-            JsonWriter jsonWriter = new JsonWriter();
-            _hidSize.Value = jsonWriter.Write(sizeObj);
+            _hidSize.Value = JsonWriter.WriteObject(sizeObj);
         }
-        
+
         #endregion Public methods
     }
 }

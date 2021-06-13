@@ -40,8 +40,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="VAR.Json, Version=1.1.1.36534, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VAR.Json.1.1.1.36534\lib\net461\VAR.Json.dll</HintPath>
+    <Reference Include="VAR.Json, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VAR.Json.1.2.2\lib\netstandard2.0\VAR.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -72,14 +72,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Scripts\01. Base.js" />
     <EmbeddedResource Include="Scripts\02. Ajax.js" />
     <EmbeddedResource Include="Scripts\03. Controls.js" />
     <EmbeddedResource Include="Styles\00. Reset.css" />
     <EmbeddedResource Include="Styles\01. base.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
