@@ -6,6 +6,6 @@
 Dotfuscated/*
 Published/*
 
-VAR.Focus.Web/priv/*.json
+VAR.Focus.WebApp/priv/*.json
 .vs
 packages/*

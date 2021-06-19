@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\01. Base.js" />
+    <None Remove="Scripts\02. Ajax.js" />
+    <None Remove="Scripts\03. Controls.js" />
+    <None Remove="Styles\00. Reset.css" />
+    <None Remove="Styles\01. base.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\01. Base.js" />
+    <EmbeddedResource Include="Scripts\02. Ajax.js" />
+    <EmbeddedResource Include="Scripts\03. Controls.js" />
+    <EmbeddedResource Include="Styles\00. Reset.css" />
+    <EmbeddedResource Include="Styles\01. base.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="VAR.Json" Version="1.2.2" />
+  </ItemGroup>
+
+
+</Project>
