@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using VAR.Json;
-using VAR.WebForms.Common.Code;
+using VAR.WebFormsCore.Code;
 
-namespace VAR.WebForms.Common.Pages
+namespace VAR.WebFormsCore.Pages
 {
     public class FrmEcho : IHttpHandler
     {
         #region IHttpHandler
-
-        public bool IsReusable
-        {
-            get { return false; }
-        }
 
         public void ProcessRequest(HttpContext context)
         {

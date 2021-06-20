@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using VAR.WebForms.Common.Code;
-using VAR.WebForms.Common.Controls;
+using VAR.WebFormsCore.Code;
+using VAR.WebFormsCore.Controls;
 
-namespace VAR.WebForms.Common.Pages
+namespace VAR.WebFormsCore.Pages
 {
     public class PageCommon : Page
     {
@@ -14,8 +13,8 @@ namespace VAR.WebForms.Common.Pages
         private HtmlBody _body;
         private HtmlForm _form;
         private Panel _pnlContainer = new Panel();
-        private CButton _btnPostback = new CButton();
-        private CButton _btnLogout = new CButton();
+        private Button _btnPostback = new Button();
+        private Button _btnLogout = new Button();
 
         private bool _mustBeAutenticated = true;
         private bool _isAuthenticated = false;
@@ -24,7 +23,7 @@ namespace VAR.WebForms.Common.Pages
 
         #region Properties
 
-        public new List<Control> Controls
+        public new ControlCollection Controls
         {
             get { return _pnlContainer.Controls; }
         }
@@ -120,7 +119,7 @@ namespace VAR.WebForms.Common.Pages
             lnkTitle.NavigateUrl = ".";
             pnlHeader.Controls.Add(lnkTitle);
 
-            var lblTitle = new CLabel { Text = GlobalConfig.Get().Title, Tag = "h1" };
+            var lblTitle = new Label { Text = GlobalConfig.Get().Title, Tag = "h1" };
             lnkTitle.Controls.Add(lblTitle);
 
             _btnPostback.ID = "btnPostback";

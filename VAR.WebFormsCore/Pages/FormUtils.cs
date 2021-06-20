@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using VAR.WebForms.Common.Controls;
+﻿using VAR.WebFormsCore.Controls;
 
-namespace VAR.WebForms.Common.Pages
+namespace VAR.WebFormsCore.Pages
 {
     public class FormUtils
     {
@@ -35,7 +34,7 @@ namespace VAR.WebForms.Common.Pages
 
             if (string.IsNullOrEmpty(label) == false)
             {
-                CLabel lblField = new CLabel();
+                Label lblField = new Label();
                 lblField.Text = label;
                 pnlLabelContainer.Controls.Add(lblField);
             }
@@ -61,7 +60,7 @@ namespace VAR.WebForms.Common.Pages
             return true;
         }
 
-        public static bool Controls_AreValid(List<Control> controls)
+        public static bool Controls_AreValid(ControlCollection controls)
         {
             bool valid = true;
             foreach (Control control in controls)

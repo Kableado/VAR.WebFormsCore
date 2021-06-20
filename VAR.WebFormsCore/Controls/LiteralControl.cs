@@ -1,6 +1,6 @@
-﻿using VAR.WebForms.Common.Controls;
+﻿using System.IO;
 
-namespace VAR.WebForms.Common.Pages
+namespace VAR.WebFormsCore.Controls
 {
     public class LiteralControl : Control
     {
@@ -8,6 +8,11 @@ namespace VAR.WebForms.Common.Pages
 
         public LiteralControl() { }
         public LiteralControl(string content) { Content = content; }
+
+        public override void Render(TextWriter textWriter)
+        {
+            textWriter.Write(Content);
+        }
 
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 using Microsoft.AspNetCore.Http;
-using VAR.WebForms.Common.Pages;
+using VAR.WebFormsCore.Pages;
 
-namespace VAR.WebForms.Common.Code
+namespace VAR.WebFormsCore.Code
 {
     public static class GlobalErrorHandler
     {

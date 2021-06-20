@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Web;
-using VAR.WebForms.Common.Controls;
+using VAR.WebFormsCore.Controls;
 
-namespace VAR.WebForms.Common.Pages
+namespace VAR.WebFormsCore.Pages
 {
     public class FrmError : PageCommon
     {
@@ -16,6 +16,7 @@ namespace VAR.WebForms.Common.Pages
 
         public FrmError(Exception ex)
         {
+            MustBeAutenticated = false;
             _ex = ex;
             Init += FrmError_Init;
         }
@@ -33,18 +34,18 @@ namespace VAR.WebForms.Common.Pages
         {
             Title = "Application Error";
 
-            CLabel lblErrorTitle = new CLabel { Text = Title, Tag = "h2" };
+            Label lblErrorTitle = new Label { Text = Title, Tag = "h2" };
             Controls.Add(lblErrorTitle);
 
             Exception exAux = _ex;
             //if (exAux is HttpUnhandledException && exAux.InnerException != null) { exAux = exAux.InnerException; }
             while (exAux != null)
             {
-                CLabel lblMessage = new CLabel { Tag = "P" };
+                Label lblMessage = new Label { Tag = "P" };
                 lblMessage.Text = string.Format("<b>{0}:</b> {1}", "Message", HttpUtility.HtmlEncode(exAux.Message));
                 Controls.Add(lblMessage);
 
-                CLabel lblStacktraceTitle = new CLabel { Tag = "p" };
+                Label lblStacktraceTitle = new Label { Tag = "p" };
                 lblStacktraceTitle.Text = string.Format("<b>{0}:</b>", "Stacktrace");
                 Controls.Add(lblStacktraceTitle);
                 Panel pnlStacktrace = new Panel();

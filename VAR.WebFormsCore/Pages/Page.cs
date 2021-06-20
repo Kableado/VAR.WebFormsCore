@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using VAR.WebForms.Common.Code;
-using VAR.WebForms.Common.Controls;
+﻿using System.IO;
+using Microsoft.AspNetCore.Http;
+using VAR.WebFormsCore.Code;
+using VAR.WebFormsCore.Controls;
 
-namespace VAR.WebForms.Common.Pages
+namespace VAR.WebFormsCore.Pages
 {
     // TODO: Implement Page
     public class Page : Control, IHttpHandler
@@ -13,8 +14,19 @@ namespace VAR.WebForms.Common.Pages
 
         public void ProcessRequest(HttpContext context)
         {
+            StringWriter stringWriter = new();
+
             Context = context;
-            throw new System.NotImplementedException();
+            Page = this;
+
+            OnPreInit();
+            OnInit();
+            OnLoad();
+            OnPreRender();
+
+            Render(stringWriter);
+            context.Response.Headers.Add("Content-Type", "text/html");
+            Context.Response.WriteAsync(stringWriter.ToString());
         }
 
         public bool IsPostBack { get; }

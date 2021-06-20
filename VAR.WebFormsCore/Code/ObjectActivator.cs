@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace VAR.WebForms.Common.Code
+namespace VAR.WebFormsCore.Code
 {
     public class ObjectActivator
     {

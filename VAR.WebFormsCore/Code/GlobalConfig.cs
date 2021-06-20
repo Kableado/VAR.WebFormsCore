@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace VAR.WebForms.Common.Code
+namespace VAR.WebFormsCore.Code
 {
     public static class GlobalConfig
     {

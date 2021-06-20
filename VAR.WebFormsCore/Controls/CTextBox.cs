@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using VAR.Json;
-using VAR.WebForms.Common.Pages;
 
-namespace VAR.WebForms.Common.Controls
+namespace VAR.WebFormsCore.Controls
 {
-    // TODO: Implememnt control
     public class CTextBox : Control, INamingContainer, IValidableControl
     {
         #region Declarations

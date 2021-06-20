@@ -1,8 +1,8 @@
-﻿using VAR.WebForms.Common.Controls;
-
-namespace VAR.WebForms.Common.Pages
+﻿namespace VAR.WebFormsCore.Controls
 {
-    public class HtmlForm : Control
+    // TODO: Implment this control
+    public class HtmlForm : HtmlGenericControl
     {
+        public HtmlForm() : base("form") { }
     }
 }

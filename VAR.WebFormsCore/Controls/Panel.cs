@@ -1,12 +1,8 @@
-﻿using VAR.WebForms.Common.Controls;
-using VAR.WebFormsCore.Code;
-
-namespace VAR.WebForms.Common.Pages
+﻿namespace VAR.WebFormsCore.Controls
 {
     // TODO: Implememnt control
-    public class Panel : Control
+    public class Panel : HtmlGenericControl
     {
-        public Unit Width { get; set; }
-        public Unit Height { get; set; }
+        public Panel() : base("div") { }
     }
 }

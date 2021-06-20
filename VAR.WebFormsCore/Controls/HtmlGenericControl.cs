@@ -1,14 +1,25 @@
-﻿using VAR.WebForms.Common.Controls;
+﻿using System.IO;
 
-namespace VAR.WebForms.Common.Pages
+namespace VAR.WebFormsCore.Controls
 {
     public class HtmlGenericControl : Control
     {
-        private string _tag;
+        private string _tagName;
 
         public HtmlGenericControl(string tag)
         {
-            this._tag = tag;
+            _tagName = tag;
+        }
+
+        public override void Render(TextWriter textWriter)
+        {
+            textWriter.Write("<{0} ", _tagName);
+            RenderAttributes(textWriter);
+            textWriter.Write(">");
+
+            base.Render(textWriter);
+
+            textWriter.Write("</{0}>", _tagName);
         }
     }
 }

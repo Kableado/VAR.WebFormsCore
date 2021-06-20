@@ -1,4 +1,4 @@
-﻿namespace VAR.WebForms.Common.Controls
+﻿namespace VAR.WebFormsCore.Controls
 {
     public interface INamingContainer
     {

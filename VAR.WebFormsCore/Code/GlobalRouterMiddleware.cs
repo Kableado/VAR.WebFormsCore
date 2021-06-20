@@ -5,25 +5,25 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using VAR.WebForms.Common.Code;
 
-namespace VAR.Focus.WebApp
+namespace VAR.WebFormsCore.Code
 {
-    // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class GlobalRouterMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly IWebHostEnvironment _env;
 
-        public GlobalRouterMiddleware(RequestDelegate next)
+        public GlobalRouterMiddleware(RequestDelegate next, IWebHostEnvironment env)
         {
             _next = next;
+            _env = env;
+            ServerHelpers.SetContentRoot(env.ContentRootPath);
         }
 
         public Task Invoke(HttpContext httpContext)
         {
-
-
             httpContext.Response.Headers.Remove("Server");
             httpContext.Response.Headers.Remove("X-Powered-By");
             httpContext.Response.Headers.Add("X-Content-Type-Options", "nosniff");
@@ -43,17 +43,12 @@ namespace VAR.Focus.WebApp
                 GlobalErrorHandler.HandleError(httpContext, ex);
             }
 
-            //httpContext.Response.WriteAsync("Hello World!");
-
-            //return _next(httpContext);
-
             return null;
         }
 
 
         private void RouteRequest(HttpContext context)
         {
-            // TODO: need a replacement for context.Request.FilePath, using context.Request.Path for now
             string path = context.Request.Path;
             string file = Path.GetFileName(path);
             if (string.IsNullOrEmpty(file))
@@ -65,8 +60,7 @@ namespace VAR.Focus.WebApp
             string extension = Path.GetExtension(path).ToLower();
             if (GlobalConfig.Get().AllowedExtensions.Contains(extension))
             {
-                // TODO: need a replacement for context.Request.PhysicalPath, using context.Request.Path for now
-                string filePath = context.Request.Path;
+                string filePath = ServerHelpers.MapContentPath(path);
                 if (File.Exists(filePath))
                 {
                     StaticFileHelper.ResponseStaticFile(context, filePath);
@@ -82,8 +76,6 @@ namespace VAR.Focus.WebApp
             }
 
             // Use handler
-            //context.Response.Clear();
-            //context.Handler = handler;
             handler.ProcessRequest(context);
         }
 
@@ -154,12 +146,11 @@ namespace VAR.Focus.WebApp
 
     }
 
-    // Extension method used to add the middleware to the HTTP request pipeline.
     public static class GlobalRouterMiddlewareExtensions
     {
-        public static IApplicationBuilder UseGlobalRouterMiddleware(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseGlobalRouterMiddleware(this IApplicationBuilder builder, IWebHostEnvironment env)
         {
-            return builder.UseMiddleware<GlobalRouterMiddleware>();
+            return builder.UseMiddleware<GlobalRouterMiddleware>(env);
         }
     }
 }

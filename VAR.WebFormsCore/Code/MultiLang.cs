@@ -2,7 +2,7 @@
 using System.IO;
 using VAR.Json;
 
-namespace VAR.WebForms.Common.Code
+namespace VAR.WebFormsCore.Code
 {
     public class MultiLang
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using VAR.Json;
 
-namespace VAR.WebForms.Common.Code
+namespace VAR.WebFormsCore.Code
 {
     public static class ExtensionMethods
     {
@@ -9,13 +9,6 @@ namespace VAR.WebForms.Common.Code
 
         public static string GetRequestParm(this HttpContext context, string parm)
         {
-            foreach (string key in context.Request.Form.Keys)
-            {
-                if (string.IsNullOrEmpty(key) == false && key.EndsWith(parm))
-                {
-                    return context.Request.Form[key];
-                }
-            }
             foreach (string key in context.Request.Query.Keys)
             {
                 if (string.IsNullOrEmpty(key) == false && key.EndsWith(parm))

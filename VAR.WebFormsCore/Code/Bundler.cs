@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace VAR.WebForms.Common.Code
+namespace VAR.WebFormsCore.Code
 {
     public class Bundler
     {
