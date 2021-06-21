@@ -34,8 +34,11 @@ namespace VAR.WebFormsCore.Controls
 
         public event EventHandler Load;
 
+        protected virtual void Process() { }
+
         protected void OnLoad()
         {
+            Process();
             Load?.Invoke(this, null);
             foreach (Control control in Controls)
             {
@@ -172,9 +175,9 @@ namespace VAR.WebFormsCore.Controls
             textWriter.Write(" {0}=\"{1}\"", key, value);
         }
 
-        protected void RenderAttributes(TextWriter textWriter)
+        protected void RenderAttributes(TextWriter textWriter, bool forceId = false)
         {
-            if (string.IsNullOrEmpty(_id) == false)
+            if (string.IsNullOrEmpty(_id) == false || forceId)
             {
                 RenderAttribute(textWriter, "id", ClientID);
                 RenderAttribute(textWriter, "name", ClientID);
@@ -196,6 +199,22 @@ namespace VAR.WebFormsCore.Controls
                 }
                 RenderAttribute(textWriter, "style", sbStyle.ToString());
             }
+        }
+
+        public List<Control> ChildsOfType<T>(List<Control> controls = null)
+        {
+            if (controls == null)
+            {
+                controls = new List<Control>();
+            }
+
+            if (this is T) { controls.Add(this); }
+
+            foreach (Control child in _controls)
+            {
+                child.ChildsOfType<T>(controls);
+            }
+            return controls;
         }
 
     }

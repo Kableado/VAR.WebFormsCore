@@ -141,12 +141,6 @@ namespace VAR.WebFormsCore.Controls
                     "if(event.keyCode==13){{document.getElementById('{0}').focus(); return false;}}",
                     _nextFocusOnEnter.ClientID));
             }
-
-            // FIX: The framework deletes textbox values on password mode
-            if (_txtContent.TextMode == TextBoxMode.Password)
-            {
-                _txtContent.Attributes["value"] = _txtContent.Text;
-            }
         }
 
         #endregion Control life cycle

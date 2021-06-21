@@ -4,7 +4,7 @@ using System.IO;
 namespace VAR.WebFormsCore.Controls
 {
     // TODO: Implememnt control
-    public class Button : Control
+    public class Button : Control, IReceivePostbackEvent
     {
         public Button()
         {
@@ -27,6 +27,11 @@ namespace VAR.WebFormsCore.Controls
             base.Render(textWriter);
 
             textWriter.Write("</input>");
+        }
+
+        public void ReceivePostBack()
+        {
+            Click?.Invoke(this, null);
         }
     }
 }

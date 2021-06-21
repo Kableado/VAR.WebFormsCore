@@ -9,12 +9,20 @@ namespace VAR.WebFormsCore.Controls
 
         public TextBoxMode TextMode { get; set; } = TextBoxMode.Normal;
 
+        protected override void Process()
+        {
+            if (Page.IsPostBack && Page.Context.Request.Form.ContainsKey(ClientID))
+            {
+                Text = Page.Context.Request.Form[ClientID];
+            }
+        }
+
         public override void Render(TextWriter textWriter)
         {
             if (TextMode == TextBoxMode.MultiLine)
             {
                 textWriter.Write("<textare ");
-                RenderAttributes(textWriter);
+                RenderAttributes(textWriter, forceId: true);
                 textWriter.Write(">");
                 textWriter.Write(Text);
                 textWriter.Write("</textare>");
@@ -22,7 +30,7 @@ namespace VAR.WebFormsCore.Controls
             else if (TextMode == TextBoxMode.Normal)
             {
                 textWriter.Write("<input type=\"text\" ");
-                RenderAttributes(textWriter);
+                RenderAttributes(textWriter, forceId: true);
                 if (string.IsNullOrEmpty(Text) == false)
                 {
                     RenderAttribute(textWriter, "value", Text);
@@ -33,7 +41,7 @@ namespace VAR.WebFormsCore.Controls
             else if (TextMode == TextBoxMode.Password)
             {
                 textWriter.Write("<input type=\"password\" ");
-                RenderAttributes(textWriter);
+                RenderAttributes(textWriter, forceId: true);
                 if (string.IsNullOrEmpty(Text) == false)
                 {
                     RenderAttribute(textWriter, "value", Text);
