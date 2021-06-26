@@ -1,17 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using VAR.Json;
 
 namespace VAR.WebFormsCore.Code
 {
     public class MultiLang
     {
-        private static string GetLocalPath(string path)
+        private static string GetPrivatePath(string baseDir, string fileName)
         {
-            // TODO: Needs replacement for Assembly.GetExecutingAssembly().CodeBase
-            //string currentDir = Path.GetDirectoryName((new System.Uri(Assembly.GetExecutingAssembly().CodeBase)).AbsolutePath);
-            //return string.Format("{0}/{1}", Directory.GetParent(currentDir), path);
-            return path;
+            string currentDir = Path.GetDirectoryName(new System.Uri(Assembly.GetExecutingAssembly().Location).AbsolutePath);
+            string privatePath = Path.Combine(currentDir, baseDir);
+            while (Directory.Exists(privatePath) == false)
+            {
+                DirectoryInfo dirInfo = Directory.GetParent(currentDir);
+                if (dirInfo == null) { break; }
+                currentDir = dirInfo.FullName;
+                privatePath = Path.Combine(currentDir, baseDir);
+            }
+            return Path.Combine(privatePath, fileName);
         }
 
         private static Dictionary<string, Dictionary<string, object>> _literals = null;
@@ -23,7 +30,7 @@ namespace VAR.WebFormsCore.Code
             JsonParser jsonParser = new JsonParser();
             foreach (string lang in new string[] { "en", "es" })
             {
-                string filePath = GetLocalPath(string.Format("Resources/Literals.{0}.json", lang));
+                string filePath = GetPrivatePath("Resources", string.Format("Literals.{0}.json", lang));
                 if (File.Exists(filePath) == false) { continue; }
 
                 string strJsonLiteralsLanguage = File.ReadAllText(filePath);
