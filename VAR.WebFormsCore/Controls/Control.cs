@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Pages;
 
 namespace VAR.WebFormsCore.Controls
@@ -172,7 +173,7 @@ namespace VAR.WebFormsCore.Controls
 
         public void RenderAttribute(TextWriter textWriter, string key, string value)
         {
-            textWriter.Write(" {0}=\"{1}\"", key, value);
+            textWriter.Write(" {0}=\"{1}\"", key, ServerHelpers.HtmlEncode(value));
         }
 
         protected void RenderAttributes(TextWriter textWriter, bool forceId = false)

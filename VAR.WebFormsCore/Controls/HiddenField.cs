@@ -2,10 +2,11 @@
 
 namespace VAR.WebFormsCore.Controls
 {
-    // TODO: Implememnt control
     public class HiddenField : Control
     {
-        public string Value { get; set; }
+        private string _value = string.Empty;
+
+        public string Value { get { return _value; } set { _value = value; } }
 
         protected override void Process()
         {
@@ -21,7 +22,7 @@ namespace VAR.WebFormsCore.Controls
             RenderAttributes(textWriter, forceId: true);
             if (string.IsNullOrEmpty(Value) == false)
             {
-                textWriter.Write(" value=\"{0}\"", Value);
+                RenderAttribute(textWriter, "value", _value);
             }
             textWriter.Write(">");
             textWriter.Write("</input>");

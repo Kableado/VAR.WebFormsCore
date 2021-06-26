@@ -1,11 +1,13 @@
 ﻿using System.IO;
+using VAR.WebFormsCore.Code;
 
 namespace VAR.WebFormsCore.Controls
 {
-    // TODO: Implememnt control
     public class TextBox : Control
     {
-        public string Text { get; set; }
+        private string _text = string.Empty;
+
+        public string Text { get { return _text; } set { _text = value; } }
 
         public TextBoxMode TextMode { get; set; } = TextBoxMode.Normal;
 
@@ -13,7 +15,7 @@ namespace VAR.WebFormsCore.Controls
         {
             if (Page.IsPostBack && Page.Context.Request.Form.ContainsKey(ClientID))
             {
-                Text = Page.Context.Request.Form[ClientID];
+                _text = Page.Context.Request.Form[ClientID];
             }
         }
 
@@ -21,11 +23,11 @@ namespace VAR.WebFormsCore.Controls
         {
             if (TextMode == TextBoxMode.MultiLine)
             {
-                textWriter.Write("<textare ");
+                textWriter.Write("<textarea ");
                 RenderAttributes(textWriter, forceId: true);
                 textWriter.Write(">");
-                textWriter.Write(Text);
-                textWriter.Write("</textare>");
+                textWriter.Write(ServerHelpers.HtmlEncode(_text));
+                textWriter.Write("</textarea>");
             }
             else if (TextMode == TextBoxMode.Normal)
             {
@@ -33,7 +35,7 @@ namespace VAR.WebFormsCore.Controls
                 RenderAttributes(textWriter, forceId: true);
                 if (string.IsNullOrEmpty(Text) == false)
                 {
-                    RenderAttribute(textWriter, "value", Text);
+                    RenderAttribute(textWriter, "value", _text);
                 }
                 textWriter.Write(">");
                 textWriter.Write("</input>");
@@ -44,7 +46,7 @@ namespace VAR.WebFormsCore.Controls
                 RenderAttributes(textWriter, forceId: true);
                 if (string.IsNullOrEmpty(Text) == false)
                 {
-                    RenderAttribute(textWriter, "value", Text);
+                    RenderAttribute(textWriter, "value", _text);
                 }
                 textWriter.Write(">");
                 textWriter.Write("</input>");

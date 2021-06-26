@@ -3,7 +3,6 @@ using System.IO;
 
 namespace VAR.WebFormsCore.Controls
 {
-    // TODO: Implememnt control
     public class Button : Control, IReceivePostbackEvent
     {
         public Button()
@@ -11,17 +10,21 @@ namespace VAR.WebFormsCore.Controls
             CssClass = "button";
         }
 
-        public string Text { get; set; }
-        public string CommandArgument { get; set; }
+        private string _text = string.Empty;
+
+        public string Text { get { return _text; } set { _text = value; } }
+
+        private string _commandArgument = string.Empty;
+
+        public string CommandArgument { get { return _commandArgument; } set { _commandArgument = value; } }
 
         public event EventHandler Click;
-
 
         public override void Render(TextWriter textWriter)
         {
             textWriter.Write("<input type=\"submit\" ");
             RenderAttributes(textWriter);
-            RenderAttribute(textWriter, "value", Text);
+            RenderAttribute(textWriter, "value", _text);
             textWriter.Write(">");
 
             base.Render(textWriter);

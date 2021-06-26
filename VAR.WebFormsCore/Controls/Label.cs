@@ -1,17 +1,13 @@
 ﻿using System.IO;
+using VAR.WebFormsCore.Code;
 
 namespace VAR.WebFormsCore.Controls
 {
-    // TODO: Implememnt control
     public class Label : Control
     {
-        #region Declarations
+        #region Properties
 
         private string _tagName = "span";
-
-        #endregion Declarations
-
-        #region Properties
 
         public string Tag
         {
@@ -19,7 +15,9 @@ namespace VAR.WebFormsCore.Controls
             set { _tagName = value; }
         }
 
-        public string Text { get; set; }
+        private string _text = string.Empty;
+
+        public string Text { get { return _text; } set { _text = value; } }
 
         #endregion Properties
 
@@ -31,7 +29,7 @@ namespace VAR.WebFormsCore.Controls
             RenderAttributes(textWriter);
             textWriter.Write(">");
 
-            textWriter.Write(Text);
+            textWriter.Write(ServerHelpers.HtmlEncode(_text));
 
             base.Render(textWriter);
 

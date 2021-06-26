@@ -9,9 +9,19 @@ namespace VAR.WebFormsCore.Code
 
         public static string GetRequestParm(this HttpContext context, string parm)
         {
+            if (context.Request.Method == "POST")
+            {
+                foreach (string key in context.Request.Form.Keys)
+                {
+                    if (string.IsNullOrEmpty(key) == false && key == parm)
+                    {
+                        return context.Request.Form[key];
+                    }
+                }
+            }
             foreach (string key in context.Request.Query.Keys)
             {
-                if (string.IsNullOrEmpty(key) == false && key.EndsWith(parm))
+                if (string.IsNullOrEmpty(key) == false && key == parm)
                 {
                     return context.Request.Query[key];
                 }

@@ -1,8 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Microsoft.Extensions.Primitives;
+using VAR.WebFormsCore.Code;
 
 namespace VAR.WebFormsCore.Controls
 {
-    // TODO: Implment this control
     public class HtmlForm : Control
     {
         private string _method = "post";
@@ -14,12 +17,29 @@ namespace VAR.WebFormsCore.Controls
             textWriter.Write("<form ");
             RenderAttributes(textWriter);
             RenderAttribute(textWriter, "method", _method);
-            RenderAttribute(textWriter, "action", Page.GetType().Name);
+            RenderAttribute(textWriter, "action", GetAction());
             textWriter.Write(">");
 
             base.Render(textWriter);
 
             textWriter.Write("</form>");
+        }
+        private string GetAction()
+        {
+            StringBuilder sbAction = new();
+            sbAction.Append(Page.GetType().Name);
+
+            if (Page.Context.Request.Query.Count > 0)
+            {
+                sbAction.Append('?');
+
+                foreach (KeyValuePair<string, StringValues> queryParam in Page.Context.Request.Query)
+                {
+                    sbAction.AppendFormat("&{0}={1}", ServerHelpers.UrlEncode(queryParam.Key), ServerHelpers.UrlEncode(queryParam.Value[0]));
+                }
+            }
+
+            return sbAction.ToString();
         }
     }
 }

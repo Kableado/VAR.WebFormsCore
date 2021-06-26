@@ -6,7 +6,6 @@ using VAR.WebFormsCore.Controls;
 
 namespace VAR.WebFormsCore.Pages
 {
-    // TODO: Implement Page
     public class Page : Control, IHttpHandler
     {
         public string Title { get; set; }
@@ -26,8 +25,13 @@ namespace VAR.WebFormsCore.Pages
             }
 
             OnPreInit();
+            if (context.Response.HasStarted) { return; }
+
             OnInit();
+            if (context.Response.HasStarted) { return; }
+
             OnLoad();
+            if (context.Response.HasStarted) { return; }
 
             if (_isPostBack)
             {
@@ -38,12 +42,17 @@ namespace VAR.WebFormsCore.Pages
                     if (context.Request.Form.ContainsKey(clientID))
                     {
                         (control as IReceivePostbackEvent).ReceivePostBack();
+                        if (context.Response.HasStarted) { return; }
                     }
                 }
             }
 
             OnPreRender();
+            if (context.Response.HasStarted) { return; }
+
             Render(stringWriter);
+            if (context.Response.HasStarted) { return; }
+
             context.Response.Headers.Add("Content-Type", "text/html");
             Context.Response.WriteAsync(stringWriter.ToString());
         }
