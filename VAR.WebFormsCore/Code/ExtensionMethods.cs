@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using VAR.Json;
 
 namespace VAR.WebFormsCore.Code
@@ -38,21 +39,17 @@ namespace VAR.WebFormsCore.Code
 
         public static void PrepareCacheableResponse(this HttpResponse response)
         {
-            // TODO: Implement on asp.net core
-            //const int secondsInDay = 86400;
-            //response.ExpiresAbsolute = DateTime.Now.AddSeconds(secondsInDay);
-            //response.Expires = secondsInDay;
-            //response.Cache.SetCacheability(HttpCacheability.Public);
-            //response.Cache.SetMaxAge(new TimeSpan(0, 0, secondsInDay));
+            const int secondsInDay = 86400;
+            response.Headers.Add("Cache-Control", string.Format("public, max-age={0}", secondsInDay));
+            string ExpireDate = DateTime.UtcNow.AddSeconds(secondsInDay).ToString("ddd, dd MMM yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            response.Headers.Add("Expires", ExpireDate + " GMT");
         }
 
         public static void PrepareUncacheableResponse(this HttpResponse response)
         {
-            // TODO: Implement on asp.net core
-            //response.ExpiresAbsolute = DateTime.Now.AddDays(-2d);
-            //response.Expires = -1500;
-            //response.Headers.Add("Cache-Control", "max-age=0, no-cache, no-store");
-            //response.BufferOutput = true;
+            response.Headers.Add("Cache-Control", "max-age=0, no-cache, no-store");
+            string ExpireDate = DateTime.UtcNow.AddSeconds(-1500).ToString("ddd, dd MMM yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            response.Headers.Add("Expires", ExpireDate + " GMT");
         }
 
         #endregion HttpContext
