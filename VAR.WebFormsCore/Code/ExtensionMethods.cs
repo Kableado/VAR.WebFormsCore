@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Microsoft.AspNetCore.Http;
 using VAR.Json;
 
@@ -30,11 +31,14 @@ namespace VAR.WebFormsCore.Code
             return string.Empty;
         }
 
+        private static Encoding _utf8Econding = new UTF8Encoding();
+
         public static void ResponseObject(this HttpContext context, object obj)
         {
             context.Response.ContentType = "text/json";
             string strObject = JsonWriter.WriteObject(obj);
-            context.Response.WriteAsync(strObject);
+            byte[] byteObject = _utf8Econding.GetBytes(strObject);
+            context.Response.Body.WriteAsync(byteObject);
         }
 
         public static void PrepareCacheableResponse(this HttpResponse response)

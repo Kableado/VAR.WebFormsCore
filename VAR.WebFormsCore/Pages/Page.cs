@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Microsoft.AspNetCore.Http;
 using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Controls;
@@ -12,7 +13,9 @@ namespace VAR.WebFormsCore.Pages
 
         public HttpContext Context { get; set; }
 
-        public void ProcessRequest(HttpContext context)
+        private static Encoding _utf8Econding = new UTF8Encoding();
+
+        public async void ProcessRequest(HttpContext context)
         {
             StringWriter stringWriter = new();
 
@@ -54,7 +57,8 @@ namespace VAR.WebFormsCore.Pages
             if (context.Response.HasStarted) { return; }
 
             context.Response.Headers.Add("Content-Type", "text/html");
-            Context.Response.WriteAsync(stringWriter.ToString());
+            byte[] byteObject = _utf8Econding.GetBytes(stringWriter.ToString());
+            await context.Response.Body.WriteAsync(byteObject);
         }
 
         private bool _isPostBack = false;

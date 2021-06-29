@@ -70,34 +70,27 @@ namespace VAR.WebFormsCore.Code
 
         #region Public methods
 
-        public void WriteResponse(HttpResponse response, string contentType)
+        private static Encoding _utf8Econding = new UTF8Encoding();
+
+        public async void WriteResponse(HttpResponse response, string contentType)
         {
+            StringWriter textWriter = new StringWriter();
             response.ContentType = contentType;
             foreach (string fileName in AssemblyFiles)
             {
                 Stream resourceStream = _assembly.GetManifestResourceStream(fileName);
                 string fileContent = new StreamReader(resourceStream).ReadToEnd();
-                byte[] byteArray = Encoding.UTF8.GetBytes(fileContent);
-                if (byteArray.Length > 0)
-                {
-                    response.Body.Write(byteArray, 0, byteArray.Length);
-
-                    byteArray = Encoding.UTF8.GetBytes("\n\n");
-                    response.Body.Write(byteArray, 0, byteArray.Length);
-                }
+                textWriter.Write(fileContent);
+                textWriter.Write("\n\n");
             }
             foreach (string fileName in AbsoluteFiles)
             {
                 string fileContent = File.ReadAllText(fileName);
-                byte[] byteArray = Encoding.UTF8.GetBytes(fileContent);
-                if (byteArray.Length > 0)
-                {
-                    response.Body.Write(byteArray, 0, byteArray.Length);
-
-                    byteArray = Encoding.UTF8.GetBytes("\n\n");
-                    response.Body.Write(byteArray, 0, byteArray.Length);
-                }
+                textWriter.Write(fileContent);
+                textWriter.Write("\n\n");
             }
+            byte[] byteObject = _utf8Econding.GetBytes(textWriter.ToString());
+            await response.Body.WriteAsync(byteObject);
         }
 
         #endregion Public methods

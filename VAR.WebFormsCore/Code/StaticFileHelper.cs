@@ -66,7 +66,7 @@ namespace VAR.WebFormsCore.Code
             {".7z", "application/x-7z-compressed"},
         };
 
-        public static void ResponseStaticFile(HttpContext context, string filePath)
+        public static async void ResponseStaticFile(HttpContext context, string filePath)
         {
             string extension = Path.GetExtension(filePath).ToLower();
             string contentType = null;
@@ -75,21 +75,14 @@ namespace VAR.WebFormsCore.Code
                 contentType = _mimeTypeByExtension[extension];
             }
 
-            //context.Response.Clear();
-
             if (string.IsNullOrEmpty(contentType) == false)
             {
                 context.Response.ContentType = contentType;
             }
             context.Response.PrepareCacheableResponse();
 
-            //context.Response.Buffer = true;
-            //context.Response.WriteFile(filePath);
-            //context.Response.Flush();
-            //context.Response.Close();
-            //context.Response.End();
             byte[] fileData = File.ReadAllBytes(filePath);
-            context.Response.Body.Write(fileData);
+            await context.Response.Body.WriteAsync(fileData);
         }
 
     }

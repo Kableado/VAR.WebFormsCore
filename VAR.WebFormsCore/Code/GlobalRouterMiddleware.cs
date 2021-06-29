@@ -22,7 +22,7 @@ namespace VAR.WebFormsCore.Code
             ServerHelpers.SetContentRoot(env.ContentRootPath);
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext httpContext)
         {
             httpContext.Response.Headers.Remove("Server");
             httpContext.Response.Headers.Remove("X-Powered-By");
@@ -36,16 +36,23 @@ namespace VAR.WebFormsCore.Code
             }
             catch (Exception ex)
             {
-                if (ex is ThreadAbortException)
+                if (IsIgnoreException(ex) == false)
                 {
-                    return null;
+                    GlobalErrorHandler.HandleError(httpContext, ex);
                 }
-                GlobalErrorHandler.HandleError(httpContext, ex);
             }
 
-            return null;
+            await httpContext.Response.Body.FlushAsync();
         }
 
+        private static bool IsIgnoreException(Exception ex)
+        {
+            if (ex is ThreadAbortException)
+            {
+                return true;
+            }
+            return false;
+        }
 
         private void RouteRequest(HttpContext context)
         {
