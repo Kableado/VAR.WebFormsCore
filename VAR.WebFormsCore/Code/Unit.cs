@@ -10,6 +10,21 @@
             _value = value;
             _unitType = type;
         }
+
+        public override string ToString()
+        {
+            if (_unitType == UnitType.Pixel)
+            {
+                return string.Format("{0}px", _value);
+            }
+
+            if (_unitType == UnitType.Percentaje)
+            {
+                return string.Format("{0}%", _value);
+            }
+
+            return string.Empty;
+        }
     }
 
     public enum UnitType
