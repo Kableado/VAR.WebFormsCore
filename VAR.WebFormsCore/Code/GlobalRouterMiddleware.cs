@@ -33,16 +33,25 @@ namespace VAR.WebFormsCore.Code
             try
             {
                 RouteRequest(httpContext);
+                await httpContext.Response.Body.FlushAsync();
             }
             catch (Exception ex)
             {
                 if (IsIgnoreException(ex) == false)
                 {
-                    GlobalErrorHandler.HandleError(httpContext, ex);
+                    try
+                    {
+                        // TODO: Implement better error logging
+                        Console.WriteLine("!!!!!!!!!!");
+                        Console.Write("Message: {0}\nStacktrace: {1}\n", ex.Message, ex.StackTrace);
+
+                        GlobalErrorHandler.HandleError(httpContext, ex);
+                        await httpContext.Response.Body.FlushAsync();
+                    }
+                    catch (Exception) { /* Nom nom nom */}
                 }
             }
 
-            await httpContext.Response.Body.FlushAsync();
         }
 
         private static bool IsIgnoreException(Exception ex)
