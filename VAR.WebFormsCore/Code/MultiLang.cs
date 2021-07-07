@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using VAR.Json;
 
 namespace VAR.WebFormsCore.Code
@@ -9,7 +9,7 @@ namespace VAR.WebFormsCore.Code
     {
         private static string GetPrivatePath(string baseDir, string fileName)
         {
-            string currentDir = Path.GetDirectoryName(new System.Uri(Assembly.GetExecutingAssembly().Location).AbsolutePath);
+            string currentDir = Directory.GetCurrentDirectory();
             string privatePath = Path.Combine(currentDir, baseDir);
             while (Directory.Exists(privatePath) == false)
             {
