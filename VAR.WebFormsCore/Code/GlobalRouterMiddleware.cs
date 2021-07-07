@@ -82,6 +82,11 @@ namespace VAR.WebFormsCore.Code
                     StaticFileHelper.ResponseStaticFile(context, filePath);
                     return;
                 }
+                else
+                {
+                    // TODO: FrmNotFound
+                    throw new Exception("NotFound");
+                }
             }
 
             IHttpHandler handler = GetHandler(file);
