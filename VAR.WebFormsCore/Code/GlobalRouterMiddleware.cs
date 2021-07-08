@@ -39,16 +39,11 @@ namespace VAR.WebFormsCore.Code
             {
                 if (IsIgnoreException(ex) == false)
                 {
-                    try
-                    {
-                        // TODO: Implement better error logging
-                        Console.WriteLine("!!!!!!!!!!");
-                        Console.Write("Message: {0}\nStacktrace: {1}\n", ex.Message, ex.StackTrace);
+                    // TODO: Implement better error logging
+                    Console.WriteLine("!!!!!!!!!!");
+                    Console.Write("Message: {0}\nStacktrace: {1}\n", ex.Message, ex.StackTrace);
 
-                        GlobalErrorHandler.HandleError(httpContext, ex);
-                        await httpContext.Response.Body.FlushAsync();
-                    }
-                    catch (Exception) { /* Nom nom nom */}
+                    await GlobalErrorHandler.HandleErrorAsync(httpContext, ex);
                 }
             }
 

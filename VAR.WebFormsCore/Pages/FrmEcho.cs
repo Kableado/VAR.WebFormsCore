@@ -8,11 +8,11 @@ namespace VAR.WebFormsCore.Pages
     {
         #region IHttpHandler
 
-        public void ProcessRequest(HttpContext context)
+        public async void ProcessRequest(HttpContext context)
         {
-            context.Response.WriteAsync("<pre><code>");
-            context.Response.WriteAsync(JsonWriter.WriteObject(context.Request, indent: true));
-            context.Response.WriteAsync("</code></pre>");
+            await context.Response.WriteAsync("<pre><code>");
+            await context.Response.WriteAsync(JsonWriter.WriteObject(context.Request, indent: true));
+            await context.Response.WriteAsync("</code></pre>");
         }
 
         #endregion IHttpHandler
