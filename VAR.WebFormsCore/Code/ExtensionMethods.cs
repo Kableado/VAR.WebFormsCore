@@ -41,19 +41,39 @@ namespace VAR.WebFormsCore.Code
             context.Response.Body.WriteAsync(byteObject);
         }
 
+        public static void SafeSet(this IHeaderDictionary header, string key, string value)
+        {
+            if (header.ContainsKey(key))
+            {
+                header[key] = value;
+            }
+            else
+            {
+                header.Add(key, value);
+            }
+        }
+
+        public static void SafeDel(this IHeaderDictionary header, string key)
+        {
+            if (header.ContainsKey(key))
+            {
+                header.Remove(key);
+            }
+        }
+
         public static void PrepareCacheableResponse(this HttpResponse response)
         {
             const int secondsInDay = 86400;
-            response.Headers.Add("Cache-Control", string.Format("public, max-age={0}", secondsInDay));
+            response.Headers.SafeSet("Cache-Control", string.Format("public, max-age={0}", secondsInDay));
             string ExpireDate = DateTime.UtcNow.AddSeconds(secondsInDay).ToString("ddd, dd MMM yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            response.Headers.Add("Expires", ExpireDate + " GMT");
+            response.Headers.SafeSet("Expires", ExpireDate + " GMT");
         }
 
         public static void PrepareUncacheableResponse(this HttpResponse response)
         {
-            response.Headers.Add("Cache-Control", "max-age=0, no-cache, no-store");
+            response.Headers.SafeSet("Cache-Control", "max-age=0, no-cache, no-store");
             string ExpireDate = DateTime.UtcNow.AddSeconds(-1500).ToString("ddd, dd MMM yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            response.Headers.Add("Expires", ExpireDate + " GMT");
+            response.Headers.SafeSet("Expires", ExpireDate + " GMT");
         }
 
         #endregion HttpContext

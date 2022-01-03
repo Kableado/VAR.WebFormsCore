@@ -59,7 +59,7 @@ namespace VAR.WebFormsCore.Pages
                 Render(stringWriter);
                 if (context.Response.HasStarted) { return; }
 
-                context.Response.Headers.Add("Content-Type", "text/html");
+                context.Response.Headers.SafeSet("Content-Type", "text/html");
                 byte[] byteObject = _utf8Econding.GetBytes(stringWriter.ToString());
                 await context.Response.Body.WriteAsync(byteObject);
             }

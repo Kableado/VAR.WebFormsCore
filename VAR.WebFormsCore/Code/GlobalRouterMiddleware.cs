@@ -24,11 +24,11 @@ namespace VAR.WebFormsCore.Code
 
         public async Task Invoke(HttpContext httpContext)
         {
-            httpContext.Response.Headers.Remove("Server");
-            httpContext.Response.Headers.Remove("X-Powered-By");
-            httpContext.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-            httpContext.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
-            httpContext.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
+            httpContext.Response.Headers.SafeDel("Server");
+            httpContext.Response.Headers.SafeDel("X-Powered-By");
+            httpContext.Response.Headers.SafeSet("X-Content-Type-Options", "nosniff");
+            httpContext.Response.Headers.SafeSet("X-Frame-Options", "SAMEORIGIN");
+            httpContext.Response.Headers.SafeSet("X-XSS-Protection", "1; mode=block");
 
             try
             {
