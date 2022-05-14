@@ -8,7 +8,7 @@ namespace VAR.WebFormsCore.Pages
     {
         #region Declarations
 
-        private Exception _ex = null;
+        private readonly Exception _ex;
 
         #endregion Declarations
 
@@ -16,15 +16,12 @@ namespace VAR.WebFormsCore.Pages
 
         public FrmError(Exception ex)
         {
-            MustBeAutenticated = false;
+            MustBeAuthenticated = false;
             _ex = ex;
             Init += FrmError_Init;
         }
 
-        private void FrmError_Init(object sender, EventArgs e)
-        {
-            InitializeControls();
-        }
+        private void FrmError_Init(object sender, EventArgs e) { InitializeControls(); }
 
         #endregion Page life cycle
 
@@ -34,25 +31,25 @@ namespace VAR.WebFormsCore.Pages
         {
             Title = "Application Error";
 
-            Label lblErrorTitle = new Label { Text = Title, Tag = "h2" };
+            Label lblErrorTitle = new Label {Text = Title, Tag = "h2"};
             Controls.Add(lblErrorTitle);
 
             Exception exAux = _ex;
             //if (exAux is HttpUnhandledException && exAux.InnerException != null) { exAux = exAux.InnerException; }
             while (exAux != null)
             {
-                Label lblMessage = new Label { Tag = "P" };
-                lblMessage.Text = string.Format("<b>{0}:</b> {1}", "Message", HttpUtility.HtmlEncode(exAux.Message));
+                Label lblMessage = new Label {Tag = "P", Text =
+                    $"<b>Message:</b> {HttpUtility.HtmlEncode(exAux.Message)}"
+                };
                 Controls.Add(lblMessage);
 
-                Label lblStacktraceTitle = new Label { Tag = "p" };
-                lblStacktraceTitle.Text = string.Format("<b>{0}:</b>", "Stacktrace");
+                Label lblStacktraceTitle = new Label {Tag = "p", Text = "<b>Stacktrace:</b>"};
                 Controls.Add(lblStacktraceTitle);
-                Panel pnlStacktrace = new Panel();
-                pnlStacktrace.CssClass = "divCode";
+                Panel pnlStacktrace = new Panel {CssClass = "divCode"};
                 Controls.Add(pnlStacktrace);
                 LiteralControl litStackTrace = new LiteralControl(
-                    string.Format("<pre><code>{0}</code></pre>", HttpUtility.HtmlEncode(exAux.StackTrace)));
+                    $"<pre><code>{HttpUtility.HtmlEncode(exAux.StackTrace)}</code></pre>"
+                );
                 pnlStacktrace.Controls.Add(litStackTrace);
 
                 exAux = exAux.InnerException;

@@ -2,45 +2,32 @@
 
 namespace VAR.WebFormsCore.Pages
 {
-    public class FormUtils
+    public static class FormUtils
     {
-        public static Control CreatePanel(string cssClass, Control ctrl)
+        public static Control CreatePanel(string cssClass, Control ctrl = null)
         {
             Panel pnl = new Panel();
-            if (ctrl != null)
-            {
-                pnl.Controls.Add(ctrl);
-            }
-            if (string.IsNullOrEmpty(cssClass) == false)
-            {
-                pnl.CssClass = cssClass;
-            }
-            return pnl;
-        }
+            if (ctrl != null) { pnl.Controls.Add(ctrl); }
 
-        public static Control CreatePanel(string cssClass)
-        {
-            return CreatePanel(cssClass, null);
+            if (string.IsNullOrEmpty(cssClass) == false) { pnl.CssClass = cssClass; }
+
+            return pnl;
         }
 
         public static Control CreateField(string label, Control fieldControl)
         {
-            Panel pnlRow = new Panel();
-            pnlRow.CssClass = "formRow";
+            Panel pnlRow = new Panel {CssClass = "formRow"};
 
-            Panel pnlLabelContainer = new Panel();
-            pnlLabelContainer.CssClass = "formLabel width25pc";
+            Panel pnlLabelContainer = new Panel {CssClass = "formLabel width25pc"};
             pnlRow.Controls.Add(pnlLabelContainer);
 
             if (string.IsNullOrEmpty(label) == false)
             {
-                Label lblField = new Label();
-                lblField.Text = label;
+                Label lblField = new Label {Text = label};
                 pnlLabelContainer.Controls.Add(lblField);
             }
 
-            Panel pnlFieldContainer = new Panel();
-            pnlFieldContainer.CssClass = "formField width75pc";
+            Panel pnlFieldContainer = new Panel {CssClass = "formField width75pc"};
             pnlRow.Controls.Add(pnlFieldContainer);
 
             pnlFieldContainer.Controls.Add(fieldControl);
@@ -50,14 +37,7 @@ namespace VAR.WebFormsCore.Pages
 
         public static bool Control_IsValid(Control control)
         {
-            if (control is IValidableControl)
-            {
-                if (((IValidableControl)control).IsValid() == false)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return (control as IValidableControl)?.IsValid() != false;
         }
 
         public static bool Controls_AreValid(ControlCollection controls)
@@ -79,6 +59,7 @@ namespace VAR.WebFormsCore.Pages
                     break;
                 }
             }
+
             return valid;
         }
     }

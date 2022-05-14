@@ -4,26 +4,24 @@ using System.Linq.Expressions;
 
 namespace VAR.WebFormsCore.Code
 {
-    public class ObjectActivator
+    public static class ObjectActivator
     {
-        private static Dictionary<Type, Func<object>> _creators = new Dictionary<Type, Func<object>>();
+        private static readonly Dictionary<Type, Func<object>> Creators = new Dictionary<Type, Func<object>>();
 
-        public static Func<object> GetLambdaNew(Type type)
+        private static Func<object> GetLambdaNew(Type type)
         {
-            if (_creators.ContainsKey(type))
+            lock (Creators)
             {
-                return _creators[type];
-            }
+                if (Creators.ContainsKey(type)) { return Creators[type]; }
 
-            lock (_creators)
-            {
                 NewExpression newExp = Expression.New(type);
                 LambdaExpression lambda = Expression.Lambda(typeof(Func<object>), newExp);
-                Func<object> compiledLambdaNew = (Func<object>)lambda.Compile();
+                Func<object> compiledLambdaNew = (Func<object>) lambda.Compile();
 
-                _creators.Add(type, compiledLambdaNew);
+                Creators.Add(type, compiledLambdaNew);
+
+                return Creators[type];
             }
-            return _creators[type];
         }
 
         public static object CreateInstance(Type type)

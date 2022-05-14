@@ -4,12 +4,9 @@ namespace VAR.WebFormsCore.Controls
 {
     public class HtmlGenericControl : Control
     {
-        private string _tagName;
+        private readonly string _tagName;
 
-        public HtmlGenericControl(string tag)
-        {
-            _tagName = tag;
-        }
+        public HtmlGenericControl(string tag) { _tagName = tag; }
 
         public override void Render(TextWriter textWriter)
         {

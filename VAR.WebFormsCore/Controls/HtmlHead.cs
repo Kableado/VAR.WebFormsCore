@@ -12,10 +12,7 @@ namespace VAR.WebFormsCore.Controls
             RenderAttributes(textWriter);
             textWriter.Write(">");
 
-            if (string.IsNullOrEmpty(Title) == false)
-            {
-                textWriter.Write("<title>{0}</title>", Title);
-            }
+            if (string.IsNullOrEmpty(Title) == false) { textWriter.Write("<title>{0}</title>", Title); }
 
             base.Render(textWriter);
 

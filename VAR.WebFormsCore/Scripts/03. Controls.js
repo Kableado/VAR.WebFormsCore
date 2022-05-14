@@ -1,6 +1,5 @@
-﻿
-////////////////////////
-//  CTextBox_Multilin_SetText
+﻿////////////////////////
+//  CTextBox_SetText
 //
 var CTextBox_SetText = function (id, text) {
     var element = document.getElementById(id);

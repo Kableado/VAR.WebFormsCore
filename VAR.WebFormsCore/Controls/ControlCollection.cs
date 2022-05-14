@@ -4,13 +4,10 @@ namespace VAR.WebFormsCore.Controls
 {
     public class ControlCollection : List<Control>
     {
-        private Control _parent = null;
-        private int _index = 0;
+        private readonly Control _parent;
+        private int _index;
 
-        public ControlCollection(Control parent)
-        {
-            _parent = parent;
-        }
+        public ControlCollection(Control parent) { _parent = parent; }
 
         public new void Add(Control control)
         {

@@ -5,9 +5,7 @@ namespace VAR.WebFormsCore.Controls
 {
     public class TextBox : Control
     {
-        private string _text = string.Empty;
-
-        public string Text { get { return _text; } set { _text = value; } }
+        public string Text { get; set; } = string.Empty;
 
         public TextBoxMode TextMode { get; set; } = TextBoxMode.Normal;
 
@@ -15,7 +13,7 @@ namespace VAR.WebFormsCore.Controls
         {
             if (Page.IsPostBack && Page.Context.Request.Form.ContainsKey(ClientID))
             {
-                _text = Page.Context.Request.Form[ClientID];
+                Text = Page.Context.Request.Form[ClientID];
             }
         }
 
@@ -26,17 +24,15 @@ namespace VAR.WebFormsCore.Controls
                 textWriter.Write("<textarea ");
                 RenderAttributes(textWriter, forceId: true);
                 textWriter.Write(">");
-                textWriter.Write(ServerHelpers.HtmlEncode(_text));
+                textWriter.Write(ServerHelpers.HtmlEncode(Text));
                 textWriter.Write("</textarea>");
             }
             else if (TextMode == TextBoxMode.Normal)
             {
                 textWriter.Write("<input type=\"text\" ");
                 RenderAttributes(textWriter, forceId: true);
-                if (string.IsNullOrEmpty(Text) == false)
-                {
-                    RenderAttribute(textWriter, "value", _text);
-                }
+                if (string.IsNullOrEmpty(Text) == false) { RenderAttribute(textWriter, "value", Text); }
+
                 textWriter.Write(">");
                 textWriter.Write("</input>");
             }
@@ -44,10 +40,8 @@ namespace VAR.WebFormsCore.Controls
             {
                 textWriter.Write("<input type=\"password\" ");
                 RenderAttributes(textWriter, forceId: true);
-                if (string.IsNullOrEmpty(Text) == false)
-                {
-                    RenderAttribute(textWriter, "value", _text);
-                }
+                if (string.IsNullOrEmpty(Text) == false) { RenderAttribute(textWriter, "value", Text); }
+
                 textWriter.Write(">");
                 textWriter.Write("</input>");
             }
@@ -56,8 +50,6 @@ namespace VAR.WebFormsCore.Controls
 
     public enum TextBoxMode
     {
-        Normal,
-        Password,
-        MultiLine,
+        Normal, Password, MultiLine,
     }
 }

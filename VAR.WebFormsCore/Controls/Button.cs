@@ -5,18 +5,17 @@ namespace VAR.WebFormsCore.Controls
 {
     public class Button : Control, IReceivePostbackEvent
     {
-        public Button()
-        {
-            CssClass = "button";
-        }
+        public Button() { CssClass = "button"; }
 
         private string _text = string.Empty;
 
-        public string Text { get { return _text; } set { _text = value; } }
+        public string Text
+        {
+            get => _text;
+            set => _text = value;
+        }
 
-        private string _commandArgument = string.Empty;
-
-        public string CommandArgument { get { return _commandArgument; } set { _commandArgument = value; } }
+        public string CommandArgument { get; set; } = string.Empty;
 
         public event EventHandler Click;
 
@@ -32,9 +31,6 @@ namespace VAR.WebFormsCore.Controls
             textWriter.Write("</input>");
         }
 
-        public void ReceivePostBack()
-        {
-            Click?.Invoke(this, null);
-        }
+        public void ReceivePostBack() { Click?.Invoke(this, EventArgs.Empty); }
     }
 }

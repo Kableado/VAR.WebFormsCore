@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using VAR.Json;
 
 namespace VAR.WebFormsCore.Code
 {
-    public class MultiLang
+    public static class MultiLang
     {
         private static string GetPrivatePath(string baseDir, string fileName)
         {
@@ -15,22 +14,24 @@ namespace VAR.WebFormsCore.Code
             {
                 DirectoryInfo dirInfo = Directory.GetParent(currentDir);
                 if (dirInfo == null) { break; }
+
                 currentDir = dirInfo.FullName;
                 privatePath = Path.Combine(currentDir, baseDir);
             }
+
             return Path.Combine(privatePath, fileName);
         }
 
-        private static Dictionary<string, Dictionary<string, object>> _literals = null;
+        private static Dictionary<string, Dictionary<string, object>> _literals;
 
         private static void InitializeLiterals()
         {
             _literals = new Dictionary<string, Dictionary<string, object>>();
 
             JsonParser jsonParser = new JsonParser();
-            foreach (string lang in new string[] { "en", "es" })
+            foreach (string lang in new[] {"en", "es"})
             {
-                string filePath = GetPrivatePath("Resources", string.Format("Literals.{0}.json", lang));
+                string filePath = GetPrivatePath("Resources", $"Literals.{lang}.json");
                 if (File.Exists(filePath) == false) { continue; }
 
                 string strJsonLiteralsLanguage = File.ReadAllText(filePath);
@@ -39,7 +40,7 @@ namespace VAR.WebFormsCore.Code
             }
         }
 
-        private const string _defaultLanguage = "en";
+        private const string DefaultLanguage = "en";
 
         private static string GetUserLanguage()
         {
@@ -71,19 +72,25 @@ namespace VAR.WebFormsCore.Code
             //    ctx.Items["UserLang"] = userLang;
             //    return userLang;
             //}
-            return _defaultLanguage;
+            return DefaultLanguage;
         }
 
         public static string GetLiteral(string resource, string culture = null)
         {
             if (_literals == null) { InitializeLiterals(); }
-            if (culture == null) { culture = GetUserLanguage(); }
+
+            culture ??= GetUserLanguage();
 
             if (_literals == null || _literals.ContainsKey(culture) == false) { return resource; }
-            Dictionary<string, object> _literalCurrentCulture = _literals[culture];
 
-            if (_literalCurrentCulture == null || _literalCurrentCulture.ContainsKey(resource) == false) { return resource; }
-            return (_literalCurrentCulture[resource] as string) ?? resource;
+            Dictionary<string, object> literalCurrentCulture = _literals[culture];
+
+            if (literalCurrentCulture == null || literalCurrentCulture.ContainsKey(resource) == false)
+            {
+                return resource;
+            }
+
+            return (literalCurrentCulture[resource] as string) ?? resource;
         }
     }
 }

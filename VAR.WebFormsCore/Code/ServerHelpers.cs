@@ -3,13 +3,10 @@ using System.Text;
 
 namespace VAR.WebFormsCore.Code
 {
-    public class ServerHelpers
+    public static class ServerHelpers
     {
-        private static string _contentRoot = null;
-        public static void SetContentRoot(string contentRoot)
-        {
-            _contentRoot = contentRoot;
-        }
+        private static string _contentRoot;
+        public static void SetContentRoot(string contentRoot) { _contentRoot = contentRoot; }
 
         public static string MapContentPath(string path)
         {
@@ -27,36 +24,18 @@ namespace VAR.WebFormsCore.Code
             {
                 char ch = text[i];
 
-                if (ch == '<')
-                {
-                    sbResult.Append("&lt;");
-                }
-                else if (ch == '>')
-                {
-                    sbResult.Append("&gt;");
-                }
-                else if (ch == '"')
-                {
-                    sbResult.Append("&quot;");
-                }
-                else if (ch == '\'')
-                {
-                    sbResult.Append("&#39;");
-                }
-                else if (ch == '&')
-                {
-                    sbResult.Append("&amp;");
-                }
+                if (ch == '<') { sbResult.Append("&lt;"); }
+                else if (ch == '>') { sbResult.Append("&gt;"); }
+                else if (ch == '"') { sbResult.Append("&quot;"); }
+                else if (ch == '\'') { sbResult.Append("&#39;"); }
+                else if (ch == '&') { sbResult.Append("&amp;"); }
                 else if (ch > 127)
                 {
                     sbResult.Append("&#");
-                    sbResult.Append(((int)ch).ToString(NumberFormatInfo.InvariantInfo));
+                    sbResult.Append(((int) ch).ToString(NumberFormatInfo.InvariantInfo));
                     sbResult.Append(';');
                 }
-                else
-                {
-                    sbResult.Append(ch);
-                }
+                else { sbResult.Append(ch); }
             }
 
             return sbResult.ToString();
@@ -72,18 +51,9 @@ namespace VAR.WebFormsCore.Code
             {
                 char ch = text[i];
 
-                if (ch == ' ')
-                {
-                    sbResult.Append('+');
-                }
-                else if (IsUrlSafe(ch) == false)
-                {
-                    sbResult.AppendFormat("%{0:X02}", ch);
-                }
-                else
-                {
-                    sbResult.Append(ch);
-                }
+                if (ch == ' ') { sbResult.Append('+'); }
+                else if (IsUrlSafe(ch) == false) { sbResult.AppendFormat("%{0:X02}", ch); }
+                else { sbResult.Append(ch); }
             }
 
             return sbResult.ToString();
@@ -102,10 +72,7 @@ namespace VAR.WebFormsCore.Code
                 ch == '*' ||
                 ch == '(' ||
                 ch == ')' ||
-                false)
-            {
-                return true;
-            }
+                false) { return true; }
 
             return false;
         }

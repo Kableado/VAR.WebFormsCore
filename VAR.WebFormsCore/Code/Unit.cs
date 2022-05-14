@@ -2,8 +2,8 @@
 {
     public class Unit
     {
-        private int _value;
-        private UnitType _unitType;
+        private readonly int _value;
+        private readonly UnitType _unitType;
 
         public Unit(int value, UnitType type)
         {
@@ -13,15 +13,9 @@
 
         public override string ToString()
         {
-            if (_unitType == UnitType.Pixel)
-            {
-                return string.Format("{0}px", _value);
-            }
+            if (_unitType == UnitType.Pixel) { return $"{_value}px"; }
 
-            if (_unitType == UnitType.Percentaje)
-            {
-                return string.Format("{0}%", _value);
-            }
+            if (_unitType == UnitType.Percentage) { return $"{_value}%"; }
 
             return string.Empty;
         }
@@ -29,7 +23,6 @@
 
     public enum UnitType
     {
-        Pixel,
-        Percentaje,
+        Pixel, Percentage,
     }
 }

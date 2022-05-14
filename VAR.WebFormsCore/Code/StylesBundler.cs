@@ -12,7 +12,8 @@ namespace VAR.WebFormsCore.Code
             Bundler bundler = new Bundler(
                 assembly: Assembly.GetExecutingAssembly(),
                 assemblyNamespace: "Styles",
-                absolutePath: ServerHelpers.MapContentPath("Styles"));
+                absolutePath: ServerHelpers.MapContentPath("Styles")
+            );
             context.Response.PrepareCacheableResponse();
             bundler.WriteResponse(context.Response, "text/css");
         }

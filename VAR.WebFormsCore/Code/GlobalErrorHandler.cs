@@ -31,17 +31,18 @@ namespace VAR.WebFormsCore.Code
                 if (fillResponse > 0)
                 {
                     sbOutput.Append("<!--");
-                    for (int i = 0; i < fillResponse; i++)
-                    {
-                        sbOutput.Append("A");
-                    }
+                    for (int i = 0; i < fillResponse; i++) { sbOutput.Append("A"); }
+
                     sbOutput.Append("-->");
                 }
 
                 await context.Response.WriteAsync(sbOutput.ToString());
                 await context.Response.Body.FlushAsync();
             }
-            catch { /* Nom nom nom */ }
+            catch
+            {
+                /* Nom nom nom */
+            }
         }
 
         #endregion Private methods
@@ -58,10 +59,7 @@ namespace VAR.WebFormsCore.Code
                 frmError.ProcessRequest(context);
                 await context.Response.Body.FlushAsync();
             }
-            catch
-            {
-                await ShowInternalErrorAsync(context, ex);
-            }
+            catch { await ShowInternalErrorAsync(context, ex); }
         }
 
         #endregion Public methods

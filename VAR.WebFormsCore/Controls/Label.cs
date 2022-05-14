@@ -11,13 +11,17 @@ namespace VAR.WebFormsCore.Controls
 
         public string Tag
         {
-            get { return _tagName; }
-            set { _tagName = value; }
+            get => _tagName;
+            set => _tagName = value;
         }
 
         private string _text = string.Empty;
 
-        public string Text { get { return _text; } set { _text = value; } }
+        public string Text
+        {
+            get => _text;
+            set => _text = value;
+        }
 
         #endregion Properties
 

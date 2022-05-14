@@ -10,8 +10,6 @@ namespace VAR.WebFormsCore.Controls
     {
         private string _method = "post";
 
-        public HtmlForm() { }
-
         public override void Render(TextWriter textWriter)
         {
             textWriter.Write("<form ");
@@ -24,19 +22,20 @@ namespace VAR.WebFormsCore.Controls
 
             textWriter.Write("</form>");
         }
+
         private string GetAction()
         {
             StringBuilder sbAction = new();
             sbAction.Append(Page.GetType().Name);
 
-            if (Page.Context.Request.Query.Count > 0)
-            {
-                sbAction.Append('?');
+            if (Page.Context.Request.Query.Count <= 0) { return sbAction.ToString(); }
 
-                foreach (KeyValuePair<string, StringValues> queryParam in Page.Context.Request.Query)
-                {
-                    sbAction.AppendFormat("&{0}={1}", ServerHelpers.UrlEncode(queryParam.Key), ServerHelpers.UrlEncode(queryParam.Value[0]));
-                }
+            sbAction.Append('?');
+            foreach (KeyValuePair<string, StringValues> queryParam in Page.Context.Request.Query)
+            {
+                string key = ServerHelpers.UrlEncode(queryParam.Key);
+                string value = ServerHelpers.UrlEncode(queryParam.Value[0]);
+                sbAction.Append($"&{key}={value}");
             }
 
             return sbAction.ToString();

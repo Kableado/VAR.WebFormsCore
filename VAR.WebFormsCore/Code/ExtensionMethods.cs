@@ -15,65 +15,54 @@ namespace VAR.WebFormsCore.Code
             {
                 foreach (string key in context.Request.Form.Keys)
                 {
-                    if (string.IsNullOrEmpty(key) == false && key == parm)
-                    {
-                        return context.Request.Form[key];
-                    }
+                    if (string.IsNullOrEmpty(key) == false && key == parm) { return context.Request.Form[key]; }
                 }
             }
+
             foreach (string key in context.Request.Query.Keys)
             {
-                if (string.IsNullOrEmpty(key) == false && key == parm)
-                {
-                    return context.Request.Query[key];
-                }
+                if (string.IsNullOrEmpty(key) == false && key == parm) { return context.Request.Query[key]; }
             }
+
             return string.Empty;
         }
 
-        private static Encoding _utf8Econding = new UTF8Encoding();
+        private static readonly Encoding Utf8Encoding = new UTF8Encoding();
 
         public static void ResponseObject(this HttpContext context, object obj)
         {
             context.Response.ContentType = "text/json";
             string strObject = JsonWriter.WriteObject(obj);
-            byte[] byteObject = _utf8Econding.GetBytes(strObject);
+            byte[] byteObject = Utf8Encoding.GetBytes(strObject);
             context.Response.Body.WriteAsync(byteObject);
         }
 
         public static void SafeSet(this IHeaderDictionary header, string key, string value)
         {
-            if (header.ContainsKey(key))
-            {
-                header[key] = value;
-            }
-            else
-            {
-                header.Add(key, value);
-            }
+            if (header.ContainsKey(key)) { header[key] = value; }
+            else { header.Add(key, value); }
         }
 
         public static void SafeDel(this IHeaderDictionary header, string key)
         {
-            if (header.ContainsKey(key))
-            {
-                header.Remove(key);
-            }
+            if (header.ContainsKey(key)) { header.Remove(key); }
         }
 
         public static void PrepareCacheableResponse(this HttpResponse response)
         {
             const int secondsInDay = 86400;
-            response.Headers.SafeSet("Cache-Control", string.Format("public, max-age={0}", secondsInDay));
-            string ExpireDate = DateTime.UtcNow.AddSeconds(secondsInDay).ToString("ddd, dd MMM yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            response.Headers.SafeSet("Expires", ExpireDate + " GMT");
+            response.Headers.SafeSet("Cache-Control", $"public, max-age={secondsInDay}");
+            string expireDate = DateTime.UtcNow.AddSeconds(secondsInDay)
+                .ToString("ddd, dd MMM yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            response.Headers.SafeSet("Expires", expireDate + " GMT");
         }
 
         public static void PrepareUncacheableResponse(this HttpResponse response)
         {
             response.Headers.SafeSet("Cache-Control", "max-age=0, no-cache, no-store");
-            string ExpireDate = DateTime.UtcNow.AddSeconds(-1500).ToString("ddd, dd MMM yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            response.Headers.SafeSet("Expires", ExpireDate + " GMT");
+            string expireDate = DateTime.UtcNow.AddSeconds(-1500)
+                .ToString("ddd, dd MMM yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            response.Headers.SafeSet("Expires", expireDate + " GMT");
         }
 
         #endregion HttpContext

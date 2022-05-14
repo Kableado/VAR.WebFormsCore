@@ -10,11 +10,11 @@ namespace VAR.WebFormsCore.Pages
 {
     public class Page : Control, IHttpHandler
     {
-        public string Title { get; set; }
+        protected string Title { get; set; }
 
-        public HttpContext Context { get; set; }
+        public HttpContext Context { get; private set; }
 
-        private static Encoding _utf8Econding = new UTF8Encoding();
+        private static readonly Encoding Utf8Encoding = new UTF8Encoding();
 
         public async void ProcessRequest(HttpContext context)
         {
@@ -25,18 +25,15 @@ namespace VAR.WebFormsCore.Pages
                 Context = context;
                 Page = this;
 
-                if (context.Request.Method == "POST")
-                {
-                    _isPostBack = true;
-                }
+                if (context.Request.Method == "POST") { _isPostBack = true; }
 
-                OnPreInit();
+                OnPreInit(EventArgs.Empty);
                 if (context.Response.HasStarted) { return; }
 
-                OnInit();
+                OnInit(EventArgs.Empty);
                 if (context.Response.HasStarted) { return; }
 
-                OnLoad();
+                OnLoad(EventArgs.Empty);
                 if (context.Response.HasStarted) { return; }
 
                 if (_isPostBack)
@@ -47,20 +44,20 @@ namespace VAR.WebFormsCore.Pages
                         string clientID = control.ClientID;
                         if (context.Request.Form.ContainsKey(clientID))
                         {
-                            (control as IReceivePostbackEvent).ReceivePostBack();
+                            (control as IReceivePostbackEvent)?.ReceivePostBack();
                             if (context.Response.HasStarted) { return; }
                         }
                     }
                 }
 
-                OnPreRender();
+                OnPreRender(EventArgs.Empty);
                 if (context.Response.HasStarted) { return; }
 
                 Render(stringWriter);
                 if (context.Response.HasStarted) { return; }
 
                 context.Response.Headers.SafeSet("Content-Type", "text/html");
-                byte[] byteObject = _utf8Econding.GetBytes(stringWriter.ToString());
+                byte[] byteObject = Utf8Encoding.GetBytes(stringWriter.ToString());
                 await context.Response.Body.WriteAsync(byteObject);
             }
             catch (Exception ex)
@@ -73,8 +70,8 @@ namespace VAR.WebFormsCore.Pages
             }
         }
 
-        private bool _isPostBack = false;
+        private bool _isPostBack;
 
-        public bool IsPostBack { get { return _isPostBack; } }
+        public bool IsPostBack => _isPostBack;
     }
 }

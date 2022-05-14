@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace VAR.WebFormsCore.Code
 {
-    public class StaticFileHelper
+    public static class StaticFileHelper
     {
-        private static Dictionary<string, string> _mimeTypeByExtension = new Dictionary<string, string> { {".aac", "audio/aac"},
+        private static readonly Dictionary<string, string> MimeTypeByExtension = new Dictionary<string, string>
+        {
+            {".aac", "audio/aac"},
             {".abw", "application/x-abiword"},
             {".arc", "application/octet-stream"},
             {".avi", "video/x-msvideo"},
@@ -70,20 +72,14 @@ namespace VAR.WebFormsCore.Code
         {
             string extension = Path.GetExtension(filePath).ToLower();
             string contentType = null;
-            if (_mimeTypeByExtension.ContainsKey(extension))
-            {
-                contentType = _mimeTypeByExtension[extension];
-            }
+            if (MimeTypeByExtension.ContainsKey(extension)) { contentType = MimeTypeByExtension[extension]; }
 
-            if (string.IsNullOrEmpty(contentType) == false)
-            {
-                context.Response.ContentType = contentType;
-            }
+            if (string.IsNullOrEmpty(contentType) == false) { context.Response.ContentType = contentType; }
+
             context.Response.PrepareCacheableResponse();
 
             byte[] fileData = File.ReadAllBytes(filePath);
             await context.Response.Body.WriteAsync(fileData);
         }
-
     }
 }

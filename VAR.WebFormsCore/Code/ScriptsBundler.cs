@@ -12,7 +12,8 @@ namespace VAR.WebFormsCore.Code
             Bundler bundler = new Bundler(
                 assembly: Assembly.GetExecutingAssembly(),
                 assemblyNamespace: "Scripts",
-                absolutePath: ServerHelpers.MapContentPath("Scripts"));
+                absolutePath: ServerHelpers.MapContentPath("Scripts")
+            );
             context.Response.PrepareCacheableResponse();
             bundler.WriteResponse(context.Response, "text/javascript");
         }

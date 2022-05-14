@@ -6,7 +6,11 @@ namespace VAR.WebFormsCore.Controls
     {
         private string _value = string.Empty;
 
-        public string Value { get { return _value; } set { _value = value; } }
+        public string Value
+        {
+            get => _value;
+            set => _value = value;
+        }
 
         protected override void Process()
         {
@@ -20,10 +24,8 @@ namespace VAR.WebFormsCore.Controls
         {
             textWriter.Write("<input type=\"hidden\" ");
             RenderAttributes(textWriter, forceId: true);
-            if (string.IsNullOrEmpty(Value) == false)
-            {
-                RenderAttribute(textWriter, "value", _value);
-            }
+            if (string.IsNullOrEmpty(Value) == false) { RenderAttribute(textWriter, "value", _value); }
+
             textWriter.Write(">");
             textWriter.Write("</input>");
         }

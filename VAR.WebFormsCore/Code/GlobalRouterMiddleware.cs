@@ -12,13 +12,8 @@ namespace VAR.WebFormsCore.Code
 {
     public class GlobalRouterMiddleware
     {
-        private readonly RequestDelegate _next;
-        private readonly IWebHostEnvironment _env;
-
         public GlobalRouterMiddleware(RequestDelegate next, IWebHostEnvironment env)
         {
-            _next = next;
-            _env = env;
             ServerHelpers.SetContentRoot(env.ContentRootPath);
         }
 
@@ -46,26 +41,15 @@ namespace VAR.WebFormsCore.Code
                     await GlobalErrorHandler.HandleErrorAsync(httpContext, ex);
                 }
             }
-
         }
 
-        private static bool IsIgnoreException(Exception ex)
-        {
-            if (ex is ThreadAbortException)
-            {
-                return true;
-            }
-            return false;
-        }
+        private static bool IsIgnoreException(Exception ex) { return ex is ThreadAbortException; }
 
         private void RouteRequest(HttpContext context)
         {
             string path = context.Request.Path;
             string file = Path.GetFileName(path);
-            if (string.IsNullOrEmpty(file))
-            {
-                file = GlobalConfig.Get().DefaultHandler;
-            }
+            if (string.IsNullOrEmpty(file)) { file = GlobalConfig.Get().DefaultHandler; }
 
             // Pass allowed extensions requests
             string extension = Path.GetExtension(path).ToLower();
@@ -80,7 +64,7 @@ namespace VAR.WebFormsCore.Code
                 else
                 {
                     // TODO: FrmNotFound
-                    throw new Exception("NotFound");
+                    throw new Exception($"NotFound: {path}");
                 }
             }
 
@@ -88,33 +72,36 @@ namespace VAR.WebFormsCore.Code
             if (handler == null)
             {
                 // TODO: FrmNotFound
-                throw new Exception("NotFound");
+                throw new Exception($"NotFound: {path}");
             }
 
             // Use handler
             handler.ProcessRequest(context);
         }
 
-        private static Dictionary<string, Type> _handlers = new Dictionary<string, Type>();
+        private static readonly Dictionary<string, Type> Handlers = new Dictionary<string, Type>();
 
         private static IHttpHandler GetHandler(string typeName)
         {
             if (string.IsNullOrEmpty(typeName)) { return null; }
+
             Type type = null;
-            if (_handlers.ContainsKey(typeName))
+            lock (Handlers)
             {
-                type = _handlers[typeName];
-                IHttpHandler handler = ObjectActivator.CreateInstance(type) as IHttpHandler;
-                return handler;
+                if (Handlers.ContainsKey(typeName))
+                {
+                    type = Handlers[typeName];
+                    IHttpHandler handler = ObjectActivator.CreateInstance(type) as IHttpHandler;
+                    return handler;
+                }
             }
 
             // Search type on executing assembly
-            Type[] types;
             Assembly asm = Assembly.GetExecutingAssembly();
-            types = asm.GetTypes();
+            Type[] types = asm.GetTypes();
             foreach (Type typeAux in types)
             {
-                if (typeAux.FullName.EndsWith(typeName))
+                if (typeAux.FullName?.EndsWith(typeName) == true)
                 {
                     type = typeAux;
                     break;
@@ -124,18 +111,18 @@ namespace VAR.WebFormsCore.Code
             // Search type on all loaded assemblies
             if (type == null)
             {
-                Assembly[] asms = AppDomain.CurrentDomain.GetAssemblies();
-                foreach (Assembly asmAux in asms)
+                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                foreach (Assembly asmAux in assemblies)
                 {
                     types = asmAux.GetTypes();
                     foreach (Type typeAux in types)
                     {
-                        if (typeAux.FullName.EndsWith(typeName))
-                        {
-                            type = typeAux;
-                            break;
-                        }
+                        if (typeAux.FullName?.EndsWith(typeName) != true) { continue; }
+
+                        type = typeAux;
+                        break;
                     }
+
                     if (type != null) { break; }
                 }
             }
@@ -146,25 +133,25 @@ namespace VAR.WebFormsCore.Code
                 IHttpHandler handler = ObjectActivator.CreateInstance(type) as IHttpHandler;
                 if (handler != null)
                 {
-                    lock (_handlers)
+                    lock (Handlers)
                     {
-                        if (_handlers.ContainsKey(typeName) == false)
-                        {
-                            _handlers.Add(typeName, type);
-                        }
+                        if (Handlers.ContainsKey(typeName) == false) { Handlers.Add(typeName, type); }
                     }
                 }
+
                 return handler;
             }
 
             return null;
         }
-
     }
 
     public static class GlobalRouterMiddlewareExtensions
     {
-        public static IApplicationBuilder UseGlobalRouterMiddleware(this IApplicationBuilder builder, IWebHostEnvironment env)
+        public static IApplicationBuilder UseGlobalRouterMiddleware(
+            this IApplicationBuilder builder,
+            IWebHostEnvironment env
+        )
         {
             return builder.UseMiddleware<GlobalRouterMiddleware>(env);
         }
