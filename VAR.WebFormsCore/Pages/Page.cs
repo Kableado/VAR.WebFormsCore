@@ -16,7 +16,7 @@ namespace VAR.WebFormsCore.Pages
 
         private static readonly Encoding Utf8Encoding = new UTF8Encoding();
 
-        public async void ProcessRequest(HttpContext context)
+        public void ProcessRequest(HttpContext context)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace VAR.WebFormsCore.Pages
 
                 context.Response.Headers.SafeSet("Content-Type", "text/html");
                 byte[] byteObject = Utf8Encoding.GetBytes(stringWriter.ToString());
-                await context.Response.Body.WriteAsync(byteObject);
+                context.Response.Body.WriteAsync(byteObject).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace VAR.WebFormsCore.Pages
                 Console.WriteLine("!!!!!!!!!!");
                 Console.Write("Message: {0}\nStacktrace: {1}\n", ex.Message, ex.StackTrace);
 
-                await GlobalErrorHandler.HandleErrorAsync(context, ex);
+                GlobalErrorHandler.HandleError(context, ex);
             }
         }
 

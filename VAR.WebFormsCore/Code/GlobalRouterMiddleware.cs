@@ -38,7 +38,7 @@ namespace VAR.WebFormsCore.Code
                     Console.WriteLine("!!!!!!!!!!");
                     Console.Write("Message: {0}\nStacktrace: {1}\n", ex.Message, ex.StackTrace);
 
-                    await GlobalErrorHandler.HandleErrorAsync(httpContext, ex);
+                    GlobalErrorHandler.HandleError(httpContext, ex);
                 }
             }
         }

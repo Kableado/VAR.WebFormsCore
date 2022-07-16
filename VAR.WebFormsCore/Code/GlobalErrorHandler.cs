@@ -10,7 +10,7 @@ namespace VAR.WebFormsCore.Code
     {
         #region Private methods
 
-        private static async Task ShowInternalErrorAsync(HttpContext context, Exception ex)
+        private static void ShowInternalError(HttpContext context, Exception ex)
         {
             try
             {
@@ -36,8 +36,8 @@ namespace VAR.WebFormsCore.Code
                     sbOutput.Append("-->");
                 }
 
-                await context.Response.WriteAsync(sbOutput.ToString());
-                await context.Response.Body.FlushAsync();
+                context.Response.WriteAsync(sbOutput.ToString()).GetAwaiter().GetResult();
+                context.Response.Body.FlushAsync().GetAwaiter().GetResult();
             }
             catch
             {
@@ -49,7 +49,7 @@ namespace VAR.WebFormsCore.Code
 
         #region Public methods
 
-        public static async Task HandleErrorAsync(HttpContext context, Exception ex)
+        public static void HandleError(HttpContext context, Exception ex)
         {
             try
             {
@@ -57,9 +57,9 @@ namespace VAR.WebFormsCore.Code
                 //context.Response.Clear();
                 //context.Handler = frmError;
                 frmError.ProcessRequest(context);
-                await context.Response.Body.FlushAsync();
+                context.Response.Body.FlushAsync().GetAwaiter().GetResult();
             }
-            catch { await ShowInternalErrorAsync(context, ex); }
+            catch { ShowInternalError(context, ex); }
         }
 
         #endregion Public methods

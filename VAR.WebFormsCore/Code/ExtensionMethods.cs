@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using VAR.Json;
@@ -29,12 +30,12 @@ namespace VAR.WebFormsCore.Code
 
         private static readonly Encoding Utf8Encoding = new UTF8Encoding();
 
-        public static void ResponseObject(this HttpContext context, object obj)
+        public static void ResponseObject(this HttpContext context, object obj, string contentType = "text/json")
         {
-            context.Response.ContentType = "text/json";
+            context.Response.ContentType = contentType;
             string strObject = JsonWriter.WriteObject(obj);
             byte[] byteObject = Utf8Encoding.GetBytes(strObject);
-            context.Response.Body.WriteAsync(byteObject);
+            context.Response.Body.WriteAsync(byteObject).GetAwaiter().GetResult();
         }
 
         public static void SafeSet(this IHeaderDictionary header, string key, string value)
