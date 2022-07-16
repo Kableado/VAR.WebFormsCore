@@ -38,18 +38,18 @@ namespace VAR.WebFormsCore.Pages
             //if (exAux is HttpUnhandledException && exAux.InnerException != null) { exAux = exAux.InnerException; }
             while (exAux != null)
             {
-                Label lblMessage = new Label {Tag = "P", Text =
-                    $"<b>Message:</b> {HttpUtility.HtmlEncode(exAux.Message)}"
-                };
+                LiteralControl lblMessage = new LiteralControl($"<p><b>Message:</b> {HttpUtility.HtmlEncode(exAux.Message)}</p>");
                 Controls.Add(lblMessage);
 
-                Label lblStacktraceTitle = new Label {Tag = "p", Text = "<b>Stacktrace:</b>"};
+                LiteralControl lblStacktraceTitle = new LiteralControl("<p><b>Stacktrace:</b></p>");
                 Controls.Add(lblStacktraceTitle);
-                Panel pnlStacktrace = new Panel {CssClass = "divCode"};
+                Panel pnlStacktrace = new Panel
+                {
+                    CssClass = "divCode"
+                };
                 Controls.Add(pnlStacktrace);
                 LiteralControl litStackTrace = new LiteralControl(
-                    $"<pre><code>{HttpUtility.HtmlEncode(exAux.StackTrace)}</code></pre>"
-                );
+                    $"<pre><code>{HttpUtility.HtmlEncode(exAux.StackTrace)}</code></pre>");
                 pnlStacktrace.Controls.Add(litStackTrace);
 
                 exAux = exAux.InnerException;
