@@ -7,7 +7,7 @@ namespace VAR.WebFormsCore.Controls
         public string NavigateUrl { get; set; }
         public string Text { get; init; }
 
-        public override void Render(TextWriter textWriter)
+        protected override void Render(TextWriter textWriter)
         {
             textWriter.Write("<a ");
             RenderAttributes(textWriter);

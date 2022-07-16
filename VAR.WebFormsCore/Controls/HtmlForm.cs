@@ -10,7 +10,7 @@ namespace VAR.WebFormsCore.Controls
     {
         private string _method = "post";
 
-        public override void Render(TextWriter textWriter)
+        protected override void Render(TextWriter textWriter)
         {
             textWriter.Write("<form ");
             RenderAttributes(textWriter);

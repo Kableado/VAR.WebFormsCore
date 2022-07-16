@@ -20,7 +20,7 @@ namespace VAR.WebFormsCore.Controls
             }
         }
 
-        public override void Render(TextWriter textWriter)
+        protected override void Render(TextWriter textWriter)
         {
             textWriter.Write("<input type=\"hidden\" ");
             RenderAttributes(textWriter, forceId: true);

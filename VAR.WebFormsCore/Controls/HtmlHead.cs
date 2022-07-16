@@ -6,7 +6,7 @@ namespace VAR.WebFormsCore.Controls
     {
         public string Title { get; set; }
 
-        public override void Render(TextWriter textWriter)
+        protected override void Render(TextWriter textWriter)
         {
             textWriter.Write("<head ");
             RenderAttributes(textWriter);

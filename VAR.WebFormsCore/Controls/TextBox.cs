@@ -17,7 +17,7 @@ namespace VAR.WebFormsCore.Controls
             }
         }
 
-        public override void Render(TextWriter textWriter)
+        protected override void Render(TextWriter textWriter)
         {
             if (TextMode == TextBoxMode.MultiLine)
             {

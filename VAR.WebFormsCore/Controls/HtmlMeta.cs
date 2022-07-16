@@ -8,7 +8,7 @@ namespace VAR.WebFormsCore.Controls
         public string Content { get; init; }
         public string HttpEquiv { get; internal init; }
 
-        public override void Render(TextWriter textWriter)
+        protected override void Render(TextWriter textWriter)
         {
             textWriter.Write("<meta ");
             RenderAttributes(textWriter);

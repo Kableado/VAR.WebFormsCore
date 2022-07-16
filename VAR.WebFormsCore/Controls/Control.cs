@@ -137,7 +137,7 @@ namespace VAR.WebFormsCore.Controls
 
         public int Index { get; set; }
 
-        public virtual void Render(TextWriter textWriter)
+        protected virtual void Render(TextWriter textWriter)
         {
             foreach (Control control in Controls)
             {
@@ -147,7 +147,7 @@ namespace VAR.WebFormsCore.Controls
             }
         }
 
-        public static void RenderAttribute(TextWriter textWriter, string key, string value)
+        protected static void RenderAttribute(TextWriter textWriter, string key, string value)
         {
             textWriter.Write(" {0}=\"{1}\"", key, ServerHelpers.HtmlEncode(value));
         }
@@ -179,7 +179,7 @@ namespace VAR.WebFormsCore.Controls
             }
         }
 
-        public List<Control> ChildsOfType<T>(List<Control> controls = null)
+        protected List<Control> ChildsOfType<T>(List<Control> controls = null)
         {
             controls ??= new List<Control>();
 

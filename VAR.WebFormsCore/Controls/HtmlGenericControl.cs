@@ -8,7 +8,7 @@ namespace VAR.WebFormsCore.Controls
 
         public HtmlGenericControl(string tag) { _tagName = tag; }
 
-        public override void Render(TextWriter textWriter)
+        protected override void Render(TextWriter textWriter)
         {
             textWriter.Write("<{0} ", _tagName);
             RenderAttributes(textWriter);

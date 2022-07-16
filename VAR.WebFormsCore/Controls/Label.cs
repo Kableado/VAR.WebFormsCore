@@ -27,7 +27,7 @@ namespace VAR.WebFormsCore.Controls
 
         #region Life cycle
 
-        public override void Render(TextWriter textWriter)
+        protected override void Render(TextWriter textWriter)
         {
             textWriter.Write("<{0} ", _tagName);
             RenderAttributes(textWriter);
