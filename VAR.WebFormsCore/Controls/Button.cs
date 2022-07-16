@@ -14,16 +14,22 @@ namespace VAR.WebFormsCore.Controls
             get => _text;
             set => _text = value;
         }
-
+        
+        public string OnClientClick { get; set; }
+        
         public string CommandArgument { get; set; } = string.Empty;
 
         public event EventHandler Click;
 
-        public override void Render(TextWriter textWriter)
+        protected override void Render(TextWriter textWriter)
         {
             textWriter.Write("<input type=\"submit\" ");
             RenderAttributes(textWriter);
             RenderAttribute(textWriter, "value", _text);
+            if (string.IsNullOrEmpty(OnClientClick) == false)
+            {
+                RenderAttribute(textWriter, "onclick", OnClientClick);
+            }
             textWriter.Write(">");
 
             base.Render(textWriter);
