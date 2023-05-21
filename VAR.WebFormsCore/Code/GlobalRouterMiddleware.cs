@@ -85,12 +85,11 @@ namespace VAR.WebFormsCore.Code
         {
             if (string.IsNullOrEmpty(typeName)) { return null; }
 
-            Type type = null;
+            Type type;
             lock (Handlers)
             {
-                if (Handlers.ContainsKey(typeName))
+                if (Handlers.TryGetValue(typeName, out type))
                 {
-                    type = Handlers[typeName];
                     IHttpHandler handler = ObjectActivator.CreateInstance(type) as IHttpHandler;
                     return handler;
                 }
@@ -135,7 +134,7 @@ namespace VAR.WebFormsCore.Code
                 {
                     lock (Handlers)
                     {
-                        if (Handlers.ContainsKey(typeName) == false) { Handlers.Add(typeName, type); }
+                        Handlers.TryAdd(typeName, type);
                     }
                 }
 

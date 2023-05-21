@@ -71,14 +71,13 @@ namespace VAR.WebFormsCore.Code
         public static async void ResponseStaticFile(HttpContext context, string filePath)
         {
             string extension = Path.GetExtension(filePath).ToLower();
-            string contentType = null;
-            if (MimeTypeByExtension.ContainsKey(extension)) { contentType = MimeTypeByExtension[extension]; }
+            MimeTypeByExtension.TryGetValue(extension, out string contentType);
 
             if (string.IsNullOrEmpty(contentType) == false) { context.Response.ContentType = contentType; }
 
             context.Response.PrepareCacheableResponse();
 
-            byte[] fileData = File.ReadAllBytes(filePath);
+            byte[] fileData = await File.ReadAllBytesAsync(filePath);
             await context.Response.Body.WriteAsync(fileData);
         }
     }

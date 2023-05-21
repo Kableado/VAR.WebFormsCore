@@ -12,7 +12,7 @@ namespace VAR.WebFormsCore.Code
         {
             lock (Creators)
             {
-                if (Creators.ContainsKey(type)) { return Creators[type]; }
+                if (Creators.TryGetValue(type, out var creator)) { return creator; }
 
                 NewExpression newExp = Expression.New(type);
                 LambdaExpression lambda = Expression.Lambda(typeof(Func<object>), newExp);

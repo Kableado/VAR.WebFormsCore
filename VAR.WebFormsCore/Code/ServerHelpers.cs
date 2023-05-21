@@ -71,8 +71,7 @@ namespace VAR.WebFormsCore.Code
                 ch == '!' ||
                 ch == '*' ||
                 ch == '(' ||
-                ch == ')' ||
-                false) { return true; }
+                ch == ')') { return true; }
 
             return false;
         }

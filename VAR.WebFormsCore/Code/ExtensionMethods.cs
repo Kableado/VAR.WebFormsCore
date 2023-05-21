@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using VAR.Json;
@@ -38,11 +37,7 @@ namespace VAR.WebFormsCore.Code
             context.Response.Body.WriteAsync(byteObject).GetAwaiter().GetResult();
         }
 
-        public static void SafeSet(this IHeaderDictionary header, string key, string value)
-        {
-            if (header.ContainsKey(key)) { header[key] = value; }
-            else { header.Add(key, value); }
-        }
+        public static void SafeSet(this IHeaderDictionary header, string key, string value) { header[key] = value; }
 
         public static void SafeDel(this IHeaderDictionary header, string key)
         {

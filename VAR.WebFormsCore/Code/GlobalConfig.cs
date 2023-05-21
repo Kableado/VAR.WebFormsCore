@@ -22,8 +22,7 @@ namespace VAR.WebFormsCore.Code
                     x =>
                         x.IsAbstract == false &&
                         x.IsInterface == false &&
-                        iGlobalConfig.IsAssignableFrom(x) &&
-                        true
+                        iGlobalConfig.IsAssignableFrom(x)
                 );
             _globalConfig = ObjectActivator.CreateInstance(foundGlobalConfig) as IGlobalConfig;
 
