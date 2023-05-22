@@ -21,7 +21,7 @@ namespace VAR.WebFormsCore.Pages
             Init += FrmError_Init;
         }
 
-        private void FrmError_Init(object sender, EventArgs e) { InitializeControls(); }
+        private void FrmError_Init(object? sender, EventArgs e) { InitializeControls(); }
 
         #endregion Page life cycle
 
@@ -34,7 +34,7 @@ namespace VAR.WebFormsCore.Pages
             Label lblErrorTitle = new Label {Text = Title, Tag = "h2"};
             Controls.Add(lblErrorTitle);
 
-            Exception exAux = _ex;
+            Exception? exAux = _ex;
             //if (exAux is HttpUnhandledException && exAux.InnerException != null) { exAux = exAux.InnerException; }
             while (exAux != null)
             {

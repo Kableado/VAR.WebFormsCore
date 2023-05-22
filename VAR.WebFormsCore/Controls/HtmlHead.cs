@@ -4,7 +4,7 @@ namespace VAR.WebFormsCore.Controls
 {
     public class HtmlHead : Control
     {
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         protected override void Render(TextWriter textWriter)
         {

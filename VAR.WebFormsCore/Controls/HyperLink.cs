@@ -4,8 +4,8 @@ namespace VAR.WebFormsCore.Controls
 {
     public class HyperLink : Control
     {
-        public string NavigateUrl { get; set; }
-        public string Text { get; init; }
+        public string NavigateUrl { get; set; } = string.Empty;
+        public string Text { get; init; } = string.Empty;
 
         protected override void Render(TextWriter textWriter)
         {

@@ -15,11 +15,11 @@ namespace VAR.WebFormsCore.Controls
             set => _text = value;
         }
         
-        public string OnClientClick { get; set; }
+        public string OnClientClick { get; set; } = string.Empty;
         
         public string CommandArgument { get; set; } = string.Empty;
 
-        public event EventHandler Click;
+        public event EventHandler? Click;
 
         protected override void Render(TextWriter textWriter)
         {

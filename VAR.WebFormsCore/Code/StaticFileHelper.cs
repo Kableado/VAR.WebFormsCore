@@ -71,7 +71,7 @@ namespace VAR.WebFormsCore.Code
         public static async void ResponseStaticFile(HttpContext context, string filePath)
         {
             string extension = Path.GetExtension(filePath).ToLower();
-            MimeTypeByExtension.TryGetValue(extension, out string contentType);
+            MimeTypeByExtension.TryGetValue(extension, out string? contentType);
 
             if (string.IsNullOrEmpty(contentType) == false) { context.Response.ContentType = contentType; }
 

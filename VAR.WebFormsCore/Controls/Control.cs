@@ -9,7 +9,7 @@ namespace VAR.WebFormsCore.Controls
 {
     public class Control
     {
-        public event EventHandler PreInit;
+        public event EventHandler? PreInit;
 
         protected void OnPreInit(EventArgs e)
         {
@@ -17,8 +17,7 @@ namespace VAR.WebFormsCore.Controls
             foreach (Control control in Controls) { control.OnPreInit(e); }
         }
 
-
-        public event EventHandler Init;
+        public event EventHandler? Init;
 
         protected void OnInit(EventArgs e)
         {
@@ -27,7 +26,7 @@ namespace VAR.WebFormsCore.Controls
         }
 
 
-        public event EventHandler Load;
+        public event EventHandler? Load;
 
         protected virtual void Process() { }
 
@@ -38,7 +37,7 @@ namespace VAR.WebFormsCore.Controls
             foreach (Control control in Controls) { control.OnLoad(e); }
         }
 
-        public event EventHandler PreRender;
+        public event EventHandler? PreRender;
 
         protected void OnPreRender(EventArgs e)
         {
@@ -46,9 +45,9 @@ namespace VAR.WebFormsCore.Controls
             foreach (Control control in Controls) { control.OnPreRender(e); }
         }
 
-        private string _id;
+        private string? _id;
 
-        public string ID
+        public string? ID
         {
             get => _id;
             set
@@ -58,16 +57,16 @@ namespace VAR.WebFormsCore.Controls
             }
         }
 
-        private string _clientID;
+        private string? _clientID;
 
         public string ClientID
         {
             get { return _clientID ??= GenerateClientID(); }
         }
 
-        private Control _parent;
+        private Control? _parent;
 
-        public Control Parent
+        public Control? Parent
         {
             get => _parent;
             set
@@ -77,18 +76,18 @@ namespace VAR.WebFormsCore.Controls
             }
         }
 
-        private ControlCollection _controls;
+        private ControlCollection? _controls;
 
-        public string CssClass { get; set; }
+        public string CssClass { get; set; } = string.Empty;
 
         public ControlCollection Controls
         {
             get { return _controls ??= new ControlCollection(this); }
         }
 
-        private Page _page;
+        private Page? _page;
 
-        public Page Page
+        public Page? Page
         {
             get => _page;
             set
@@ -111,7 +110,7 @@ namespace VAR.WebFormsCore.Controls
                 sbClientID.Insert(0, currentID);
             }
 
-            Control parent = Parent;
+            Control? parent = Parent;
             while (parent != null)
             {
                 if (parent is INamingContainer)
@@ -131,9 +130,9 @@ namespace VAR.WebFormsCore.Controls
             return sbClientID.ToString();
         }
 
-        public Dictionary<string, string> Style { get; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Style { get; } = new();
 
-        public Dictionary<string, string> Attributes { get; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Attributes { get; } = new();
 
         public int Index { get; set; }
 
@@ -179,13 +178,19 @@ namespace VAR.WebFormsCore.Controls
             }
         }
 
-        protected List<Control> ChildsOfType<T>(List<Control> controls = null)
+        protected List<Control> ChildsOfType<T>(List<Control>? controls = null)
         {
             controls ??= new List<Control>();
 
             if (this is T) { controls.Add(this); }
 
-            foreach (Control child in _controls) { child.ChildsOfType<T>(controls); }
+            if (_controls != null)
+            {
+                foreach (Control child in _controls)
+                {
+                    child.ChildsOfType<T>(controls);
+                }
+            }
 
             return controls;
         }

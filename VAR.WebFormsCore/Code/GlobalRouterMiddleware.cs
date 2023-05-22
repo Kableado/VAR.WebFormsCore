@@ -68,7 +68,7 @@ namespace VAR.WebFormsCore.Code
                 }
             }
 
-            IHttpHandler handler = GetHandler(file);
+            IHttpHandler? handler = GetHandler(file);
             if (handler == null)
             {
                 // TODO: FrmNotFound
@@ -81,16 +81,16 @@ namespace VAR.WebFormsCore.Code
 
         private static readonly Dictionary<string, Type> Handlers = new Dictionary<string, Type>();
 
-        private static IHttpHandler GetHandler(string typeName)
+        private static IHttpHandler? GetHandler(string typeName)
         {
             if (string.IsNullOrEmpty(typeName)) { return null; }
 
-            Type type;
+            Type? type;
             lock (Handlers)
             {
                 if (Handlers.TryGetValue(typeName, out type))
                 {
-                    IHttpHandler handler = ObjectActivator.CreateInstance(type) as IHttpHandler;
+                    IHttpHandler? handler = ObjectActivator.CreateInstance(type) as IHttpHandler;
                     return handler;
                 }
             }
@@ -129,7 +129,7 @@ namespace VAR.WebFormsCore.Code
             // Use found type
             if (type != null)
             {
-                IHttpHandler handler = ObjectActivator.CreateInstance(type) as IHttpHandler;
+                IHttpHandler? handler = ObjectActivator.CreateInstance(type) as IHttpHandler;
                 if (handler != null)
                 {
                     lock (Handlers)

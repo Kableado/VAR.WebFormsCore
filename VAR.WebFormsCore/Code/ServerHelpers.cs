@@ -5,7 +5,7 @@ namespace VAR.WebFormsCore.Code
 {
     public static class ServerHelpers
     {
-        private static string _contentRoot;
+        private static string? _contentRoot;
         public static void SetContentRoot(string contentRoot) { _contentRoot = contentRoot; }
 
         public static string MapContentPath(string path)

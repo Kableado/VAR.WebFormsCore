@@ -9,12 +9,12 @@ namespace VAR.WebFormsCore.Pages
     {
         #region Declarations
 
-        private HtmlHead _head;
-        private HtmlBody _body;
-        private HtmlForm _form;
-        private readonly Panel _pnlContainer = new Panel();
-        private readonly Button _btnPostback = new Button();
-        private readonly Button _btnLogout = new Button();
+        private readonly HtmlHead _head = new();
+        private readonly HtmlBody _body = new();
+        private readonly HtmlForm _form = new() {ID = "formMain"};
+        private readonly Panel _pnlContainer = new();
+        private readonly Button _btnPostback = new();
+        private readonly Button _btnLogout = new();
 
         private bool _isAuthenticated;
 
@@ -37,20 +37,24 @@ namespace VAR.WebFormsCore.Pages
             PreRender += PageCommon_PreRender;
         }
 
-        private void PageCommon_PreInit(object sender, EventArgs e)
+        private void PageCommon_PreInit(object? sender, EventArgs e)
         {
-            Context.Response.PrepareUncacheableResponse();
+            Context?.Response.PrepareUncacheableResponse();
 
-            _isAuthenticated = GlobalConfig.Get().IsUserAuthenticated(Context);
+            if (Context != null)
+            {
+                _isAuthenticated = GlobalConfig.Get().IsUserAuthenticated(Context);
+            }
+
             if (MustBeAuthenticated && _isAuthenticated == false)
             {
-                Context.Response.Redirect(GlobalConfig.Get().LoginHandler);
+                Context?.Response.Redirect(GlobalConfig.Get().LoginHandler);
             }
         }
 
-        private void PageCommon_Init(object sender, EventArgs e) { CreateControls(); }
+        private void PageCommon_Init(object? sender, EventArgs e) { CreateControls(); }
 
-        private void PageCommon_PreRender(object sender, EventArgs e)
+        private void PageCommon_PreRender(object? sender, EventArgs e)
         {
             _head.Title = string.IsNullOrEmpty(Title)
                 ? GlobalConfig.Get().Title
@@ -62,10 +66,13 @@ namespace VAR.WebFormsCore.Pages
 
         #region UI Events
 
-        private void btnLogout_Click(object sender, EventArgs e)
+        private void btnLogout_Click(object? sender, EventArgs e)
         {
-            GlobalConfig.Get().UserUnauthenticate(Context);
-            if (MustBeAuthenticated) { Context.Response.Redirect(GlobalConfig.Get().LoginHandler); }
+            if(Context != null)
+            {
+                GlobalConfig.Get().UserUnauthenticate(Context);
+            }
+            if (MustBeAuthenticated) { Context?.Response.Redirect(GlobalConfig.Get().LoginHandler); }
         }
 
         #endregion UI Events
@@ -82,7 +89,6 @@ namespace VAR.WebFormsCore.Pages
             var html = new HtmlGenericControl("html");
             base.Controls.Add(html);
 
-            _head = new HtmlHead();
             html.Controls.Add(_head);
 
             _head.Controls.Add(new HtmlMeta {HttpEquiv = "X-UA-Compatible", Content = "IE=Edge"});
@@ -97,7 +103,7 @@ namespace VAR.WebFormsCore.Pages
                 }
             );
 
-            string version = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+            string? version = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
             _head.Controls.Add(
                 new LiteralControl($"<script type=\"text/javascript\" src=\"ScriptsBundler?v={version}\"></script>\n")
             );
@@ -105,9 +111,7 @@ namespace VAR.WebFormsCore.Pages
                 new LiteralControl($"<link href=\"StylesBundler?v={version}\" type=\"text/css\" rel=\"stylesheet\"/>\n")
             );
 
-            _body = new HtmlBody();
             html.Controls.Add(_body);
-            _form = new HtmlForm {ID = "formMain"};
             _body.Controls.Add(_form);
 
             var pnlHeader = new Panel {CssClass = "divHeader"};

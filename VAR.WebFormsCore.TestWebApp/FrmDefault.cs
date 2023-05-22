@@ -1,4 +1,3 @@
-using System;
 using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Controls;
 using VAR.WebFormsCore.Pages;
@@ -7,9 +6,9 @@ namespace VAR.WebFormsCore.TestWebApp;
 
 public class FrmDefault: PageCommon
 {
-    private CTextBox _txtText = new CTextBox { ID = "txtText", CssClassExtra = "width150px", AllowEmpty = false };
-    private Button _btnTest = new Button { ID = "btnTest", };
-    private Label _lblMessage = new Label { ID = "lblMessage", };
+    private readonly CTextBox _txtText = new() { ID = "txtText", CssClassExtra = "width150px", AllowEmpty = false };
+    private readonly Button _btnTest = new() { ID = "btnTest", };
+    private readonly Label _lblMessage = new() { ID = "lblMessage", };
     
     public FrmDefault()
     {
@@ -17,7 +16,7 @@ public class FrmDefault: PageCommon
         Init += FrmLogin_Init;
     }
     
-    private void FrmLogin_Init(object sender, EventArgs e)
+    private void FrmLogin_Init(object? sender, EventArgs e)
     {
         InitializeControls();
     }

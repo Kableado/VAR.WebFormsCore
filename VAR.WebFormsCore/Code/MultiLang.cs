@@ -12,7 +12,7 @@ namespace VAR.WebFormsCore.Code
             string privatePath = Path.Combine(currentDir, baseDir);
             while (Directory.Exists(privatePath) == false)
             {
-                DirectoryInfo dirInfo = Directory.GetParent(currentDir);
+                DirectoryInfo? dirInfo = Directory.GetParent(currentDir);
                 if (dirInfo == null) { break; }
 
                 currentDir = dirInfo.FullName;
@@ -22,11 +22,11 @@ namespace VAR.WebFormsCore.Code
             return Path.Combine(privatePath, fileName);
         }
 
-        private static Dictionary<string, Dictionary<string, object>> _literals;
+        private static Dictionary<string, Dictionary<string, object>?>? _literals;
 
         private static void InitializeLiterals()
         {
-            _literals = new Dictionary<string, Dictionary<string, object>>();
+            _literals = new Dictionary<string, Dictionary<string, object>?>();
 
             JsonParser jsonParser = new JsonParser();
             foreach (string lang in new[] {"en", "es"})
@@ -75,7 +75,7 @@ namespace VAR.WebFormsCore.Code
             return DefaultLanguage;
         }
 
-        public static string GetLiteral(string resource, string culture = null)
+        public static string GetLiteral(string resource, string? culture = null)
         {
             if (_literals == null) { InitializeLiterals(); }
 
@@ -83,7 +83,7 @@ namespace VAR.WebFormsCore.Code
 
             if (_literals == null || _literals.ContainsKey(culture) == false) { return resource; }
 
-            Dictionary<string, object> literalCurrentCulture = _literals[culture];
+            Dictionary<string, object>? literalCurrentCulture = _literals[culture];
 
             if (literalCurrentCulture == null || literalCurrentCulture.ContainsKey(resource) == false)
             {

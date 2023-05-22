@@ -14,9 +14,9 @@ namespace VAR.WebFormsCore.Controls
 
         protected override void Process()
         {
-            if (Page.IsPostBack && Page.Context.Request.Form.ContainsKey(ClientID))
+            if (Page?.IsPostBack == true && Page?.Context?.Request.Form.ContainsKey(ClientID) == true)
             {
-                Value = Page.Context.Request.Form[ClientID];
+                Value = Page?.Context.Request.Form[ClientID][0] ?? string.Empty;
             }
         }
 

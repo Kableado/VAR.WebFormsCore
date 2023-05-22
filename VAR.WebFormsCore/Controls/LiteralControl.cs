@@ -4,7 +4,7 @@ namespace VAR.WebFormsCore.Controls
 {
     public class LiteralControl : Control
     {
-        public string Content { get; set; }
+        public string Content { get; set; } = string.Empty;
 
         public LiteralControl() { }
         public LiteralControl(string content) { Content = content; }

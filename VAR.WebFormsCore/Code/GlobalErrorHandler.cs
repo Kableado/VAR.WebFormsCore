@@ -17,7 +17,7 @@ namespace VAR.WebFormsCore.Code
 
                 StringBuilder sbOutput = new StringBuilder();
                 sbOutput.Append("<h2>Internal error</h2>");
-                Exception exAux = ex;
+                Exception? exAux = ex;
                 while (exAux != null)
                 {
                     sbOutput.AppendFormat("<p><b>Message:</b> {0}</p>", exAux.Message);

@@ -10,9 +10,9 @@ namespace VAR.WebFormsCore.Pages
 {
     public class Page : Control, IHttpHandler
     {
-        protected string Title { get; set; }
+        protected string Title { get; set; } = string.Empty;
 
-        public HttpContext Context { get; private set; }
+        public HttpContext? Context { get; private set; }
 
         private static readonly Encoding Utf8Encoding = new UTF8Encoding();
 

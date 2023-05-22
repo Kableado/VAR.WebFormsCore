@@ -11,11 +11,11 @@ namespace VAR.WebFormsCore.Code
     {
         #region Declarations
 
-        private readonly Assembly _assembly;
-        private readonly string _assemblyNamespace;
-        private List<string> _assemblyFiles;
-        private readonly string _absolutePath;
-        private List<string> _absoluteFiles;
+        private readonly Assembly? _assembly;
+        private readonly string? _assemblyNamespace;
+        private List<string>? _assemblyFiles;
+        private readonly string? _absolutePath;
+        private List<string>? _absoluteFiles;
 
         #endregion Declarations
 
@@ -62,7 +62,7 @@ namespace VAR.WebFormsCore.Code
 
         #region Creator
 
-        public Bundler(Assembly assembly = null, string assemblyNamespace = null, string absolutePath = null)
+        public Bundler(Assembly? assembly = null, string? assemblyNamespace = null, string? absolutePath = null)
         {
             _assembly = assembly;
             _assemblyNamespace = assemblyNamespace;
@@ -81,7 +81,7 @@ namespace VAR.WebFormsCore.Code
             response.ContentType = contentType;
             foreach (string fileName in AssemblyFiles)
             {
-                Stream resourceStream = _assembly.GetManifestResourceStream(fileName);
+                Stream? resourceStream = _assembly?.GetManifestResourceStream(fileName);
                 if (resourceStream != null)
                 {
                     string fileContent = new StreamReader(resourceStream).ReadToEnd();

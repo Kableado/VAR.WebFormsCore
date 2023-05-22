@@ -4,9 +4,9 @@ namespace VAR.WebFormsCore.Controls
 {
     public class HtmlMeta : Control
     {
-        public string Name { get; init; }
-        public string Content { get; init; }
-        public string HttpEquiv { get; internal init; }
+        public string Name { get; init; } = string.Empty;
+        public string Content { get; init; } = string.Empty;
+        public string HttpEquiv { get; internal init; } = string.Empty;
 
         protected override void Render(TextWriter textWriter)
         {

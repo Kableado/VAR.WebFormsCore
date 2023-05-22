@@ -9,7 +9,7 @@ namespace VAR.WebFormsCore.Code
     {
         #region HttpContext
 
-        public static string GetRequestParm(this HttpContext context, string parm)
+        public static string? GetRequestParm(this HttpContext context, string parm)
         {
             if (context.Request.Method == "POST")
             {

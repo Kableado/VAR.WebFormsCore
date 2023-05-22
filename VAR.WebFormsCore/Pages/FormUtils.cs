@@ -4,7 +4,7 @@ namespace VAR.WebFormsCore.Pages
 {
     public static class FormUtils
     {
-        public static Control CreatePanel(string cssClass, Control ctrl = null)
+        public static Control CreatePanel(string cssClass, Control? ctrl = null)
         {
             Panel pnl = new Panel();
             if (ctrl != null) { pnl.Controls.Add(ctrl); }

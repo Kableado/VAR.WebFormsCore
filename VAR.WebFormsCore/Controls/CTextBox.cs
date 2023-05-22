@@ -11,7 +11,7 @@ namespace VAR.WebFormsCore.Controls
 
         private readonly TextBox _txtContent = new TextBox();
 
-        private HiddenField _hidSize;
+        private HiddenField? _hidSize;
 
         private const string CssClassBase = "textbox";
         private string _cssClassExtra = "";
@@ -22,7 +22,7 @@ namespace VAR.WebFormsCore.Controls
 
         private bool _markedInvalid;
 
-        private Control _nextFocusOnEnter;
+        private Control? _nextFocusOnEnter;
 
         private bool _keepSize;
 
@@ -54,7 +54,7 @@ namespace VAR.WebFormsCore.Controls
             set => _markedInvalid = value;
         }
 
-        public Control NextFocusOnEnter
+        public Control? NextFocusOnEnter
         {
             get => _nextFocusOnEnter;
             set => _nextFocusOnEnter = value;
@@ -88,7 +88,7 @@ namespace VAR.WebFormsCore.Controls
             PreRender += CTextbox_PreRender;
         }
 
-        private void CTextBox_Init(object sender, EventArgs e)
+        private void CTextBox_Init(object? sender, EventArgs e)
         {
             Controls.Add(_txtContent);
 
@@ -103,7 +103,7 @@ namespace VAR.WebFormsCore.Controls
                 string strCfgName = $"{this.ClientID}_cfg";
                 Dictionary<string, object> cfg = new Dictionary<string, object>
                 {
-                    {"txtContent", _txtContent.ClientID}, {"hidSize", _hidSize.ClientID}, {"keepSize", _keepSize},
+                    {"txtContent", _txtContent.ClientID}, {"hidSize", _hidSize?.ClientID ?? string.Empty}, {"keepSize", _keepSize},
                 };
                 StringBuilder sbCfg = new StringBuilder();
                 sbCfg.AppendFormat("<script>\n");
@@ -115,7 +115,7 @@ namespace VAR.WebFormsCore.Controls
             }
         }
 
-        private void CTextbox_PreRender(object sender, EventArgs e)
+        private void CTextbox_PreRender(object? sender, EventArgs e)
         {
             _txtContent.CssClass = CssClassBase;
             if (string.IsNullOrEmpty(_cssClassExtra) == false)
@@ -123,7 +123,7 @@ namespace VAR.WebFormsCore.Controls
                 _txtContent.CssClass = $"{CssClassBase} {_cssClassExtra}";
             }
 
-            if (Page.IsPostBack && (_allowEmpty == false && IsEmpty()) || _markedInvalid)
+            if (Page?.IsPostBack == true && (_allowEmpty == false && IsEmpty()) || _markedInvalid)
             {
                 _txtContent.CssClass += " textboxInvalid";
             }
@@ -154,10 +154,10 @@ namespace VAR.WebFormsCore.Controls
 
         public int? GetClientsideHeight()
         {
-            if (string.IsNullOrEmpty(_hidSize.Value)) { return null; }
+            if (string.IsNullOrEmpty(_hidSize?.Value)) { return null; }
 
             JsonParser jsonParser = new JsonParser();
-            Dictionary<string, object> sizeObj = jsonParser.Parse(_hidSize.Value) as Dictionary<string, object>;
+            Dictionary<string, object>? sizeObj = jsonParser.Parse(_hidSize.Value) as Dictionary<string, object>;
             if (sizeObj == null) { return null; }
 
             if (sizeObj.ContainsKey("height") == false) { return null; }
@@ -169,22 +169,28 @@ namespace VAR.WebFormsCore.Controls
         {
             if (height == null)
             {
-                _hidSize.Value = string.Empty;
+                if (_hidSize != null)
+                {
+                    _hidSize.Value = string.Empty;
+                }
                 return;
             }
 
-            Dictionary<string, object> sizeObj;
-            if (string.IsNullOrEmpty(_hidSize.Value) == false)
+            Dictionary<string, object?>? sizeObj = null;
+            if (string.IsNullOrEmpty(_hidSize?.Value) == false)
             {
                 JsonParser jsonParser = new JsonParser();
-                sizeObj = jsonParser.Parse(_hidSize.Value) as Dictionary<string, object>;
+                sizeObj = jsonParser.Parse(_hidSize.Value) as Dictionary<string, object?>;
             }
-            else
+            if(sizeObj == null)
             {
-                sizeObj = new Dictionary<string, object> {{"height", height}, {"width", null}, {"scrollTop", null},};
+                sizeObj = new Dictionary<string, object?> {{"height", height}, {"width", null}, {"scrollTop", null},};
             }
 
-            _hidSize.Value = JsonWriter.WriteObject(sizeObj);
+            if (_hidSize != null)
+            {
+                _hidSize.Value = JsonWriter.WriteObject(sizeObj);
+            }
         }
 
         #endregion Public methods

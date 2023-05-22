@@ -26,16 +26,19 @@ namespace VAR.WebFormsCore.Controls
         private string GetAction()
         {
             StringBuilder sbAction = new();
-            sbAction.Append(Page.GetType().Name);
+            sbAction.Append(Page?.GetType().Name);
 
-            if (Page.Context.Request.Query.Count <= 0) { return sbAction.ToString(); }
+            if ((Page?.Context?.Request.Query.Count ?? 0) <= 0) { return sbAction.ToString(); }
 
             sbAction.Append('?');
-            foreach (KeyValuePair<string, StringValues> queryParam in Page.Context.Request.Query)
+            if (Page?.Context?.Request.Query != null)
             {
-                string key = ServerHelpers.UrlEncode(queryParam.Key);
-                string value = ServerHelpers.UrlEncode(queryParam.Value[0]);
-                sbAction.Append($"&{key}={value}");
+                foreach (KeyValuePair<string, StringValues> queryParam in Page.Context.Request.Query)
+                {
+                    string key = ServerHelpers.UrlEncode(queryParam.Key);
+                    string value = ServerHelpers.UrlEncode(queryParam.Value[0] ?? string.Empty);
+                    sbAction.Append($"&{key}={value}");
+                }
             }
 
             return sbAction.ToString();
