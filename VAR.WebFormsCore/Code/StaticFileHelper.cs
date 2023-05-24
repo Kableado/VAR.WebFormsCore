@@ -6,7 +6,7 @@ namespace VAR.WebFormsCore.Code
 {
     public static class StaticFileHelper
     {
-        private static readonly Dictionary<string, string> MimeTypeByExtension = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> MimeTypeByExtension = new()
         {
             {".aac", "audio/aac"},
             {".abw", "application/x-abiword"},
@@ -68,7 +68,7 @@ namespace VAR.WebFormsCore.Code
             {".7z", "application/x-7z-compressed"},
         };
 
-        public static async void ResponseStaticFile(HttpContext context, string filePath)
+        public static void ResponseStaticFile(HttpContext context, string filePath)
         {
             string extension = Path.GetExtension(filePath).ToLower();
             MimeTypeByExtension.TryGetValue(extension, out string? contentType);
@@ -77,8 +77,8 @@ namespace VAR.WebFormsCore.Code
 
             context.Response.PrepareCacheableResponse();
 
-            byte[] fileData = await File.ReadAllBytesAsync(filePath);
-            await context.Response.Body.WriteAsync(fileData);
+            byte[] fileData = File.ReadAllBytes(filePath);
+            context.Response.Body.WriteAsync(fileData).GetAwaiter().GetResult();
         }
     }
 }

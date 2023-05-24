@@ -75,7 +75,7 @@ namespace VAR.WebFormsCore.Code
 
         private static readonly Encoding Utf8Encoding = new UTF8Encoding();
 
-        public async void WriteResponse(HttpResponse response, string contentType)
+        public void WriteResponse(HttpResponse response, string contentType)
         {
             StringWriter textWriter = new StringWriter();
             response.ContentType = contentType;
@@ -99,7 +99,7 @@ namespace VAR.WebFormsCore.Code
             }
 
             byte[] byteObject = Utf8Encoding.GetBytes(textWriter.ToString());
-            await response.Body.WriteAsync(byteObject);
+            response.Body.WriteAsync(byteObject).GetAwaiter().GetResult();
         }
 
         #endregion Public methods
