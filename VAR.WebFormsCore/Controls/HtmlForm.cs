@@ -8,7 +8,7 @@ namespace VAR.WebFormsCore.Controls
 {
     public class HtmlForm : Control
     {
-        private string _method = "post";
+        private readonly string _method = "post";
 
         protected override void Render(TextWriter textWriter)
         {

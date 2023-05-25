@@ -9,7 +9,7 @@ namespace VAR.WebFormsCore.Controls
     {
         #region Declarations
 
-        private readonly TextBox _txtContent = new TextBox();
+        private readonly TextBox _txtContent = new();
 
         private HiddenField? _hidSize;
 
@@ -101,14 +101,14 @@ namespace VAR.WebFormsCore.Controls
                 }
 
                 string strCfgName = $"{this.ClientID}_cfg";
-                Dictionary<string, object> cfg = new Dictionary<string, object>
+                Dictionary<string, object> cfg = new()
                 {
                     {"txtContent", _txtContent.ClientID}, {"hidSize", _hidSize?.ClientID ?? string.Empty}, {"keepSize", _keepSize},
                 };
                 StringBuilder sbCfg = new StringBuilder();
                 sbCfg.AppendFormat("<script>\n");
-                sbCfg.AppendFormat("var {0} = {1};\n", strCfgName, JsonWriter.WriteObject(cfg));
-                sbCfg.AppendFormat("CTextBox_Multiline_Init({0});\n", strCfgName);
+                sbCfg.Append($"var {strCfgName} = {JsonWriter.WriteObject(cfg)};\n");
+                sbCfg.Append($"CTextBox_Multiline_Init({strCfgName});\n");
                 sbCfg.AppendFormat("</script>\n");
                 LiteralControl liScript = new LiteralControl(sbCfg.ToString());
                 Controls.Add(liScript);
@@ -182,10 +182,7 @@ namespace VAR.WebFormsCore.Controls
                 JsonParser jsonParser = new JsonParser();
                 sizeObj = jsonParser.Parse(_hidSize.Value) as Dictionary<string, object?>;
             }
-            if(sizeObj == null)
-            {
-                sizeObj = new Dictionary<string, object?> {{"height", height}, {"width", null}, {"scrollTop", null},};
-            }
+            sizeObj ??= new Dictionary<string, object?> { { "height", height }, { "width", null }, { "scrollTop", null }, };
 
             if (_hidSize != null)
             {

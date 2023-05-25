@@ -6,7 +6,7 @@ namespace VAR.WebFormsCore.Code
 {
     public static class ObjectActivator
     {
-        private static readonly Dictionary<Type, Func<object>> Creators = new Dictionary<Type, Func<object>>();
+        private static readonly Dictionary<Type, Func<object>> Creators = new();
 
         private static Func<object> GetLambdaNew(Type type)
         {

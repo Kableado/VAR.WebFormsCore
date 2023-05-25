@@ -20,8 +20,8 @@ namespace VAR.WebFormsCore.Code
                 Exception? exAux = ex;
                 while (exAux != null)
                 {
-                    sbOutput.AppendFormat("<p><b>Message:</b> {0}</p>", exAux.Message);
-                    sbOutput.AppendFormat("<p><b>StackTrace:</b></p> <pre><code>{0}</code></pre>", exAux.StackTrace);
+                    sbOutput.Append($"<p><b>Message:</b> {exAux.Message}</p>");
+                    sbOutput.Append($"<p><b>StackTrace:</b></p> <pre><code>{exAux.StackTrace}</code></pre>");
                     exAux = exAux.InnerException;
                 }
 

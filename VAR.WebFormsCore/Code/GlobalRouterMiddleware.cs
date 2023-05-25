@@ -79,7 +79,7 @@ namespace VAR.WebFormsCore.Code
             handler.ProcessRequest(context);
         }
 
-        private static readonly Dictionary<string, Type> Handlers = new Dictionary<string, Type>();
+        private static readonly Dictionary<string, Type> Handlers = new();
 
         private static IHttpHandler? GetHandler(string typeName)
         {

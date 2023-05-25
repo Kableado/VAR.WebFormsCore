@@ -2,15 +2,18 @@ using VAR.WebFormsCore.Code;
 
 namespace VAR.WebFormsCore.TestWebApp;
 
-public class TestWebAppGlobalConfig: IGlobalConfig
-{ 
-    public string Title { get; } = "TestWebApp";
-    public string TitleSeparator { get; } = " :: ";
-    public string Author { get; } = "XXX";
-    public string Copyright { get; } = "Copyright (c) 2022 by XXX, All Right Reserved";
-    public string DefaultHandler { get; } = nameof(FrmDefault);
-    public string LoginHandler { get; } = nameof(FrmDefault);
-    public List<string> AllowedExtensions { get; } = new List<string> { ".png", ".jpg", ".jpeg", ".gif", ".ico", ".wav", ".mp3", ".ogg", ".mp4", ".webm", ".webp", ".mkv", ".avi" };
+public class TestWebAppGlobalConfig : IGlobalConfig
+{
+    public string Title => "TestWebApp";
+    public string TitleSeparator => " :: ";
+    public string Author => "XXX";
+    public string Copyright => "Copyright (c) 2022 by XXX, All Right Reserved";
+    public string DefaultHandler => nameof(FrmDefault);
+    public string LoginHandler => nameof(FrmDefault);
+
+    public List<string> AllowedExtensions { get; } = new()
+        { ".png", ".jpg", ".jpeg", ".gif", ".ico", ".wav", ".mp3", ".ogg", ".mp4", ".webm", ".webp", ".mkv", ".avi" };
+
     public bool IsUserAuthenticated(HttpContext context)
     {
         return false;
