@@ -19,7 +19,7 @@ public class TestWebAppGlobalConfig : IGlobalConfig
         return false;
     }
 
-    public void UserUnauthenticate(HttpContext context)
+    public void UserDeauthenticate(HttpContext context)
     {
     }
 }

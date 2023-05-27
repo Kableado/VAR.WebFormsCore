@@ -19,9 +19,7 @@ namespace VAR.WebFormsCore.Code
                 .SelectMany(x => x.GetTypes())
                 .FirstOrDefault(
                     x =>
-                        x.IsAbstract == false &&
-                        x.IsInterface == false &&
-                        x.IsPublic &&
+                        x is { IsAbstract: false, IsInterface: false, IsPublic: true } &&
                         iGlobalConfig.IsAssignableFrom(x)
                 );
             if(foundGlobalConfig != null)
@@ -48,7 +46,7 @@ namespace VAR.WebFormsCore.Code
                 return false;
             }
 
-            public void UserUnauthenticate(HttpContext context)
+            public void UserDeauthenticate(HttpContext context)
             {
             }
         }

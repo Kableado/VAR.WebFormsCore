@@ -14,6 +14,6 @@ namespace VAR.WebFormsCore.Code
         List<string> AllowedExtensions { get; }
 
         bool IsUserAuthenticated(HttpContext context);
-        void UserUnauthenticate(HttpContext context);
+        void UserDeauthenticate(HttpContext context);
     }
 }

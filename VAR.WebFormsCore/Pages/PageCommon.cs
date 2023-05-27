@@ -70,7 +70,7 @@ namespace VAR.WebFormsCore.Pages
         {
             if(Context != null)
             {
-                GlobalConfig.Get().UserUnauthenticate(Context);
+                GlobalConfig.Get().UserDeauthenticate(Context);
             }
             if (MustBeAuthenticated) { Context?.Response.Redirect(GlobalConfig.Get().LoginHandler); }
         }

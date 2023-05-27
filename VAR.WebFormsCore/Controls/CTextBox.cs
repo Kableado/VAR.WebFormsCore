@@ -13,7 +13,7 @@ namespace VAR.WebFormsCore.Controls
 
         private HiddenField? _hidSize;
 
-        private const string CssClassBase = "textbox";
+        private const string CssClassBase = "textBox";
         private string _cssClassExtra = "";
 
         private bool _allowEmpty = true;
@@ -85,7 +85,7 @@ namespace VAR.WebFormsCore.Controls
         public CTextBox()
         {
             Init += CTextBox_Init;
-            PreRender += CTextbox_PreRender;
+            PreRender += CTextBox_PreRender;
         }
 
         private void CTextBox_Init(object? sender, EventArgs e)
@@ -100,7 +100,7 @@ namespace VAR.WebFormsCore.Controls
                     Controls.Add(_hidSize);
                 }
 
-                string strCfgName = $"{this.ClientID}_cfg";
+                string strCfgName = $"{ClientID}_cfg";
                 Dictionary<string, object> cfg = new()
                 {
                     {"txtContent", _txtContent.ClientID}, {"hidSize", _hidSize?.ClientID ?? string.Empty}, {"keepSize", _keepSize},
@@ -115,7 +115,7 @@ namespace VAR.WebFormsCore.Controls
             }
         }
 
-        private void CTextbox_PreRender(object? sender, EventArgs e)
+        private void CTextBox_PreRender(object? sender, EventArgs e)
         {
             _txtContent.CssClass = CssClassBase;
             if (string.IsNullOrEmpty(_cssClassExtra) == false)
@@ -125,10 +125,10 @@ namespace VAR.WebFormsCore.Controls
 
             if (Page?.IsPostBack == true && (_allowEmpty == false && IsEmpty()) || _markedInvalid)
             {
-                _txtContent.CssClass += " textboxInvalid";
+                _txtContent.CssClass += " textBoxInvalid";
             }
 
-            _txtContent.Attributes.Add("onchange", "ElementRemoveClass(this, 'textboxInvalid');");
+            _txtContent.Attributes.Add("onchange", "ElementRemoveClass(this, 'textBoxInvalid');");
 
             if (string.IsNullOrEmpty(_placeHolder) == false)
             {

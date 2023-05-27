@@ -9,19 +9,19 @@ namespace VAR.WebFormsCore.Code
     {
         #region HttpContext
 
-        public static string? GetRequestParm(this HttpContext context, string parm)
+        public static string GetRequestParameter(this HttpContext context, string parameter)
         {
             if (context.Request.Method == "POST")
             {
                 foreach (string key in context.Request.Form.Keys)
                 {
-                    if (string.IsNullOrEmpty(key) == false && key == parm) { return context.Request.Form[key]; }
+                    if (string.IsNullOrEmpty(key) == false && key == parameter) { return context.Request.Form[key][0] ?? string.Empty; }
                 }
             }
 
             foreach (string key in context.Request.Query.Keys)
             {
-                if (string.IsNullOrEmpty(key) == false && key == parm) { return context.Request.Query[key]; }
+                if (string.IsNullOrEmpty(key) == false && key == parameter) { return context.Request.Query[key][0] ?? string.Empty; }
             }
 
             return string.Empty;
