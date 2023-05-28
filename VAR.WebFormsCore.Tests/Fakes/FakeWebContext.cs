@@ -4,10 +4,15 @@ namespace VAR.WebFormsCore.Tests.Fakes;
 
 public class FakeWebContext : IWebContext
 {
+    public FakeWebContext(string requestMethod = "GET")
+    {
+        RequestMethod = requestMethod;
+    }
+    
     public string RequestPath => string.Empty;
-    
-    public string RequestMethod => string.Empty;
-    
+
+    public string RequestMethod { get; }
+
     public Dictionary<string, string?> RequestHeader { get; } = new();
     
     public Dictionary<string, string> RequestCookies { get; } = new();
