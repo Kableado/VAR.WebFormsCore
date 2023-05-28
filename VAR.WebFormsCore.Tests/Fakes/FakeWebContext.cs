@@ -1,3 +1,4 @@
+using System.Text;
 using VAR.WebFormsCore.Code;
 
 namespace VAR.WebFormsCore.Tests.Fakes;
@@ -21,12 +22,6 @@ public class FakeWebContext : IWebContext
     
     public Dictionary<string, string?> RequestForm { get; } = new();
     
-    public struct WritePackage
-    {
-        public string? Text { get; set; }
-        public byte[]? Bin { get; set; }
-    }
-
     public List<WritePackage> FakeWritePackages { get; } = new();
 
     public void ResponseWrite(string text)
@@ -78,5 +73,37 @@ public class FakeWebContext : IWebContext
     public void PrepareUncacheableResponse()
     {
         throw new NotImplementedException();
+    }
+}
+
+public struct WritePackage
+{
+    public string? Text { get; set; }
+    public byte[]? Bin { get; set; }
+
+    public override string ToString()
+    {
+        if (Text != null)
+        {
+            return Text;
+        }
+
+        if (Bin == null)
+        {
+            return string.Empty;
+        }
+
+        string text = Encoding.UTF8.GetString(Bin ?? Array.Empty<byte>());
+        return text;
+    }
+}
+
+public static class WritePackageExtensions
+{
+    public static string ToString(this List<WritePackage> list, string separator)
+    {
+        IEnumerable<string> listStrings = list.Select(x => x.ToString());
+        string result = string.Join(separator, listStrings);
+        return result;
     }
 }

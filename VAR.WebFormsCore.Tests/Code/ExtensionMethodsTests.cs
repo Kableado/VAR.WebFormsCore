@@ -97,7 +97,7 @@ public class ExtensionMethodsTests
         fakeWebContext.ResponseObject(new object());
 
         Assert.Single(fakeWebContext.FakeWritePackages);
-        Assert.Equal("{ }", Encoding.UTF8.GetString(fakeWebContext.FakeWritePackages[0].Bin ?? Array.Empty<byte>()));
+        Assert.Equal("{ }", fakeWebContext.FakeWritePackages[0].ToString());
     }
     
     #endregion ResponseObject
