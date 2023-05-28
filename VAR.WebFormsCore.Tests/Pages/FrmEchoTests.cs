@@ -17,7 +17,8 @@ public class FrmEchoTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(
             expected:   """
-                        <pre><code>Header:{ }
+                        <pre><code>
+                        Header:{ }
                         Query:{ }
                         Form:{ }
                         </code></pre>
@@ -37,7 +38,8 @@ public class FrmEchoTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(
             expected:   """
-                        <pre><code>Header:{ }
+                        <pre><code>
+                        Header:{ }
                         Query:{ "Test": "Value" }
                         Form:{ }
                         </code></pre>
@@ -57,7 +59,8 @@ public class FrmEchoTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(
             expected:   """
-                        <pre><code>Header:{ }
+                        <pre><code>
+                        Header:{ }
                         Query:{ }
                         Form:{ "Test": "Value" }
                         </code></pre>
