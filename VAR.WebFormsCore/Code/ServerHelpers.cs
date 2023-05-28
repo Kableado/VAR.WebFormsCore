@@ -84,7 +84,8 @@ public static class ServerHelpers
             }
             else if (IsUrlSafe(ch) == false)
             {
-                sbResult.Append($"%{ch:X02}");
+                int intCh = ch;
+                sbResult.Append($"%{intCh:X02}");
             }
             else
             {

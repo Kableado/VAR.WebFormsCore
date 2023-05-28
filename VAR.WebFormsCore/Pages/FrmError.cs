@@ -34,7 +34,7 @@ public class FrmError : PageCommon
         Label lblErrorTitle = new Label {Text = Title, Tag = "h2"};
         Controls.Add(lblErrorTitle);
 
-        Exception? exAux = _ex;
+        Exception? exAux = (Exception?)_ex;
         //if (exAux is HttpUnhandledException && exAux.InnerException != null) { exAux = exAux.InnerException; }
         while (exAux != null)
         {

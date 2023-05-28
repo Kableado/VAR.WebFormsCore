@@ -44,7 +44,7 @@ public class Bundler
         {
             if (_absoluteFiles != null) { return _absoluteFiles; }
 
-            if (string.IsNullOrEmpty(_absolutePath))
+            if (_absolutePath == null || string.IsNullOrEmpty(_absolutePath))
             {
                 _absoluteFiles = new List<string>();
                 return _absoluteFiles;
