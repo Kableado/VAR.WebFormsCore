@@ -1,7 +1,6 @@
-﻿namespace VAR.WebFormsCore.Controls
+﻿namespace VAR.WebFormsCore.Controls;
+
+public interface IValidableControl
 {
-    public interface IValidableControl
-    {
-        bool IsValid();
-    }
+    bool IsValid();
 }

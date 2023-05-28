@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using VAR.WebFormsCore.Code;
 
 namespace VAR.WebFormsCore.TestWebApp;
@@ -14,12 +15,12 @@ public class TestWebAppGlobalConfig : IGlobalConfig
     public List<string> AllowedExtensions { get; } = new()
         { ".png", ".jpg", ".jpeg", ".gif", ".ico", ".wav", ".mp3", ".ogg", ".mp4", ".webm", ".webp", ".mkv", ".avi" };
 
-    public bool IsUserAuthenticated(HttpContext context)
+    public bool IsUserAuthenticated(IWebContext context)
     {
         return false;
     }
 
-    public void UserDeauthenticate(HttpContext context)
+    public void UserDeauthenticate(IWebContext context)
     {
     }
 }

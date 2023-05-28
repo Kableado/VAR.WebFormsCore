@@ -1,22 +1,21 @@
 ﻿using System.IO;
 
-namespace VAR.WebFormsCore.Controls
+namespace VAR.WebFormsCore.Controls;
+
+public class HtmlHead : Control
 {
-    public class HtmlHead : Control
+    public string Title { get; set; } = string.Empty;
+
+    protected override void Render(TextWriter textWriter)
     {
-        public string Title { get; set; } = string.Empty;
+        textWriter.Write("<head ");
+        RenderAttributes(textWriter);
+        textWriter.Write(">");
 
-        protected override void Render(TextWriter textWriter)
-        {
-            textWriter.Write("<head ");
-            RenderAttributes(textWriter);
-            textWriter.Write(">");
+        if (string.IsNullOrEmpty(Title) == false) { textWriter.Write("<title>{0}</title>", Title); }
 
-            if (string.IsNullOrEmpty(Title) == false) { textWriter.Write("<title>{0}</title>", Title); }
+        base.Render(textWriter);
 
-            base.Render(textWriter);
-
-            textWriter.Write("</head>");
-        }
+        textWriter.Write("</head>");
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace VAR.WebFormsCore.Controls
+﻿namespace VAR.WebFormsCore.Controls;
+
+public class HtmlBody : HtmlGenericControl
 {
-    public class HtmlBody : HtmlGenericControl
-    {
-        public HtmlBody() : base("body") { }
-    }
+    public HtmlBody() : base("body") { }
 }

@@ -1,17 +1,12 @@
-namespace VAR.WebFormsCore.TestWebApp
-{
-    public static class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+using VAR.WebFormsCore.AspNetCore;
 
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+namespace VAR.WebFormsCore.TestWebApp;
+
+public static class Program
+{
+    public static void Main(string[] args)
+    {
+        DefaultMain.WebFormCoreMain(args);
     }
+
 }

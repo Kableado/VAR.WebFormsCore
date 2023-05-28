@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿namespace VAR.WebFormsCore.Code;
 
-namespace VAR.WebFormsCore.Code
+public interface IHttpHandler
 {
-    public interface IHttpHandler
-    {
-        void ProcessRequest(HttpContext context);
-    }
+    void ProcessRequest(IWebContext context);
 }

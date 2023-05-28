@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Microsoft.Extensions.Primitives;
 using VAR.WebFormsCore.Code;
 
 namespace VAR.WebFormsCore.Controls
@@ -28,15 +27,15 @@ namespace VAR.WebFormsCore.Controls
             StringBuilder sbAction = new();
             sbAction.Append(Page?.GetType().Name);
 
-            if ((Page?.Context?.Request.Query.Count ?? 0) <= 0) { return sbAction.ToString(); }
+            if ((Page?.Context?.RequestQuery.Count ?? 0) <= 0) { return sbAction.ToString(); }
 
             sbAction.Append('?');
-            if (Page?.Context?.Request.Query != null)
+            if (Page?.Context?.RequestQuery != null)
             {
-                foreach (KeyValuePair<string, StringValues> queryParam in Page.Context.Request.Query)
+                foreach (KeyValuePair<string, string?> queryParam in Page.Context.RequestQuery)
                 {
                     string key = ServerHelpers.UrlEncode(queryParam.Key);
-                    string value = ServerHelpers.UrlEncode(queryParam.Value[0] ?? string.Empty);
+                    string value = ServerHelpers.UrlEncode(queryParam.Value ?? string.Empty);
                     sbAction.Append($"&{key}={value}");
                 }
             }

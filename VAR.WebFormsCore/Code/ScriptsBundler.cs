@@ -1,23 +1,21 @@
 ﻿using System.Reflection;
-using Microsoft.AspNetCore.Http;
 
-namespace VAR.WebFormsCore.Code
+namespace VAR.WebFormsCore.Code;
+
+public class ScriptsBundler : IHttpHandler
 {
-    public class ScriptsBundler : IHttpHandler
+    #region IHttpHandler
+
+    public void ProcessRequest(IWebContext context)
     {
-        #region IHttpHandler
-
-        public void ProcessRequest(HttpContext context)
-        {
-            Bundler bundler = new Bundler(
-                assembly: Assembly.GetExecutingAssembly(),
-                assemblyNamespace: "Scripts",
-                absolutePath: ServerHelpers.MapContentPath("Scripts")
-            );
-            context.Response.PrepareCacheableResponse();
-            bundler.WriteResponse(context.Response, "text/javascript");
-        }
-
-        #endregion IHttpHandler
+        Bundler bundler = new Bundler(
+            assembly: Assembly.GetExecutingAssembly(),
+            assemblyNamespace: "Scripts",
+            absolutePath: ServerHelpers.MapContentPath("Scripts")
+        );
+        context.PrepareCacheableResponse();
+        bundler.WriteResponse(context, "text/javascript");
     }
+
+    #endregion IHttpHandler
 }

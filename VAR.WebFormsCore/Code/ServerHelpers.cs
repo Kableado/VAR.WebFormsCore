@@ -1,118 +1,117 @@
 ﻿using System.Globalization;
 using System.Text;
 
-namespace VAR.WebFormsCore.Code
+namespace VAR.WebFormsCore.Code;
+
+public static class ServerHelpers
 {
-    public static class ServerHelpers
+    private static string? _contentRoot;
+
+    public static void SetContentRoot(string contentRoot)
     {
-        private static string? _contentRoot;
+        _contentRoot = contentRoot;
+    }
 
-        public static void SetContentRoot(string contentRoot)
+    public static string MapContentPath(string path)
+    {
+        string mappedPath = string.Concat(_contentRoot, "/", path);
+        return mappedPath;
+    }
+
+    public static string HtmlEncode(string text)
+    {
+        if (string.IsNullOrEmpty(text))
         {
-            _contentRoot = contentRoot;
+            return text;
         }
 
-        public static string MapContentPath(string path)
+        StringBuilder sbResult = new();
+
+        foreach (var ch in text)
         {
-            string mappedPath = string.Concat(_contentRoot, "/", path);
-            return mappedPath;
-        }
-
-        public static string HtmlEncode(string text)
-        {
-            if (string.IsNullOrEmpty(text))
+            switch (ch)
             {
-                return text;
-            }
-
-            StringBuilder sbResult = new();
-
-            foreach (var ch in text)
-            {
-                switch (ch)
+                case '<':
+                    sbResult.Append("&lt;");
+                    break;
+                case '>':
+                    sbResult.Append("&gt;");
+                    break;
+                case '"':
+                    sbResult.Append("&quot;");
+                    break;
+                case '\'':
+                    sbResult.Append("&#39;");
+                    break;
+                case '&':
+                    sbResult.Append("&amp;");
+                    break;
+                default:
                 {
-                    case '<':
-                        sbResult.Append("&lt;");
-                        break;
-                    case '>':
-                        sbResult.Append("&gt;");
-                        break;
-                    case '"':
-                        sbResult.Append("&quot;");
-                        break;
-                    case '\'':
-                        sbResult.Append("&#39;");
-                        break;
-                    case '&':
-                        sbResult.Append("&amp;");
-                        break;
-                    default:
+                    if (ch > 127)
                     {
-                        if (ch > 127)
-                        {
-                            sbResult.Append("&#");
-                            sbResult.Append(((int)ch).ToString(NumberFormatInfo.InvariantInfo));
-                            sbResult.Append(';');
-                        }
-                        else
-                        {
-                            sbResult.Append(ch);
-                        }
-
-                        break;
+                        sbResult.Append("&#");
+                        sbResult.Append(((int)ch).ToString(NumberFormatInfo.InvariantInfo));
+                        sbResult.Append(';');
                     }
+                    else
+                    {
+                        sbResult.Append(ch);
+                    }
+
+                    break;
                 }
             }
-
-            return sbResult.ToString();
         }
 
-        public static string UrlEncode(string text)
+        return sbResult.ToString();
+    }
+
+    public static string UrlEncode(string text)
+    {
+        if (string.IsNullOrEmpty(text))
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return text;
-            }
-
-            StringBuilder sbResult = new();
-
-            foreach (var ch in text)
-            {
-                if (ch == ' ')
-                {
-                    sbResult.Append('+');
-                }
-                else if (IsUrlSafe(ch) == false)
-                {
-                    sbResult.Append($"%{ch:X02}");
-                }
-                else
-                {
-                    sbResult.Append(ch);
-                }
-            }
-
-            return sbResult.ToString();
+            return text;
         }
 
-        private static bool IsUrlSafe(char ch)
+        StringBuilder sbResult = new();
+
+        foreach (var ch in text)
         {
-            if (
-                (ch >= 'a' && ch <= 'z') ||
-                (ch >= 'A' && ch <= 'Z') ||
-                (ch >= '0' && ch <= '9') ||
-                ch == '-' ||
-                ch == '_' ||
-                ch == '.' ||
-                ch == '!' ||
-                ch == '*' ||
-                ch == '(' ||
-                ch == ')')
+            if (ch == ' ')
             {
-                return true;
+                sbResult.Append('+');
             }
-
-            return false;
+            else if (IsUrlSafe(ch) == false)
+            {
+                sbResult.Append($"%{ch:X02}");
+            }
+            else
+            {
+                sbResult.Append(ch);
+            }
         }
+
+        return sbResult.ToString();
+    }
+
+    private static bool IsUrlSafe(char ch)
+    {
+        if (
+            (ch >= 'a' && ch <= 'z') ||
+            (ch >= 'A' && ch <= 'Z') ||
+            (ch >= '0' && ch <= '9') ||
+            ch == '-' ||
+            ch == '_' ||
+            ch == '.' ||
+            ch == '!' ||
+            ch == '*' ||
+            ch == '(' ||
+            ch == ')')
+        {
+            return true;
+        }
+
+        return false;
     }
 }

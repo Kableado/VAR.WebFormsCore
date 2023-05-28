@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VAR.WebFormsCore", "VAR.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VAR.WebFormsCore.TestWebApp", "VAR.WebFormsCore.TestWebApp\VAR.WebFormsCore.TestWebApp.csproj", "{0D81464B-802D-4ECA-92C8-427F481A4583}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VAR.WebFormsCore.AspNetCore", "VAR.WebFormsCore.AspNetCore\VAR.WebFormsCore.AspNetCore.csproj", "{378B98EF-9269-4B96-B894-1B0F9B24EEC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{0D81464B-802D-4ECA-92C8-427F481A4583}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D81464B-802D-4ECA-92C8-427F481A4583}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D81464B-802D-4ECA-92C8-427F481A4583}.Release|Any CPU.Build.0 = Release|Any CPU
+		{378B98EF-9269-4B96-B894-1B0F9B24EEC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{378B98EF-9269-4B96-B894-1B0F9B24EEC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{378B98EF-9269-4B96-B894-1B0F9B24EEC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{378B98EF-9269-4B96-B894-1B0F9B24EEC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

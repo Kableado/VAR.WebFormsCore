@@ -1,20 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
-using VAR.Json;
+﻿using VAR.Json;
 using VAR.WebFormsCore.Code;
 
-namespace VAR.WebFormsCore.Pages
+namespace VAR.WebFormsCore.Pages;
+
+public class FrmEcho : IHttpHandler
 {
-    public class FrmEcho : IHttpHandler
+    #region IHttpHandler
+
+    public void ProcessRequest(IWebContext context)
     {
-        #region IHttpHandler
-
-        public void ProcessRequest(HttpContext context)
-        {
-            context.Response.WriteAsync("<pre><code>").GetAwaiter().GetResult();
-            context.Response.WriteAsync(JsonWriter.WriteObject(context.Request, indent: true)).GetAwaiter().GetResult();
-            context.Response.WriteAsync("</code></pre>").GetAwaiter().GetResult();
-        }
-
-        #endregion IHttpHandler
+        context.ResponseContentType = "text/html";
+        context.ResponseWrite("<pre><code>");
+        context.ResponseWrite($"Header:{JsonWriter.WriteObject(context.RequestHeader, indent: true)}\n");
+        context.ResponseWrite($"Query:{JsonWriter.WriteObject(context.RequestQuery, indent: true)}\n");
+        context.ResponseWrite($"Form:{JsonWriter.WriteObject(context.RequestForm, indent: true)}\n");
+        context.ResponseWrite("</code></pre>");
     }
+
+    #endregion IHttpHandler
 }

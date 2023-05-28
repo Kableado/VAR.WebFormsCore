@@ -1,7 +1,6 @@
-﻿namespace VAR.WebFormsCore.Controls
+﻿namespace VAR.WebFormsCore.Controls;
+
+public interface IReceivePostbackEvent
 {
-    public interface IReceivePostbackEvent
-    {
-        void ReceivePostBack();
-    }
+    void ReceivePostBack();
 }

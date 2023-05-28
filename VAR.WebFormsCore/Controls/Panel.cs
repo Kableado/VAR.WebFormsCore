@@ -1,7 +1,6 @@
-﻿namespace VAR.WebFormsCore.Controls
+﻿namespace VAR.WebFormsCore.Controls;
+
+public class Panel : HtmlGenericControl, INamingContainer
 {
-    public class Panel : HtmlGenericControl, INamingContainer
-    {
-        public Panel() : base("div") { }
-    }
+    public Panel() : base("div") { }
 }
