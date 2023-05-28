@@ -36,6 +36,23 @@ public class AspnetCoreWebContext : IWebContext
         }
     }
 
+
+    private Dictionary<string, string>? _requestCookies;
+
+    public Dictionary<string, string> RequestCookies
+    {
+        get
+        {
+            if (_requestCookies == null)
+            {
+                _requestCookies = _context.Request.Cookies
+                    .ToDictionary(p => p.Key, p => p.Value);
+            }
+
+            return _requestCookies;
+        }
+    }
+
     private Dictionary<string, string?>? _requestQuery;
     
     public Dictionary<string, string?> RequestQuery
@@ -93,6 +110,20 @@ public class AspnetCoreWebContext : IWebContext
     public void ResponseRedirect(string url)
     {
         _context.Response.Redirect(url);
+    }
+
+    public void AddResponseCookie(string cookieName, string value, DateTime? expiration = null)
+    {
+        _context.Response.Cookies.Append(
+            key: cookieName,
+            value: value,
+            options: new CookieOptions {Expires = expiration,}
+        );
+    }
+
+    public void DelResponseCookie(string cookieName)
+    {
+        _context.Response.Cookies.Delete(cookieName);
     }
 
     public bool ResponseHasStarted => _context.Response.HasStarted;
