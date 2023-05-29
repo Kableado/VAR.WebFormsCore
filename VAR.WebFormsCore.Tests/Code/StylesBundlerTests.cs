@@ -14,6 +14,7 @@ public class StylesBundlerTests
         
         stylesBundler.ProcessRequest(fakeWebContext);
         
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         Assert.Single(fakeWebContext.FakeWritePackages);
         
         // TODO: Verify contents of intrinsic styles

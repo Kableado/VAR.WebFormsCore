@@ -14,6 +14,7 @@ public class ScriptsBundlerTests
         
         scriptsBundler.ProcessRequest(fakeWebContext);
         
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         Assert.Single(fakeWebContext.FakeWritePackages);
         
         // TODO: Verify contents of intrinsic scripts

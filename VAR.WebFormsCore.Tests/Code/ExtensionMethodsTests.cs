@@ -1,4 +1,3 @@
-using System.Text;
 using Xunit;
 using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Tests.Fakes;
@@ -17,6 +16,7 @@ public class ExtensionMethodsTests
 
         string result = fakeWebContext.GetRequestParameter(key);
         
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         Assert.Equal(string.Empty, result);
     }
     
@@ -28,6 +28,7 @@ public class ExtensionMethodsTests
 
         string result = fakeWebContext.GetRequestParameter(key);
         
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         Assert.Equal(string.Empty, result);
     }
     
@@ -41,6 +42,7 @@ public class ExtensionMethodsTests
 
         string result = fakeWebContext.GetRequestParameter(key);
         
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         Assert.Equal(value, result);
     }
     
@@ -54,6 +56,7 @@ public class ExtensionMethodsTests
         
         string result = fakeWebContext.GetRequestParameter(key);
         
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         Assert.Equal(value, result);
     }
 
@@ -68,6 +71,7 @@ public class ExtensionMethodsTests
 
         string result = fakeWebContext.GetRequestParameter(key);
         
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         Assert.Equal(string.Empty, result);
     }
     
@@ -82,6 +86,7 @@ public class ExtensionMethodsTests
         
         string result = fakeWebContext.GetRequestParameter(key);
         
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         Assert.Equal(string.Empty, result);
     }
 
@@ -96,6 +101,7 @@ public class ExtensionMethodsTests
 
         fakeWebContext.ResponseObject(new object());
 
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         Assert.Single(fakeWebContext.FakeWritePackages);
         Assert.Equal("{ }", fakeWebContext.FakeWritePackages[0].ToString());
     }

@@ -41,7 +41,8 @@ public class FakeWebContext : IWebContext
 
     public void ResponseRedirect(string url)
     {
-        throw new NotImplementedException();
+        ResponseStatusCode = 302;
+        SetResponseHeader("location", url);
     }
 
     public void AddResponseCookie(string cookieName, string value, DateTime? expiration = null)
@@ -55,14 +56,16 @@ public class FakeWebContext : IWebContext
     }
 
     public bool ResponseHasStarted => false;
-    
-    public int ResponseStatusCode { get; set; }
+
+    public int ResponseStatusCode { get; set; } = 200;
     
     public string? ResponseContentType { get; set; }
-    
+
+    public Dictionary<string, string> FakeResponseHeaders { get; } = new();
+
     public void SetResponseHeader(string key, string value)
     {
-        throw new NotImplementedException();
+        FakeResponseHeaders.Add(key, value);
     }
 
     public void PrepareCacheableResponse()

@@ -14,6 +14,7 @@ public class FrmEchoTests
         
         frmEcho.ProcessRequest(fakeWebContext);
 
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(
             expected:   """
@@ -35,6 +36,7 @@ public class FrmEchoTests
         
         frmEcho.ProcessRequest(fakeWebContext);
 
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(
             expected:   """
@@ -56,6 +58,7 @@ public class FrmEchoTests
         
         frmEcho.ProcessRequest(fakeWebContext);
 
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(
             expected:   """
