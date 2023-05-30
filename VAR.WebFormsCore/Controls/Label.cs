@@ -7,21 +7,9 @@ public class Label : Control
 {
     #region Properties
 
-    private string _tagName = "span";
+    public string Tag { get; set; } = "span";
 
-    public string Tag
-    {
-        get => _tagName;
-        set => _tagName = value;
-    }
-
-    private string _text = string.Empty;
-
-    public string Text
-    {
-        get => _text;
-        set => _text = value;
-    }
+    public string Text { get; set; } = string.Empty;
 
     #endregion Properties
 
@@ -29,15 +17,15 @@ public class Label : Control
 
     protected override void Render(TextWriter textWriter)
     {
-        textWriter.Write("<{0} ", _tagName);
+        textWriter.Write("<{0} ", Tag);
         RenderAttributes(textWriter);
         textWriter.Write(">");
 
-        textWriter.Write(ServerHelpers.HtmlEncode(_text));
+        textWriter.Write(ServerHelpers.HtmlEncode(Text));
 
         base.Render(textWriter);
 
-        textWriter.Write("</{0}>", _tagName);
+        textWriter.Write("</{0}>", Tag);
     }
 
     #endregion Life cycle

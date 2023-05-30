@@ -4,13 +4,7 @@ namespace VAR.WebFormsCore.Controls;
 
 public class HiddenField : Control
 {
-    private string _value = string.Empty;
-
-    public string Value
-    {
-        get => _value;
-        set => _value = value;
-    }
+    public string Value { get; set; } = string.Empty;
 
     protected override void Process()
     {
@@ -24,7 +18,7 @@ public class HiddenField : Control
     {
         textWriter.Write("<input type=\"hidden\" ");
         RenderAttributes(textWriter, forceId: true);
-        if (string.IsNullOrEmpty(Value) == false) { RenderAttribute(textWriter, "value", _value); }
+        if (string.IsNullOrEmpty(Value) == false) { RenderAttribute(textWriter, "value", Value); }
 
         textWriter.Write(">");
         textWriter.Write("</input>");

@@ -14,57 +14,22 @@ public class CTextBox : Control, INamingContainer, IValidableControl
     private HiddenField? _hidSize;
 
     private const string CssClassBase = "textBox";
-    private string _cssClassExtra = "";
-
-    private bool _allowEmpty = true;
-
-    private string _placeHolder = string.Empty;
-
-    private bool _markedInvalid;
-
-    private Control? _nextFocusOnEnter;
-
-    private bool _keepSize;
 
     #endregion Declarations
 
     #region Properties
 
-    public string CssClassExtra
-    {
-        get => _cssClassExtra;
-        set => _cssClassExtra = value;
-    }
+    public string CssClassExtra { get; set; } = string.Empty;
 
-    public bool AllowEmpty
-    {
-        get => _allowEmpty;
-        set => _allowEmpty = value;
-    }
+    public bool AllowEmpty { get; set; } = true;
 
-    public string PlaceHolder
-    {
-        get => _placeHolder;
-        set => _placeHolder = value;
-    }
+    public string PlaceHolder { get; set; } = string.Empty;
 
-    public bool MarkedInvalid
-    {
-        get => _markedInvalid;
-        set => _markedInvalid = value;
-    }
+    public bool MarkedInvalid { get; set; }
 
-    public Control? NextFocusOnEnter
-    {
-        get => _nextFocusOnEnter;
-        set => _nextFocusOnEnter = value;
-    }
+    public Control? NextFocusOnEnter { get; set; }
 
-    public bool KeepSize
-    {
-        get => _keepSize;
-        set => _keepSize = value;
-    }
+    public bool KeepSize { get; set; }
 
     public string Text
     {
@@ -94,7 +59,7 @@ public class CTextBox : Control, INamingContainer, IValidableControl
 
         if (TextMode == TextBoxMode.MultiLine)
         {
-            if (_keepSize)
+            if (KeepSize)
             {
                 _hidSize = new HiddenField();
                 Controls.Add(_hidSize);
@@ -103,7 +68,7 @@ public class CTextBox : Control, INamingContainer, IValidableControl
             string strCfgName = $"{ClientID}_cfg";
             Dictionary<string, object> cfg = new()
             {
-                {"txtContent", _txtContent.ClientID}, {"hidSize", _hidSize?.ClientID ?? string.Empty}, {"keepSize", _keepSize},
+                {"txtContent", _txtContent.ClientID}, {"hidSize", _hidSize?.ClientID ?? string.Empty}, {"keepSize", KeepSize},
             };
             StringBuilder sbCfg = new StringBuilder();
             sbCfg.AppendFormat("<script>\n");
@@ -118,28 +83,28 @@ public class CTextBox : Control, INamingContainer, IValidableControl
     private void CTextBox_PreRender(object? sender, EventArgs e)
     {
         _txtContent.CssClass = CssClassBase;
-        if (string.IsNullOrEmpty(_cssClassExtra) == false)
+        if (string.IsNullOrEmpty(CssClassExtra) == false)
         {
-            _txtContent.CssClass = $"{CssClassBase} {_cssClassExtra}";
+            _txtContent.CssClass = $"{CssClassBase} {CssClassExtra}";
         }
 
-        if (Page?.IsPostBack == true && (_allowEmpty == false && IsEmpty()) || _markedInvalid)
+        if (Page?.IsPostBack == true && (AllowEmpty == false && IsEmpty()) || MarkedInvalid)
         {
             _txtContent.CssClass += " textBoxInvalid";
         }
 
         _txtContent.Attributes.Add("onchange", "ElementRemoveClass(this, 'textBoxInvalid');");
 
-        if (string.IsNullOrEmpty(_placeHolder) == false)
+        if (string.IsNullOrEmpty(PlaceHolder) == false)
         {
-            _txtContent.Attributes.Add("placeholder", _placeHolder);
+            _txtContent.Attributes.Add("placeholder", PlaceHolder);
         }
 
-        if (_nextFocusOnEnter != null)
+        if (NextFocusOnEnter != null)
         {
             _txtContent.Attributes.Add(
                 "onkeydown",
-                $"if(event.keyCode==13){{document.getElementById('{_nextFocusOnEnter.ClientID}').focus(); return false;}}"
+                $"if(event.keyCode==13){{document.getElementById('{NextFocusOnEnter.ClientID}').focus(); return false;}}"
             );
         }
     }
@@ -150,7 +115,7 @@ public class CTextBox : Control, INamingContainer, IValidableControl
 
     private bool IsEmpty() { return string.IsNullOrEmpty(_txtContent.Text); }
 
-    public bool IsValid() { return _allowEmpty || (string.IsNullOrEmpty(_txtContent.Text) == false); }
+    public bool IsValid() { return AllowEmpty || (string.IsNullOrEmpty(_txtContent.Text) == false); }
 
     public int? GetClientsideHeight()
     {

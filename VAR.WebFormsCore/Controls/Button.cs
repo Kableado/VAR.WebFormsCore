@@ -7,14 +7,8 @@ public class Button : Control, IReceivePostbackEvent
 {
     public Button() { CssClass = "button"; }
 
-    private string _text = string.Empty;
+    public string Text { get; set; } = string.Empty;
 
-    public string Text
-    {
-        get => _text;
-        set => _text = value;
-    }
-        
     public string OnClientClick { get; set; } = string.Empty;
         
     public string CommandArgument { get; set; } = string.Empty;
@@ -25,7 +19,7 @@ public class Button : Control, IReceivePostbackEvent
     {
         textWriter.Write("<input type=\"submit\" ");
         RenderAttributes(textWriter);
-        RenderAttribute(textWriter, "value", _text);
+        RenderAttribute(textWriter, "value", Text);
         if (string.IsNullOrEmpty(OnClientClick) == false)
         {
             RenderAttribute(textWriter, "onclick", OnClientClick);
