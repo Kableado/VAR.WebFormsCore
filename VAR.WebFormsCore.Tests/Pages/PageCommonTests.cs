@@ -1,3 +1,4 @@
+using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Pages;
 using VAR.WebFormsCore.Tests.Fakes;
 using Xunit;
@@ -39,13 +40,31 @@ public class PageCommonTests
     [Fact]
     public void ProcessRequest__TestEmptyFormNotAuthenticated__RedirectToFrmLogin()
     {
+        string loginHandler = "FrmLogin";
+        (GlobalConfig.Get() as FakeGlobalConfig)?.FakeSetLoginHandler(loginHandler);
         FakeWebContext fakeWebContext = new();
         TestEmptyForm testEmptyForm = new(mustBeAuthenticated: true);
 
         testEmptyForm.ProcessRequest(fakeWebContext);
 
         Assert.Equal(302, fakeWebContext.ResponseStatusCode);
-        Assert.Equal(string.Empty, fakeWebContext.FakeResponseHeaders["location"]);
+        Assert.Equal(loginHandler, fakeWebContext.FakeResponseHeaders["location"]);
+    }
+
+    [Fact]
+    public void ProcessRequest__TestEmptyFormPostClickLogout__RedirectToFrmLogin()
+    {
+        string loginHandler = "FrmLogin";
+        (GlobalConfig.Get() as FakeGlobalConfig)?.FakeSetLoginHandler(loginHandler);
+        (GlobalConfig.Get() as FakeGlobalConfig)?.FakeSetAuthenticated(true);
+        FakeWebContext fakeWebContext = new(requestMethod: "POST");
+        fakeWebContext.RequestForm.Add("ctl00_ctl02_btnLogout", "Logout");
+        TestEmptyForm testEmptyForm = new(mustBeAuthenticated: true);
+
+        testEmptyForm.ProcessRequest(fakeWebContext);
+
+        Assert.Equal(302, fakeWebContext.ResponseStatusCode);
+        Assert.Equal(loginHandler, fakeWebContext.FakeResponseHeaders["location"]);
     }
 
     #endregion ProcessRequest TestForm
