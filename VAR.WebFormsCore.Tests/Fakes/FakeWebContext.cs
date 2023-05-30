@@ -55,7 +55,14 @@ public class FakeWebContext : IWebContext
         throw new NotImplementedException();
     }
 
-    public bool ResponseHasStarted => false;
+    private bool _responseHasStarted;
+
+    public void FakeSetResponseHasStarted(bool responseHasStarted)
+    {
+        _responseHasStarted = responseHasStarted;
+    }
+    
+    public bool ResponseHasStarted => _responseHasStarted;
 
     public int ResponseStatusCode { get; set; } = 200;
     

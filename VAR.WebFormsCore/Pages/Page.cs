@@ -55,7 +55,6 @@ public class Page : Control, IHttpHandler
             Render(stringWriter);
             if (context.ResponseHasStarted) { return; }
 
-            //context.SetResponseHeader("Content-Type", "text/html");
             context.ResponseContentType = "text/html";
             byte[] byteObject = Utf8Encoding.GetBytes(stringWriter.ToString());
             context.ResponseWriteBin(byteObject);
