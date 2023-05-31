@@ -25,7 +25,6 @@ public class Control
         foreach (Control control in Controls) { control.OnInit(e); }
     }
 
-
     public event EventHandler? Load;
 
     protected virtual void Process() { }

@@ -113,7 +113,7 @@ public class CTextBox : Control, INamingContainer, IValidableControl
 
     #region Public methods
 
-    private bool IsEmpty() { return string.IsNullOrEmpty(_txtContent.Text); }
+    public bool IsEmpty() { return string.IsNullOrEmpty(_txtContent.Text); }
 
     public bool IsValid() { return AllowEmpty || (string.IsNullOrEmpty(_txtContent.Text) == false); }
 
