@@ -81,6 +81,229 @@ public class CTextBoxTests
             actual: result);
     }
     
+    [Fact]
+    public void MustRenderCorrectly__WithChangedText()
+    {
+        string text = "Test";
+        string changedValue = "Changed";
+        
+        FakeWebContext fakeWebContext0 = new();
+        Page page0 = new();
+        CTextBox cTextBox0 = new() { Text = text };
+        page0.Controls.Add(cTextBox0);
+        page0.ProcessRequest(fakeWebContext0);
+        
+        FakeWebContext fakeWebContext1 = new(requestMethod: "POST");
+        fakeWebContext1.RequestForm.Add(cTextBox0.TxtContent.ClientID, changedValue);
+        Page page1 = new();
+        CTextBox cTextBox1 = new() { Text = text };
+        page1.Controls.Add(cTextBox1);
+        page1.ProcessRequest(fakeWebContext1);
+
+        Assert.Equal(changedValue, cTextBox1.Text);
+        Assert.Equal(200, fakeWebContext1.ResponseStatusCode);
+        Assert.Equal("text/html", fakeWebContext1.ResponseContentType);
+        string result = fakeWebContext1.FakeWritePackages.ToString("");
+        Assert.Equal(
+            expected: """
+                        <input type="text"  id="ctl00_ctl00" name="ctl00_ctl00" class="textBox" onchange="ElementRemoveClass(this, &#39;textBoxInvalid&#39;);" value="Changed"></input>
+                        """,
+            actual: result);
+    }
+    
+    [Fact]
+    public void MustRenderCorrectly_Multiline()
+    {
+        FakeWebContext fakeWebContext = new();
+        Page page = new();
+        CTextBox cTextBox = new()
+        {
+            TextMode = TextBoxMode.MultiLine, 
+            KeepSize = true,
+        };
+        page.Controls.Add(cTextBox);
+
+        page.ProcessRequest(fakeWebContext);
+
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
+        Assert.Equal("text/html", fakeWebContext.ResponseContentType);
+        string result = fakeWebContext.FakeWritePackages.ToString("");
+        Assert.Equal(
+            expected: """
+                        <textarea  id="ctl00_ctl00" name="ctl00_ctl00" class="textBox" onchange="ElementRemoveClass(this, &#39;textBoxInvalid&#39;);"></textarea><input type="hidden"  id="ctl00_ctl01" name="ctl00_ctl01"></input><script>
+                        var ctl00_cfg = { "txtContent": "ctl00_ctl00", "hidSize": "ctl00_ctl01", "keepSize": true };
+                        CTextBox_Multiline_Init(ctl00_cfg);
+                        </script>
+                        
+                        """,
+            actual: result);
+    }
+
+    [Fact]
+    public void MustRenderCorrectly_Multiline__GetClientsideHeight__Null()
+    {
+        FakeWebContext fakeWebContext = new(requestMethod: "POST");
+        Page page = new();
+        CTextBox cTextBox = new()
+        {
+            TextMode = TextBoxMode.MultiLine, 
+            KeepSize = true,
+        };
+        page.Controls.Add(cTextBox);
+
+        page.ProcessRequest(fakeWebContext);
+        int? resultHeight = cTextBox.GetClientsideHeight();
+
+        Assert.Null(resultHeight);
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
+        Assert.Equal("text/html", fakeWebContext.ResponseContentType);
+        string result = fakeWebContext.FakeWritePackages.ToString("");
+        Assert.Equal(
+            expected: """
+                        <textarea  id="ctl00_ctl00" name="ctl00_ctl00" class="textBox" onchange="ElementRemoveClass(this, &#39;textBoxInvalid&#39;);"></textarea><input type="hidden"  id="ctl00_ctl01" name="ctl00_ctl01"></input><script>
+                        var ctl00_cfg = { "txtContent": "ctl00_ctl00", "hidSize": "ctl00_ctl01", "keepSize": true };
+                        CTextBox_Multiline_Init(ctl00_cfg);
+                        </script>
+                        
+                        """,
+            actual: result);
+    }
+    
+    [Fact]
+    public void MustRenderCorrectly_Multiline__GetAndSetClientsideHeight__100()
+    {
+        FakeWebContext fakeWebContext = new(requestMethod: "POST");
+        Page page = new();
+        CTextBox cTextBox = new()
+        {
+            TextMode = TextBoxMode.MultiLine, 
+            KeepSize = true,
+        };
+        page.Controls.Add(cTextBox);
+        Button button = new();
+        button.Click += (_, _) =>
+        {
+            cTextBox.SetClientsideHeight(10);
+            cTextBox.SetClientsideHeight(100);
+        };
+        page.Controls.Add(button);
+
+        fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");
+        page.ProcessRequest(fakeWebContext);
+        int? resultHeight = cTextBox.GetClientsideHeight();
+
+        Assert.Equal(100, resultHeight);
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
+        Assert.Equal("text/html", fakeWebContext.ResponseContentType);
+        string result = fakeWebContext.FakeWritePackages.ToString("");
+        Assert.Equal(
+            expected: """
+                        <textarea  id="ctl00_ctl00" name="ctl00_ctl00" class="textBox" onchange="ElementRemoveClass(this, &#39;textBoxInvalid&#39;);"></textarea><input type="hidden"  id="ctl00_ctl01" name="ctl00_ctl01" value="{ &quot;height&quot;: 100, &quot;width&quot;: null, &quot;scrollTop&quot;: null }"></input><script>
+                        var ctl00_cfg = { "txtContent": "ctl00_ctl00", "hidSize": "ctl00_ctl01", "keepSize": true };
+                        CTextBox_Multiline_Init(ctl00_cfg);
+                        </script>
+                        <input type="submit"  class="button" value=""></input>
+                        """,
+            actual: result);
+    }
+
+    [Fact]
+    public void MustRenderCorrectly_Multiline__GetAndSetClientsideHeight__Null()
+    {
+        FakeWebContext fakeWebContext = new(requestMethod: "POST");
+        Page page = new();
+        CTextBox cTextBox = new()
+        {
+            TextMode = TextBoxMode.MultiLine, 
+            KeepSize = true,
+        };
+        page.Controls.Add(cTextBox);
+        Button button = new();
+        button.Click += (_, _) =>
+        {
+            cTextBox.SetClientsideHeight(null);
+        };
+        page.Controls.Add(button);
+
+        fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");
+        page.ProcessRequest(fakeWebContext);
+        int? resultHeight = cTextBox.GetClientsideHeight();
+
+        Assert.Null(resultHeight);
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
+        Assert.Equal("text/html", fakeWebContext.ResponseContentType);
+        string result = fakeWebContext.FakeWritePackages.ToString("");
+        Assert.Equal(
+            expected: """
+                        <textarea  id="ctl00_ctl00" name="ctl00_ctl00" class="textBox" onchange="ElementRemoveClass(this, &#39;textBoxInvalid&#39;);"></textarea><input type="hidden"  id="ctl00_ctl01" name="ctl00_ctl01"></input><script>
+                        var ctl00_cfg = { "txtContent": "ctl00_ctl00", "hidSize": "ctl00_ctl01", "keepSize": true };
+                        CTextBox_Multiline_Init(ctl00_cfg);
+                        </script>
+                        <input type="submit"  class="button" value=""></input>
+                        """,
+            actual: result);
+    }
+    
+    [Fact]
+    public void MustRenderCorrectly_Multiline__GetClientsideHeightInjectArray__Null()
+    {
+        FakeWebContext fakeWebContext = new(requestMethod: "POST");
+        Page page = new();
+        CTextBox cTextBox = new()
+        {
+            TextMode = TextBoxMode.MultiLine, 
+            KeepSize = true,
+        };
+        page.Controls.Add(cTextBox);
+        Button button = new();
+        button.Click += (_, _) =>
+        {
+            if (cTextBox.HidSize != null)
+            {
+                cTextBox.HidSize.Value = "[]";
+            }
+        };
+        page.Controls.Add(button);
+
+        fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");
+        page.ProcessRequest(fakeWebContext);
+        int? resultHeight = cTextBox.GetClientsideHeight();
+
+        Assert.Null(resultHeight);
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
+        Assert.Equal("text/html", fakeWebContext.ResponseContentType);
+    }
+    
+    [Fact]
+    public void MustRenderCorrectly_Multiline__GetClientsideHeightInjectObject__Null()
+    {
+        FakeWebContext fakeWebContext = new(requestMethod: "POST");
+        Page page = new();
+        CTextBox cTextBox = new()
+        {
+            TextMode = TextBoxMode.MultiLine, 
+            KeepSize = true,
+        };
+        page.Controls.Add(cTextBox);
+        Button button = new();
+        button.Click += (_, _) =>
+        {
+            if (cTextBox.HidSize != null)
+            {
+                cTextBox.HidSize.Value = "{}";
+            }
+        };
+        page.Controls.Add(button);
+
+        fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");
+        page.ProcessRequest(fakeWebContext);
+        int? resultHeight = cTextBox.GetClientsideHeight();
+
+        Assert.Null(resultHeight);
+        Assert.Equal(200, fakeWebContext.ResponseStatusCode);
+        Assert.Equal("text/html", fakeWebContext.ResponseContentType);
+    }
+
     #endregion MustRenderCorrectly
 
     #region IsEmpty
