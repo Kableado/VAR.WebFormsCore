@@ -23,5 +23,6 @@ public class Unit
 
 public enum UnitType
 {
-    Pixel, Percentage,
+    Pixel,
+    Percentage,
 }

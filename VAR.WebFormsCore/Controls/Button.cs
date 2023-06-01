@@ -10,7 +10,7 @@ public class Button : Control, IReceivePostbackEvent
     public string Text { get; set; } = string.Empty;
 
     public string OnClientClick { get; set; } = string.Empty;
-        
+
     public string CommandArgument { get; set; } = string.Empty;
 
     public event EventHandler? Click;
@@ -20,10 +20,8 @@ public class Button : Control, IReceivePostbackEvent
         textWriter.Write("<input type=\"submit\" ");
         RenderAttributes(textWriter);
         RenderAttribute(textWriter, "value", Text);
-        if (string.IsNullOrEmpty(OnClientClick) == false)
-        {
-            RenderAttribute(textWriter, "onclick", OnClientClick);
-        }
+        if (string.IsNullOrEmpty(OnClientClick) == false) { RenderAttribute(textWriter, "onclick", OnClientClick); }
+
         textWriter.Write(">");
 
         base.Render(textWriter);

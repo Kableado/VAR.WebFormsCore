@@ -9,19 +9,16 @@ namespace VAR.WebFormsCore.AspNetCore.Code;
 public class AspnetCoreWebContext : IWebContext
 {
     private readonly HttpContext _context;
-    
-    public AspnetCoreWebContext(HttpContext context)
-    {
-        _context = context;
-    }
-    
+
+    public AspnetCoreWebContext(HttpContext context) { _context = context; }
+
     public string RequestPath => _context.Request.Path;
 
     public string RequestMethod => _context.Request.Method;
 
 
     private Dictionary<string, string?>? _requestHeader;
-    
+
     public Dictionary<string, string?> RequestHeader
     {
         get
@@ -54,7 +51,7 @@ public class AspnetCoreWebContext : IWebContext
     }
 
     private Dictionary<string, string?>? _requestQuery;
-    
+
     public Dictionary<string, string?> RequestQuery
     {
         get
@@ -68,9 +65,9 @@ public class AspnetCoreWebContext : IWebContext
             return _requestQuery;
         }
     }
-    
+
     private Dictionary<string, string?>? _requestForm;
-    
+
     public Dictionary<string, string?> RequestForm
     {
         get
@@ -82,69 +79,51 @@ public class AspnetCoreWebContext : IWebContext
                     _requestForm = _context.Request.Form
                         .ToDictionary(p => p.Key, p => p.Value[0]);
                 }
-                else
-                {
-                    _requestForm = new Dictionary<string, string?>();
-                }
+                else { _requestForm = new Dictionary<string, string?>(); }
             }
 
             return _requestForm;
         }
     }
 
-    public void ResponseWrite(string text)
-    {
-        _context.Response.WriteAsync(text).GetAwaiter().GetResult();
-    }
-    
+    public void ResponseWrite(string text) { _context.Response.WriteAsync(text).GetAwaiter().GetResult(); }
+
     public void ResponseWriteBin(byte[] content)
     {
         _context.Response.Body.WriteAsync(content).GetAwaiter().GetResult();
     }
 
-    public void ResponseFlush()
-    {
-        _context.Response.Body.FlushAsync().GetAwaiter().GetResult();
-    }
+    public void ResponseFlush() { _context.Response.Body.FlushAsync().GetAwaiter().GetResult(); }
 
-    public void ResponseRedirect(string url)
-    {
-        _context.Response.Redirect(url);
-    }
+    public void ResponseRedirect(string url) { _context.Response.Redirect(url); }
 
     public void AddResponseCookie(string cookieName, string value, DateTime? expiration = null)
     {
         _context.Response.Cookies.Append(
             key: cookieName,
             value: value,
-            options: new CookieOptions {Expires = expiration,}
+            options: new CookieOptions { Expires = expiration, }
         );
     }
 
-    public void DelResponseCookie(string cookieName)
-    {
-        _context.Response.Cookies.Delete(cookieName);
-    }
+    public void DelResponseCookie(string cookieName) { _context.Response.Cookies.Delete(cookieName); }
 
     public bool ResponseHasStarted => _context.Response.HasStarted;
-    
+
     public int ResponseStatusCode
     {
         get => _context.Response.StatusCode;
         set => _context.Response.StatusCode = value;
     }
-    
+
     public string? ResponseContentType
     {
         get => _context.Response.ContentType;
         set => _context.Response.ContentType = value;
     }
 
-    public void SetResponseHeader(string key, string value)
-    {
-        _context.Response.Headers.SafeSet(key, value);
-    }
-    
+    public void SetResponseHeader(string key, string value) { _context.Response.Headers.SafeSet(key, value); }
+
     public void PrepareCacheableResponse()
     {
         const int secondsInDay = 86400;
@@ -161,5 +140,4 @@ public class AspnetCoreWebContext : IWebContext
             .ToString("ddd, dd MMM yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
         _context.Response.Headers.SafeSet("Expires", $"{expireDate} GMT");
     }
-
 }

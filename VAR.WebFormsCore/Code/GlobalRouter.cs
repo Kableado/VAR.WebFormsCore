@@ -96,10 +96,7 @@ public class GlobalRouter
             {
                 lock (Handlers)
                 {
-                    if (Handlers.ContainsKey(typeName) == false)
-                    {
-                        Handlers.Add(typeName, type);
-                    }
+                    if (Handlers.ContainsKey(typeName) == false) { Handlers.Add(typeName, type); }
                 }
             }
 

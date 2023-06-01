@@ -16,10 +16,7 @@ public class FakeGlobalConfig : IGlobalConfig
 
     private string _loginHandler = string.Empty;
 
-    public void FakeSetLoginHandler(string loginHandler)
-    {
-        _loginHandler = loginHandler;
-    }
+    public void FakeSetLoginHandler(string loginHandler) { _loginHandler = loginHandler; }
 
     public string LoginHandler => _loginHandler;
 
@@ -27,18 +24,9 @@ public class FakeGlobalConfig : IGlobalConfig
 
     private bool _authenticated;
 
-    public void FakeSetAuthenticated(bool authenticated)
-    {
-        _authenticated = authenticated;
-    }
-    
-    public bool IsUserAuthenticated(IWebContext context)
-    {
-        return _authenticated;
-    }
+    public void FakeSetAuthenticated(bool authenticated) { _authenticated = authenticated; }
 
-    public void UserDeauthenticate(IWebContext context)
-    {
-        _authenticated = false;
-    }
+    public bool IsUserAuthenticated(IWebContext context) { return _authenticated; }
+
+    public void UserDeauthenticate(IWebContext context) { _authenticated = false; }
 }

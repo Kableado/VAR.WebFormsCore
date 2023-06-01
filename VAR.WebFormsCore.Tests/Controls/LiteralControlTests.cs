@@ -22,7 +22,7 @@ public class LiteralControlTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(@"", result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__AnyContent()
     {

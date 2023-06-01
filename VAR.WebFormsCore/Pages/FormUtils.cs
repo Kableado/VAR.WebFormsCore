@@ -16,18 +16,18 @@ public static class FormUtils
 
     public static Control CreateField(string label, Control fieldControl)
     {
-        Panel pnlRow = new Panel {CssClass = "formRow"};
+        Panel pnlRow = new Panel { CssClass = "formRow" };
 
-        Panel pnlLabelContainer = new Panel {CssClass = "formLabel width25pc"};
+        Panel pnlLabelContainer = new Panel { CssClass = "formLabel width25pc" };
         pnlRow.Controls.Add(pnlLabelContainer);
 
         if (string.IsNullOrEmpty(label) == false)
         {
-            Label lblField = new Label {Text = label};
+            Label lblField = new Label { Text = label };
             pnlLabelContainer.Controls.Add(lblField);
         }
 
-        Panel pnlFieldContainer = new Panel {CssClass = "formField width75pc"};
+        Panel pnlFieldContainer = new Panel { CssClass = "formField width75pc" };
         pnlRow.Controls.Add(pnlFieldContainer);
 
         pnlFieldContainer.Controls.Add(fieldControl);
@@ -35,10 +35,7 @@ public static class FormUtils
         return pnlRow;
     }
 
-    public static bool Control_IsValid(Control control)
-    {
-        return (control as IValidableControl)?.IsValid() != false;
-    }
+    public static bool Control_IsValid(Control control) { return (control as IValidableControl)?.IsValid() != false; }
 
     public static bool Controls_AreValid(ControlCollection controls)
     {

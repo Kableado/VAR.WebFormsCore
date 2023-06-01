@@ -50,5 +50,7 @@ public class TextBox : Control
 
 public enum TextBoxMode
 {
-    Normal, Password, MultiLine,
+    Normal,
+    Password,
+    MultiLine,
 }

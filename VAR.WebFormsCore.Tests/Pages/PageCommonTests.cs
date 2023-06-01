@@ -11,10 +11,7 @@ public class PageCommonTests
 
     private class TestEmptyForm : PageCommon
     {
-        public TestEmptyForm(bool mustBeAuthenticated)
-        {
-            MustBeAuthenticated = mustBeAuthenticated;
-        }
+        public TestEmptyForm(bool mustBeAuthenticated) { MustBeAuthenticated = mustBeAuthenticated; }
     }
 
     [Fact]

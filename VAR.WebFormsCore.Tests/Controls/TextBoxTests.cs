@@ -26,7 +26,7 @@ public class TextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__NormalWithText()
     {
@@ -46,13 +46,13 @@ public class TextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__Password()
     {
         FakeWebContext fakeWebContext = new();
         Page page = new();
-        TextBox textBox = new() {TextMode = TextBoxMode.Password, };
+        TextBox textBox = new() { TextMode = TextBoxMode.Password, };
         page.Controls.Add(textBox);
 
         page.ProcessRequest(fakeWebContext);
@@ -66,7 +66,7 @@ public class TextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__PasswordWithText()
     {
@@ -86,13 +86,13 @@ public class TextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__MultiLine()
     {
         FakeWebContext fakeWebContext = new();
         Page page = new();
-        TextBox textBox = new() {TextMode = TextBoxMode.MultiLine, };
+        TextBox textBox = new() { TextMode = TextBoxMode.MultiLine, };
         page.Controls.Add(textBox);
 
         page.ProcessRequest(fakeWebContext);
@@ -106,7 +106,7 @@ public class TextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__MultiLineWithText()
     {
@@ -127,7 +127,7 @@ public class TextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__WithChangedText()
     {

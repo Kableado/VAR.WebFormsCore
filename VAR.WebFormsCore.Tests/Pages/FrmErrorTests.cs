@@ -11,13 +11,13 @@ public class FrmErrorTests
     {
         FakeWebContext fakeWebContext = new();
         FrmError frmError = new(new Exception("Test"));
-        
+
         frmError.ProcessRequest(fakeWebContext);
 
         Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(
-            expected:   """
+            expected: """
                         <!DOCTYPE html>
                         <html ><head ><title>Application Error</title><meta  content="IE=Edge" http-equiv="X-UA-Compatible" /><meta  content="text/html; charset=utf-8" http-equiv="content-type" /><meta  name="author" /><meta  name="Copyright" /><meta  name="viewport" content="width=device-width, initial-scale=1, maximum-scale=4, user-scalable=1" /><script type="text/javascript" src="ScriptsBundler?v=1.0.0.0"></script>
                         <link href="StylesBundler?v=1.0.0.0" type="text/css" rel="stylesheet"/>
@@ -25,5 +25,4 @@ public class FrmErrorTests
                         """,
             actual: result);
     }
-
 }

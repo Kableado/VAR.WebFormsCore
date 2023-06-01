@@ -13,15 +13,17 @@ public class ObjectActivatorTests
         Assert.IsType<object>(result);
     }
 
-    private class TestType { }
-    
+    private class TestType
+    {
+    }
+
     [Fact]
     public void CreateInstance__TestType__TestType()
     {
         object result = ObjectActivator.CreateInstance(typeof(TestType));
 
         Assert.IsType<TestType>(result);
-        
+
         object result2 = ObjectActivator.CreateInstance(typeof(TestType));
 
         Assert.IsType<TestType>(result2);

@@ -6,8 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\VAR.WebFormsCore.AspNetCore\VAR.WebFormsCore.AspNetCore.csproj" />
-      <ProjectReference Include="..\VAR.WebFormsCore\VAR.WebFormsCore.csproj" />
+        <ProjectReference Include="..\VAR.WebFormsCore.AspNetCore\VAR.WebFormsCore.AspNetCore.csproj"/>
+        <ProjectReference Include="..\VAR.WebFormsCore\VAR.WebFormsCore.csproj"/>
     </ItemGroup>
 
 </Project>

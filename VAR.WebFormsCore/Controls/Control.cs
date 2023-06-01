@@ -185,10 +185,7 @@ public class Control
 
         if (_controls != null)
         {
-            foreach (Control child in _controls)
-            {
-                child.ChildsOfType<T>(controls);
-            }
+            foreach (Control child in _controls) { child.ChildsOfType<T>(controls); }
         }
 
         return controls;

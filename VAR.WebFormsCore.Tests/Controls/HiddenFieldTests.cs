@@ -22,7 +22,7 @@ public class HiddenFieldTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(@"<input type=""hidden""  id=""ctl00"" name=""ctl00""></input>", result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__WithValue()
     {
@@ -40,7 +40,7 @@ public class HiddenFieldTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(@"<input type=""hidden""  id=""ctl00"" name=""ctl00"" value=""Test""></input>", result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__WithChangedValue()
     {

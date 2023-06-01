@@ -46,7 +46,7 @@ public class CTextBox : Control, INamingContainer, IValidableControl
     public TextBox TxtContent => _txtContent;
 
     public HiddenField? HidSize => _hidSize;
-    
+
     #endregion Properties
 
     #region Control life cycle
@@ -72,7 +72,8 @@ public class CTextBox : Control, INamingContainer, IValidableControl
             string strCfgName = $"{ClientID}_cfg";
             Dictionary<string, object> cfg = new()
             {
-                {"txtContent", _txtContent.ClientID}, {"hidSize", _hidSize?.ClientID ?? string.Empty}, {"keepSize", KeepSize},
+                { "txtContent", _txtContent.ClientID }, { "hidSize", _hidSize?.ClientID ?? string.Empty },
+                { "keepSize", KeepSize },
             };
             StringBuilder sbCfg = new StringBuilder();
             sbCfg.AppendFormat("<script>\n");
@@ -87,10 +88,7 @@ public class CTextBox : Control, INamingContainer, IValidableControl
     private void CTextBox_PreRender(object? sender, EventArgs e)
     {
         _txtContent.CssClass = CssClassBase;
-        if (string.IsNullOrEmpty(CssClassExtra) == false)
-        {
-            _txtContent.CssClass = $"{CssClassBase} {CssClassExtra}";
-        }
+        if (string.IsNullOrEmpty(CssClassExtra) == false) { _txtContent.CssClass = $"{CssClassBase} {CssClassExtra}"; }
 
         if (Page?.IsPostBack == true && (AllowEmpty == false && IsEmpty()) || MarkedInvalid)
         {
@@ -99,10 +97,7 @@ public class CTextBox : Control, INamingContainer, IValidableControl
 
         _txtContent.Attributes.Add("onchange", "ElementRemoveClass(this, 'textBoxInvalid');");
 
-        if (string.IsNullOrEmpty(PlaceHolder) == false)
-        {
-            _txtContent.Attributes.Add("placeholder", PlaceHolder);
-        }
+        if (string.IsNullOrEmpty(PlaceHolder) == false) { _txtContent.Attributes.Add("placeholder", PlaceHolder); }
 
         if (NextFocusOnEnter != null)
         {
@@ -131,17 +126,15 @@ public class CTextBox : Control, INamingContainer, IValidableControl
 
         if (sizeObj.ContainsKey("height") == false) { return null; }
 
-        return (int) sizeObj["height"];
+        return (int)sizeObj["height"];
     }
 
     public void SetClientsideHeight(int? height)
     {
         if (height == null)
         {
-            if (_hidSize != null)
-            {
-                _hidSize.Value = string.Empty;
-            }
+            if (_hidSize != null) { _hidSize.Value = string.Empty; }
+
             return;
         }
 
@@ -151,13 +144,11 @@ public class CTextBox : Control, INamingContainer, IValidableControl
             JsonParser jsonParser = new JsonParser();
             sizeObj = jsonParser.Parse(_hidSize?.Value) as Dictionary<string, object?>;
         }
+
         sizeObj ??= new Dictionary<string, object?> { { "height", null }, { "width", null }, { "scrollTop", null }, };
         sizeObj["height"] = height;
-        
-        if (_hidSize != null)
-        {
-            _hidSize.Value = JsonWriter.WriteObject(sizeObj);
-        }
+
+        if (_hidSize != null) { _hidSize.Value = JsonWriter.WriteObject(sizeObj); }
     }
 
     #endregion Public methods

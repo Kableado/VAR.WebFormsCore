@@ -16,7 +16,7 @@ public static class ObjectActivator
 
             NewExpression newExp = Expression.New(type);
             LambdaExpression lambda = Expression.Lambda(typeof(Func<object>), newExp);
-            Func<object> compiledLambdaNew = (Func<object>) lambda.Compile();
+            Func<object> compiledLambdaNew = (Func<object>)lambda.Compile();
 
             Creators.Add(type, compiledLambdaNew);
 

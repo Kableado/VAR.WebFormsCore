@@ -29,7 +29,7 @@ public static class MultiLang
         _literals = new Dictionary<string, Dictionary<string, object>?>();
 
         JsonParser jsonParser = new JsonParser();
-        foreach (string lang in new[] {"en", "es"})
+        foreach (string lang in new[] { "en", "es" })
         {
             string filePath = GetPrivatePath("Resources", $"Literals.{lang}.json");
             if (File.Exists(filePath) == false) { continue; }
@@ -85,10 +85,7 @@ public static class MultiLang
 
         Dictionary<string, object>? literalCurrentCulture = _literals[culture];
 
-        if (literalCurrentCulture == null || literalCurrentCulture.ContainsKey(resource) == false)
-        {
-            return resource;
-        }
+        if (literalCurrentCulture == null || literalCurrentCulture.ContainsKey(resource) == false) { return resource; }
 
         return (literalCurrentCulture[resource] as string) ?? resource;
     }

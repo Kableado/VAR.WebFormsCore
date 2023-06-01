@@ -7,10 +7,7 @@ public static class ServerHelpers
 {
     private static string? _contentRoot;
 
-    public static void SetContentRoot(string contentRoot)
-    {
-        _contentRoot = contentRoot;
-    }
+    public static void SetContentRoot(string contentRoot) { _contentRoot = contentRoot; }
 
     public static string MapContentPath(string path)
     {
@@ -20,10 +17,7 @@ public static class ServerHelpers
 
     public static string HtmlEncode(string text)
     {
-        if (string.IsNullOrEmpty(text))
-        {
-            return text;
-        }
+        if (string.IsNullOrEmpty(text)) { return text; }
 
         StringBuilder sbResult = new();
 
@@ -54,10 +48,7 @@ public static class ServerHelpers
                         sbResult.Append(((int)ch).ToString(NumberFormatInfo.InvariantInfo));
                         sbResult.Append(';');
                     }
-                    else
-                    {
-                        sbResult.Append(ch);
-                    }
+                    else { sbResult.Append(ch); }
 
                     break;
                 }
@@ -69,28 +60,19 @@ public static class ServerHelpers
 
     public static string UrlEncode(string text)
     {
-        if (string.IsNullOrEmpty(text))
-        {
-            return text;
-        }
+        if (string.IsNullOrEmpty(text)) { return text; }
 
         StringBuilder sbResult = new();
 
         foreach (var ch in text)
         {
-            if (ch == ' ')
-            {
-                sbResult.Append('+');
-            }
+            if (ch == ' ') { sbResult.Append('+'); }
             else if (IsUrlSafe(ch) == false)
             {
                 int intCh = ch;
                 sbResult.Append($"%{intCh:X02}");
             }
-            else
-            {
-                sbResult.Append(ch);
-            }
+            else { sbResult.Append(ch); }
         }
 
         return sbResult.ToString();
@@ -108,10 +90,7 @@ public static class ServerHelpers
             ch == '!' ||
             ch == '*' ||
             ch == '(' ||
-            ch == ')')
-        {
-            return true;
-        }
+            ch == ')') { return true; }
 
         return false;
     }

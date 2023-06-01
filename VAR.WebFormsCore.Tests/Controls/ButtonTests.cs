@@ -22,7 +22,7 @@ public class ButtonTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(@"<input type=""submit""  class=""button"" value=""""></input>", result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__WithOnClientClick()
     {
@@ -41,7 +41,7 @@ public class ButtonTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(@"<input type=""submit""  class=""button"" value="""" onclick=""alert(1)""></input>", result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__ClickWithCommandArgument()
     {
@@ -53,10 +53,7 @@ public class ButtonTests
             CommandArgument = commandArgument,
         };
         string? result = null;
-        button.Click += (o, _) =>
-        {
-            result = (o as Button)?.CommandArgument;
-        };
+        button.Click += (o, _) => { result = (o as Button)?.CommandArgument; };
         page.Controls.Add(button);
 
         fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");

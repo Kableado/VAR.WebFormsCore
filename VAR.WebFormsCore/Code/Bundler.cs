@@ -55,7 +55,7 @@ public class Bundler
                 _absoluteFiles = new List<string>();
                 return _absoluteFiles;
             }
-            
+
             DirectoryInfo dir = new DirectoryInfo(_absolutePath);
             FileInfo[] files = dir.GetFiles();
             _absoluteFiles = files.OrderBy(file => file.FullName).Select(file2 => file2.FullName).ToList();

@@ -23,7 +23,7 @@ public interface IWebContext
     int ResponseStatusCode { get; set; }
     string? ResponseContentType { get; set; }
     void SetResponseHeader(string key, string value);
-    
+
     void PrepareCacheableResponse();
     void PrepareUncacheableResponse();
 }

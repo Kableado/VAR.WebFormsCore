@@ -22,7 +22,7 @@ public class HtmlFormTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal(@"<form  method=""post"" action=""Page""></form>", result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__WithQueryParameters()
     {

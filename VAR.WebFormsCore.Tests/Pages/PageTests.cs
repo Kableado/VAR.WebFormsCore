@@ -75,10 +75,7 @@ public class PageTests
         Page page = new();
         page.Load += (_, _) =>
         {
-            if (page.IsPostBack)
-            {
-                fakeWebContext.FakeSetResponseHasStarted(true);
-            }
+            if (page.IsPostBack) { fakeWebContext.FakeSetResponseHasStarted(true); }
         };
 
         page.ProcessRequest(fakeWebContext);
@@ -96,10 +93,7 @@ public class PageTests
         Page page = new();
         page.Load += (_, _) =>
         {
-            if (page.IsPostBack)
-            {
-                fakeWebContext.FakeSetResponseHasStarted(true);
-            }
+            if (page.IsPostBack) { fakeWebContext.FakeSetResponseHasStarted(true); }
         };
 
         page.ProcessRequest(fakeWebContext);

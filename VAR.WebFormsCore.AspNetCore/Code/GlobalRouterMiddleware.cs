@@ -11,7 +11,7 @@ namespace VAR.WebFormsCore.AspNetCore.Code;
 public class GlobalRouterMiddleware
 {
     private readonly GlobalRouter _globalRouter = new();
-        
+
     public GlobalRouterMiddleware(RequestDelegate next, IWebHostEnvironment env)
     {
         ServerHelpers.SetContentRoot(env.ContentRootPath);
@@ -26,7 +26,7 @@ public class GlobalRouterMiddleware
         httpContext.Response.Headers.SafeSet("X-XSS-Protection", "1; mode=block");
 
         IWebContext webContext = new AspnetCoreWebContext(httpContext);
-            
+
         try
         {
             _globalRouter.RouteRequest(webContext);
@@ -46,7 +46,6 @@ public class GlobalRouterMiddleware
     }
 
     private static bool IsIgnoreException(Exception ex) { return ex is ThreadAbortException; }
-
 }
 
 public static class GlobalRouterMiddlewareExtensions

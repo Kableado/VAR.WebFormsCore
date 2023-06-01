@@ -15,12 +15,7 @@ public class TestWebAppGlobalConfig : IGlobalConfig
     public List<string> AllowedExtensions { get; } = new()
         { ".png", ".jpg", ".jpeg", ".gif", ".ico", ".wav", ".mp3", ".ogg", ".mp4", ".webm", ".webp", ".mkv", ".avi" };
 
-    public bool IsUserAuthenticated(IWebContext context)
-    {
-        return false;
-    }
+    public bool IsUserAuthenticated(IWebContext context) { return false; }
 
-    public void UserDeauthenticate(IWebContext context)
-    {
-    }
+    public void UserDeauthenticate(IWebContext context) { }
 }

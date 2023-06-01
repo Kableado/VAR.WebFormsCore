@@ -22,7 +22,7 @@ public class HyperLinkTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal("<a ></a>", result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__WithTextAndUrl()
     {

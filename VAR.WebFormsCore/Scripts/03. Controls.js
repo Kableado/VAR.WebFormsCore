@@ -44,7 +44,7 @@ var CTextBox_Multiline_RestoreSizeData = function (textArea) {
             textArea.scrollTop = textArea.cfg.size.scrollTop;
         }
     }
-    textArea.cfg.size = { height: textArea.offsetHeight, width: textArea.offsetWidth, scrollTop: textArea.scrollTop };
+    textArea.cfg.size = {height: textArea.offsetHeight, width: textArea.offsetWidth, scrollTop: textArea.scrollTop};
 };
 
 ////////////////////////
@@ -52,7 +52,7 @@ var CTextBox_Multiline_RestoreSizeData = function (textArea) {
 //
 var CTextBox_Multiline_MouseUp = function (e) {
     var textArea = e.target;
-    var newSize = { height: textArea.offsetHeight, width: textArea.offsetWidth, scrollTop: textArea.scrollTop };
+    var newSize = {height: textArea.offsetHeight, width: textArea.offsetWidth, scrollTop: textArea.scrollTop};
     if (textArea.cfg.size.height !== newSize.height) {
         textArea.cfg.size = newSize;
         CTextBox_Multiline_SaveSizeData(textArea);
@@ -64,7 +64,7 @@ var CTextBox_Multiline_MouseUp = function (e) {
 //
 var CTextBox_Multiline_Scrolled = function (e) {
     var textArea = e.target;
-    textArea.cfg.size = { height: textArea.offsetHeight, width: textArea.offsetWidth, scrollTop: textArea.scrollTop };
+    textArea.cfg.size = {height: textArea.offsetHeight, width: textArea.offsetWidth, scrollTop: textArea.scrollTop};
     CTextBox_Multiline_SaveSizeData(textArea);
 };
 

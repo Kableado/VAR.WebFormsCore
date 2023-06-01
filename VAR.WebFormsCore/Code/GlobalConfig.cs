@@ -21,7 +21,7 @@ public static class GlobalConfig
                     x is { IsAbstract: false, IsInterface: false, IsPublic: true } &&
                     iGlobalConfig.IsAssignableFrom(x)
             );
-        if(foundGlobalConfig != null)
+        if (foundGlobalConfig != null)
         {
             _globalConfig = ObjectActivator.CreateInstance(foundGlobalConfig) as IGlobalConfig;
         }
@@ -39,14 +39,9 @@ public static class GlobalConfig
         public string DefaultHandler => string.Empty;
         public string LoginHandler => string.Empty;
         public List<string> AllowedExtensions { get; } = new();
-            
-        public bool IsUserAuthenticated(IWebContext context)
-        {
-            return false;
-        }
 
-        public void UserDeauthenticate(IWebContext context)
-        {
-        }
+        public bool IsUserAuthenticated(IWebContext context) { return false; }
+
+        public void UserDeauthenticate(IWebContext context) { }
     }
 }

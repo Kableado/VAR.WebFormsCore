@@ -8,7 +8,7 @@ namespace VAR.WebFormsCore.Tests.Controls;
 public class CTextBoxTests
 {
     #region MustRenderCorrectly
-    
+
     [Fact]
     public void MustRenderCorrectly()
     {
@@ -36,11 +36,11 @@ public class CTextBoxTests
         Page page = new();
         CTextBox cTextBox = new()
         {
-            CssClassExtra = "extraClass", 
-            PlaceHolder = "Placeholder", 
+            CssClassExtra = "extraClass",
+            PlaceHolder = "Placeholder",
             MarkedInvalid = true,
-            TextMode = TextBoxMode.Normal, 
-            AllowEmpty = true, 
+            TextMode = TextBoxMode.Normal,
+            AllowEmpty = true,
             KeepSize = true,
             Text = "Test",
         };
@@ -57,7 +57,7 @@ public class CTextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__WithNextFocusOnEnter()
     {
@@ -80,19 +80,19 @@ public class CTextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__WithChangedText()
     {
         string text = "Test";
         string changedValue = "Changed";
-        
+
         FakeWebContext fakeWebContext0 = new();
         Page page0 = new();
         CTextBox cTextBox0 = new() { Text = text };
         page0.Controls.Add(cTextBox0);
         page0.ProcessRequest(fakeWebContext0);
-        
+
         FakeWebContext fakeWebContext1 = new(requestMethod: "POST");
         fakeWebContext1.RequestForm.Add(cTextBox0.TxtContent.ClientID, changedValue);
         Page page1 = new();
@@ -110,7 +110,7 @@ public class CTextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly_Multiline()
     {
@@ -118,7 +118,7 @@ public class CTextBoxTests
         Page page = new();
         CTextBox cTextBox = new()
         {
-            TextMode = TextBoxMode.MultiLine, 
+            TextMode = TextBoxMode.MultiLine,
             KeepSize = true,
         };
         page.Controls.Add(cTextBox);
@@ -146,7 +146,7 @@ public class CTextBoxTests
         Page page = new();
         CTextBox cTextBox = new()
         {
-            TextMode = TextBoxMode.MultiLine, 
+            TextMode = TextBoxMode.MultiLine,
             KeepSize = true,
         };
         page.Controls.Add(cTextBox);
@@ -168,7 +168,7 @@ public class CTextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly_Multiline__GetAndSetClientsideHeight__100()
     {
@@ -176,7 +176,7 @@ public class CTextBoxTests
         Page page = new();
         CTextBox cTextBox = new()
         {
-            TextMode = TextBoxMode.MultiLine, 
+            TextMode = TextBoxMode.MultiLine,
             KeepSize = true,
         };
         page.Controls.Add(cTextBox);
@@ -214,15 +214,12 @@ public class CTextBoxTests
         Page page = new();
         CTextBox cTextBox = new()
         {
-            TextMode = TextBoxMode.MultiLine, 
+            TextMode = TextBoxMode.MultiLine,
             KeepSize = true,
         };
         page.Controls.Add(cTextBox);
         Button button = new();
-        button.Click += (_, _) =>
-        {
-            cTextBox.SetClientsideHeight(null);
-        };
+        button.Click += (_, _) => { cTextBox.SetClientsideHeight(null); };
         page.Controls.Add(button);
 
         fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");
@@ -243,7 +240,7 @@ public class CTextBoxTests
                         """,
             actual: result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly_Multiline__GetClientsideHeightInjectArray__Null()
     {
@@ -251,17 +248,14 @@ public class CTextBoxTests
         Page page = new();
         CTextBox cTextBox = new()
         {
-            TextMode = TextBoxMode.MultiLine, 
+            TextMode = TextBoxMode.MultiLine,
             KeepSize = true,
         };
         page.Controls.Add(cTextBox);
         Button button = new();
         button.Click += (_, _) =>
         {
-            if (cTextBox.HidSize != null)
-            {
-                cTextBox.HidSize.Value = "[]";
-            }
+            if (cTextBox.HidSize != null) { cTextBox.HidSize.Value = "[]"; }
         };
         page.Controls.Add(button);
 
@@ -273,7 +267,7 @@ public class CTextBoxTests
         Assert.Equal(200, fakeWebContext.ResponseStatusCode);
         Assert.Equal("text/html", fakeWebContext.ResponseContentType);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly_Multiline__GetClientsideHeightInjectObject__Null()
     {
@@ -281,17 +275,14 @@ public class CTextBoxTests
         Page page = new();
         CTextBox cTextBox = new()
         {
-            TextMode = TextBoxMode.MultiLine, 
+            TextMode = TextBoxMode.MultiLine,
             KeepSize = true,
         };
         page.Controls.Add(cTextBox);
         Button button = new();
         button.Click += (_, _) =>
         {
-            if (cTextBox.HidSize != null)
-            {
-                cTextBox.HidSize.Value = "{}";
-            }
+            if (cTextBox.HidSize != null) { cTextBox.HidSize.Value = "{}"; }
         };
         page.Controls.Add(button);
 
@@ -314,17 +305,17 @@ public class CTextBoxTests
         CTextBox cTextBox = new() { Text = string.Empty, };
 
         bool result = cTextBox.IsEmpty();
-        
+
         Assert.True(result);
     }
-    
+
     [Fact]
     public void IsEmpty__Text__False()
     {
         CTextBox cTextBox = new() { Text = "Text", };
 
         bool result = cTextBox.IsEmpty();
-        
+
         Assert.False(result);
     }
 
@@ -338,17 +329,17 @@ public class CTextBoxTests
         CTextBox cTextBox = new() { Text = string.Empty, AllowEmpty = false, };
 
         bool result = cTextBox.IsValid();
-        
+
         Assert.False(result);
     }
-    
+
     [Fact]
     public void IsEmpty__TextAllowEmptyFalse__True()
     {
         CTextBox cTextBox = new() { Text = "Text", AllowEmpty = false, };
 
         bool result = cTextBox.IsValid();
-        
+
         Assert.True(result);
     }
 
@@ -358,20 +349,19 @@ public class CTextBoxTests
         CTextBox cTextBox = new() { Text = string.Empty, AllowEmpty = true, };
 
         bool result = cTextBox.IsValid();
-        
+
         Assert.True(result);
     }
-    
+
     [Fact]
     public void IsEmpty__TextAllowEmptyTrue__True()
     {
         CTextBox cTextBox = new() { Text = "Text", AllowEmpty = true, };
 
         bool result = cTextBox.IsValid();
-        
+
         Assert.True(result);
     }
 
     #endregion IsEmpty
-
 }

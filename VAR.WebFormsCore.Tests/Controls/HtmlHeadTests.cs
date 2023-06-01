@@ -22,7 +22,7 @@ public class HtmlHeadTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal("<head ></head>", result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__WithTitle()
     {
@@ -39,7 +39,7 @@ public class HtmlHeadTests
         string result = fakeWebContext.FakeWritePackages.ToString("");
         Assert.Equal("<head ><title>Test</title></head>", result);
     }
-    
+
     [Fact]
     public void MustRenderCorrectly__WithMeta()
     {
@@ -54,7 +54,7 @@ public class HtmlHeadTests
             HttpEquiv = "TestMetaHttpEquiv"
         };
         htmlHead.Controls.Add(htmlMeta);
-        
+
         page.ProcessRequest(fakeWebContext);
 
         Assert.Equal(200, fakeWebContext.ResponseStatusCode);
