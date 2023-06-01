@@ -43,6 +43,10 @@ public class CTextBox : Control, INamingContainer, IValidableControl
         set => _txtContent.TextMode = value;
     }
 
+    public TextBox TxtContent => _txtContent;
+
+    public HiddenField? HidSize => _hidSize;
+    
     #endregion Properties
 
     #region Control life cycle
@@ -147,8 +151,9 @@ public class CTextBox : Control, INamingContainer, IValidableControl
             JsonParser jsonParser = new JsonParser();
             sizeObj = jsonParser.Parse(_hidSize?.Value) as Dictionary<string, object?>;
         }
-        sizeObj ??= new Dictionary<string, object?> { { "height", height }, { "width", null }, { "scrollTop", null }, };
-
+        sizeObj ??= new Dictionary<string, object?> { { "height", null }, { "width", null }, { "scrollTop", null }, };
+        sizeObj["height"] = height;
+        
         if (_hidSize != null)
         {
             _hidSize.Value = JsonWriter.WriteObject(sizeObj);
