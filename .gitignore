@@ -9,3 +9,9 @@ Published/*
 VAR.Focus.WebApp/priv/*.json
 .vs
 packages/*
+
+/.issues/
+
+.idea
+.vscode
+
