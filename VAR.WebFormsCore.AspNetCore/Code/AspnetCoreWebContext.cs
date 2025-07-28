@@ -86,6 +86,27 @@ public class AspnetCoreWebContext : IWebContext
         }
     }
 
+    public string? RequestContentType => _context.Request.ContentType;
+
+    public long? RequestContentLength => _context.Request.ContentLength;
+
+    public byte[]? RequestReadBin()
+    {
+        if ((_context.Request.ContentLength ?? 0) == 0) { return null; }
+
+        byte[] content = new byte[_context.Request.ContentLength??0];
+        int pendingRead = (int) (_context.Request.ContentLength ?? 0);
+        int currentOffset = 0;
+        while (pendingRead > 0)
+        {
+            int readCount = _context.Request.Body.ReadAsync(content, currentOffset, pendingRead).GetAwaiter().GetResult();
+            currentOffset += readCount;
+            pendingRead -= readCount;
+        }
+
+        return content;
+    }
+
     public void ResponseWrite(string text) { _context.Response.WriteAsync(text).GetAwaiter().GetResult(); }
 
     public void ResponseWriteBin(byte[] content)
@@ -97,12 +118,18 @@ public class AspnetCoreWebContext : IWebContext
 
     public void ResponseRedirect(string url) { _context.Response.Redirect(url); }
 
-    public void AddResponseCookie(string cookieName, string value, DateTime? expiration = null)
+    public void AddResponseCookie(
+        string cookieName,
+        string value,
+        DateTime? expiration = null,
+        bool httpOnly = false,
+        bool secure = false
+    )
     {
         _context.Response.Cookies.Append(
             key: cookieName,
             value: value,
-            options: new CookieOptions { Expires = expiration, }
+            options: new CookieOptions { Expires = expiration, HttpOnly = httpOnly, Secure = secure, }
         );
     }
 

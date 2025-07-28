@@ -11,12 +11,24 @@ public interface IWebContext
     Dictionary<string, string> RequestCookies { get; }
     Dictionary<string, string?> RequestQuery { get; }
     Dictionary<string, string?> RequestForm { get; }
+    
+    string? RequestContentType { get; }
+    long? RequestContentLength { get; }
+    byte[]? RequestReadBin();
 
     void ResponseWrite(string text);
     void ResponseWriteBin(byte[] content);
     void ResponseFlush();
     void ResponseRedirect(string url);
-    void AddResponseCookie(string cookieName, string value, DateTime? expiration = null);
+
+    void AddResponseCookie(
+        string cookieName,
+        string value,
+        DateTime? expiration = null,
+        bool httpOnly = false,
+        bool secure = false
+    );
+
     void DelResponseCookie(string cookieName);
 
     bool ResponseHasStarted { get; }

@@ -5,7 +5,16 @@ namespace VAR.WebFormsCore.Tests.Fakes;
 
 public class FakeWebContext : IWebContext
 {
-    public FakeWebContext(string requestMethod = "GET") { RequestMethod = requestMethod; }
+    public FakeWebContext(
+        string requestMethod = "GET",
+        string? requestContentType = null,
+        long? requestContentLength = null
+    )
+    {
+        RequestMethod = requestMethod;
+        RequestContentType = requestContentType;
+        RequestContentLength = requestContentLength;
+    }
 
     public string RequestPath => string.Empty;
 
@@ -18,7 +27,16 @@ public class FakeWebContext : IWebContext
     public Dictionary<string, string?> RequestQuery { get; } = new();
 
     public Dictionary<string, string?> RequestForm { get; } = new();
+    
+    public string? RequestContentType { get; }
+    
+    public long? RequestContentLength { get; }
 
+    public byte[]? RequestReadBin()
+    {
+        throw new NotImplementedException();
+    }
+    
     public List<WritePackage> FakeWritePackages { get; } = new();
 
     public void ResponseWrite(string text) { FakeWritePackages.Add(new WritePackage { Text = text, }); }
@@ -36,7 +54,13 @@ public class FakeWebContext : IWebContext
         SetResponseHeader("location", url);
     }
 
-    public void AddResponseCookie(string cookieName, string value, DateTime? expiration = null)
+    public void AddResponseCookie(
+        string cookieName,
+        string value,
+        DateTime? expiration = null,
+        bool httpOnly = false,
+        bool secure = false
+    )
     {
         throw new NotImplementedException();
     }
