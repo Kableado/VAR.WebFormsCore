@@ -24,7 +24,7 @@ VAR.WebFormsCore is a web framework based lightly on ASP.Net WebForms.
   * [x] AspnetCore
 
 ## Usage
-Currently there are two libraries:
+Currently, there are two libraries:
 * `VAR.WebFormsCore`: Core implementation of WebFormsCore
 * `VAR.WebFormsCore.AspnetCore`: AspnetCore interface
 
@@ -32,7 +32,7 @@ And one test web-application:
 * `VAR.WebFormsCore.TestWebApp`: A simple example web-application using WebFormsCore.
 
 ## Building
-A SLN solution is provided, for usage on Visual Studio, Rider or any editor with Omnisharp.
+An SLN solution is provided, for usage on Visual Studio, Rider or any editor with Omnisharp.
 
 ## Contributing
 1. Fork it!
