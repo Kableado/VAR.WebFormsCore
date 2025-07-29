@@ -81,7 +81,7 @@ public class Control
 
     public ControlCollection Controls
     {
-        get { return _controls ??= new ControlCollection(this); }
+        get { return _controls ??= new(this); }
     }
 
     private Page? _page;
@@ -179,7 +179,7 @@ public class Control
 
     protected List<Control> ChildsOfType<T>(List<Control>? controls = null)
     {
-        controls ??= new List<Control>();
+        controls ??= new();
 
         if (this is T) { controls.Add(this); }
 

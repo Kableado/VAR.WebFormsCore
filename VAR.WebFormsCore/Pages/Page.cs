@@ -13,8 +13,6 @@ public class Page : Control, IHttpHandler
 
     public IWebContext? Context { get; private set; }
 
-    private static readonly Encoding Utf8Encoding = new UTF8Encoding();
-
     public void ProcessRequest(IWebContext context)
     {
         try
@@ -56,7 +54,7 @@ public class Page : Control, IHttpHandler
             if (context.ResponseHasStarted) { return; }
 
             context.ResponseContentType = "text/html";
-            byte[] byteObject = Utf8Encoding.GetBytes(stringWriter.ToString());
+            byte[] byteObject = Encoding.UTF8.GetBytes(stringWriter.ToString());
             context.ResponseWriteBin(byteObject);
         }
         catch (Exception ex)

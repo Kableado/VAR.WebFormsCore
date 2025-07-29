@@ -8,7 +8,7 @@ public class StylesBundler : IHttpHandler
 
     public void ProcessRequest(IWebContext context)
     {
-        Bundler bundler = new Bundler(
+        Bundler bundler = new(
             assembly: Assembly.GetExecutingAssembly(),
             assemblyNamespace: "Styles",
             absolutePath: ServerHelpers.MapContentPath("Styles")

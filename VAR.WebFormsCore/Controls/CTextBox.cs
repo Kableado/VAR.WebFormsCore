@@ -65,7 +65,7 @@ public class CTextBox : Control, INamingContainer, IValidableControl
         {
             if (KeepSize)
             {
-                _hidSize = new HiddenField();
+                _hidSize = new();
                 Controls.Add(_hidSize);
             }
 
@@ -75,12 +75,12 @@ public class CTextBox : Control, INamingContainer, IValidableControl
                 { "txtContent", _txtContent.ClientID }, { "hidSize", _hidSize?.ClientID ?? string.Empty },
                 { "keepSize", KeepSize },
             };
-            StringBuilder sbCfg = new StringBuilder();
+            StringBuilder sbCfg = new();
             sbCfg.AppendFormat("<script>\n");
             sbCfg.Append($"var {strCfgName} = {JsonWriter.WriteObject(cfg)};\n");
             sbCfg.Append($"CTextBox_Multiline_Init({strCfgName});\n");
             sbCfg.AppendFormat("</script>\n");
-            LiteralControl liScript = new LiteralControl(sbCfg.ToString());
+            LiteralControl liScript = new(sbCfg.ToString());
             Controls.Add(liScript);
         }
     }
@@ -120,7 +120,7 @@ public class CTextBox : Control, INamingContainer, IValidableControl
     {
         if (string.IsNullOrEmpty(_hidSize?.Value)) { return null; }
 
-        JsonParser jsonParser = new JsonParser();
+        JsonParser jsonParser = new();
         Dictionary<string, object>? sizeObj = jsonParser.Parse(_hidSize?.Value) as Dictionary<string, object>;
         if (sizeObj == null) { return null; }
 
@@ -141,11 +141,11 @@ public class CTextBox : Control, INamingContainer, IValidableControl
         Dictionary<string, object?>? sizeObj = null;
         if (string.IsNullOrEmpty(_hidSize?.Value) == false)
         {
-            JsonParser jsonParser = new JsonParser();
+            JsonParser jsonParser = new();
             sizeObj = jsonParser.Parse(_hidSize?.Value) as Dictionary<string, object?>;
         }
 
-        sizeObj ??= new Dictionary<string, object?> { { "height", null }, { "width", null }, { "scrollTop", null }, };
+        sizeObj ??= new() { { "height", null }, { "width", null }, { "scrollTop", null }, };
         sizeObj["height"] = height;
 
         if (_hidSize != null) { _hidSize.Value = JsonWriter.WriteObject(sizeObj); }

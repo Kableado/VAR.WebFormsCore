@@ -26,7 +26,7 @@ public class GlobalRouter
             else
             {
                 // TODO: FrmNotFound
-                throw new Exception($"NotFound: {path}");
+                throw new($"NotFound: {path}");
             }
         }
 
@@ -34,7 +34,7 @@ public class GlobalRouter
         if (handler == null)
         {
             // TODO: FrmNotFound
-            throw new Exception($"NotFound: {path}");
+            throw new($"NotFound: {path}");
         }
 
         // Use handler

@@ -26,13 +26,11 @@ public static class ExtensionMethods
         return string.Empty;
     }
 
-    private static readonly Encoding Utf8Encoding = new UTF8Encoding();
-
     public static void ResponseObject(this IWebContext context, object obj, string contentType = "text/json")
     {
         context.ResponseContentType = contentType;
         string strObject = JsonWriter.WriteObject(obj);
-        byte[] byteObject = Utf8Encoding.GetBytes(strObject);
+        byte[] byteObject = Encoding.UTF8.GetBytes(strObject);
         context.ResponseWriteBin(byteObject);
     }
 

@@ -14,7 +14,7 @@ public static class GlobalErrorHandler
         {
             context.ResponseStatusCode = 500;
 
-            StringBuilder sbOutput = new StringBuilder();
+            StringBuilder sbOutput = new();
             sbOutput.Append("<h2>Internal error</h2>");
             Exception? exAux = ex;
             while (exAux != null)

@@ -78,10 +78,10 @@ public class PageCommon : Page
     {
         //Context.Response.Charset = Encoding.UTF8.WebName;
 
-        var doctype = new LiteralControl("<!DOCTYPE html>\n");
+        LiteralControl doctype = new("<!DOCTYPE html>\n");
         base.Controls.Add(doctype);
 
-        var html = new HtmlGenericControl("html");
+        HtmlGenericControl html = new("html");
         base.Controls.Add(html);
 
         html.Controls.Add(_head);
@@ -109,13 +109,13 @@ public class PageCommon : Page
         html.Controls.Add(_body);
         _body.Controls.Add(_form);
 
-        var pnlHeader = new Panel { CssClass = "divHeader" };
+        Panel pnlHeader = new() { CssClass = "divHeader" };
         _form.Controls.Add(pnlHeader);
 
-        HyperLink lnkTitle = new HyperLink { NavigateUrl = "." };
+        HyperLink lnkTitle = new() { NavigateUrl = "." };
         pnlHeader.Controls.Add(lnkTitle);
 
-        var lblTitle = new Label { Text = GlobalConfig.Get().Title, Tag = "h1" };
+        Label lblTitle = new() { Text = GlobalConfig.Get().Title, Tag = "h1" };
         lnkTitle.Controls.Add(lblTitle);
 
         _btnPostback.ID = "btnPostback";
@@ -123,7 +123,7 @@ public class PageCommon : Page
         pnlHeader.Controls.Add(_btnPostback);
         _btnPostback.Style.Add("display", "none");
 
-        var pnlUserInfo = new Panel { CssClass = "divUserInfo" };
+        Panel pnlUserInfo = new() { CssClass = "divUserInfo" };
         pnlHeader.Controls.Add(pnlUserInfo);
 
         _btnLogout.ID = "btnLogout";

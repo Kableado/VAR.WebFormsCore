@@ -26,9 +26,9 @@ public static class MultiLang
 
     private static void InitializeLiterals()
     {
-        _literals = new Dictionary<string, Dictionary<string, object>?>();
+        _literals = new();
 
-        JsonParser jsonParser = new JsonParser();
+        JsonParser jsonParser = new();
         foreach (string lang in new[] { "en", "es" })
         {
             string filePath = GetPrivatePath("Resources", $"Literals.{lang}.json");

@@ -31,25 +31,24 @@ public class FrmError : PageCommon
     {
         Title = "Application Error";
 
-        Label lblErrorTitle = new Label { Text = Title, Tag = "h2" };
+        Label lblErrorTitle = new() { Text = Title, Tag = "h2" };
         Controls.Add(lblErrorTitle);
 
         Exception? exAux = (Exception?)_ex;
         //if (exAux is HttpUnhandledException && exAux.InnerException != null) { exAux = exAux.InnerException; }
         while (exAux != null)
         {
-            LiteralControl lblMessage =
-                new LiteralControl($"<p><b>Message:</b> {HttpUtility.HtmlEncode(exAux.Message)}</p>");
+            LiteralControl lblMessage = new($"<p><b>Message:</b> {HttpUtility.HtmlEncode(exAux.Message)}</p>");
             Controls.Add(lblMessage);
 
-            LiteralControl lblStacktraceTitle = new LiteralControl("<p><b>Stacktrace:</b></p>");
+            LiteralControl lblStacktraceTitle = new("<p><b>Stacktrace:</b></p>");
             Controls.Add(lblStacktraceTitle);
-            Panel pnlStacktrace = new Panel
+            Panel pnlStacktrace = new()
             {
                 CssClass = "divCode"
             };
             Controls.Add(pnlStacktrace);
-            LiteralControl litStackTrace = new LiteralControl(
+            LiteralControl litStackTrace = new(
                 $"<pre><code>{HttpUtility.HtmlEncode(exAux.StackTrace)}</code></pre>");
             pnlStacktrace.Controls.Add(litStackTrace);
 

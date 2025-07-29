@@ -12,7 +12,7 @@ public static class ObjectActivator
     {
         lock (Creators)
         {
-            if (Creators.TryGetValue(type, out var creator)) { return creator; }
+            if (Creators.TryGetValue(type, out Func<object>? creator)) { return creator; }
 
             NewExpression newExp = Expression.New(type);
             LambdaExpression lambda = Expression.Lambda(typeof(Func<object>), newExp);

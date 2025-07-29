@@ -79,7 +79,7 @@ public class AspnetCoreWebContext : IWebContext
                     _requestForm = _context.Request.Form
                         .ToDictionary(p => p.Key, p => p.Value[0]);
                 }
-                else { _requestForm = new Dictionary<string, string?>(); }
+                else { _requestForm = new(); }
             }
 
             return _requestForm;
@@ -129,7 +129,7 @@ public class AspnetCoreWebContext : IWebContext
         _context.Response.Cookies.Append(
             key: cookieName,
             value: value,
-            options: new CookieOptions { Expires = expiration, HttpOnly = httpOnly, Secure = secure, }
+            options: new() { Expires = expiration, HttpOnly = httpOnly, Secure = secure, }
         );
     }
 

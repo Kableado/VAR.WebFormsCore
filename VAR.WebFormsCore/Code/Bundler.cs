@@ -28,7 +28,7 @@ public class Bundler
 
             if (_assembly == null || string.IsNullOrEmpty(_assemblyNamespace))
             {
-                _assemblyFiles = new List<string>();
+                _assemblyFiles = new();
                 return _assemblyFiles;
             }
 
@@ -46,17 +46,17 @@ public class Bundler
 
             if (_absolutePath == null || string.IsNullOrEmpty(_absolutePath))
             {
-                _absoluteFiles = new List<string>();
+                _absoluteFiles = new();
                 return _absoluteFiles;
             }
 
             if (Directory.Exists(_absolutePath) == false)
             {
-                _absoluteFiles = new List<string>();
+                _absoluteFiles = new();
                 return _absoluteFiles;
             }
 
-            DirectoryInfo dir = new DirectoryInfo(_absolutePath);
+            DirectoryInfo dir = new(_absolutePath);
             FileInfo[] files = dir.GetFiles();
             _absoluteFiles = files.OrderBy(file => file.FullName).Select(file2 => file2.FullName).ToList();
             return _absoluteFiles;
@@ -78,11 +78,9 @@ public class Bundler
 
     #region Public methods
 
-    private static readonly Encoding Utf8Encoding = new UTF8Encoding();
-
     public void WriteResponse(IWebContext context, string contentType)
     {
-        StringWriter textWriter = new StringWriter();
+        StringWriter textWriter = new();
         context.ResponseContentType = contentType;
         foreach (string fileName in AssemblyFiles)
         {
@@ -103,7 +101,7 @@ public class Bundler
             textWriter.Write("\n\n");
         }
 
-        byte[] byteObject = Utf8Encoding.GetBytes(textWriter.ToString());
+        byte[] byteObject = Encoding.UTF8.GetBytes(textWriter.ToString());
         context.ResponseWriteBin(byteObject);
     }
 

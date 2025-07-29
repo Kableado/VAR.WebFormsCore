@@ -21,7 +21,7 @@ public static class ServerHelpers
 
         StringBuilder sbResult = new();
 
-        foreach (var ch in text)
+        foreach (char ch in text)
         {
             switch (ch)
             {
@@ -64,7 +64,7 @@ public static class ServerHelpers
 
         StringBuilder sbResult = new();
 
-        foreach (var ch in text)
+        foreach (char ch in text)
         {
             if (ch == ' ') { sbResult.Append('+'); }
             else if (IsUrlSafe(ch) == false)

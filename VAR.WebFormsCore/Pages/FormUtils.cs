@@ -6,7 +6,7 @@ public static class FormUtils
 {
     public static Control CreatePanel(string cssClass, Control? ctrl = null)
     {
-        Panel pnl = new Panel();
+        Panel pnl = new();
         if (ctrl != null) { pnl.Controls.Add(ctrl); }
 
         if (string.IsNullOrEmpty(cssClass) == false) { pnl.CssClass = cssClass; }
@@ -16,18 +16,18 @@ public static class FormUtils
 
     public static Control CreateField(string label, Control fieldControl)
     {
-        Panel pnlRow = new Panel { CssClass = "formRow" };
+        Panel pnlRow = new() { CssClass = "formRow" };
 
-        Panel pnlLabelContainer = new Panel { CssClass = "formLabel width25pc" };
+        Panel pnlLabelContainer = new() { CssClass = "formLabel width25pc" };
         pnlRow.Controls.Add(pnlLabelContainer);
 
         if (string.IsNullOrEmpty(label) == false)
         {
-            Label lblField = new Label { Text = label };
+            Label lblField = new() { Text = label };
             pnlLabelContainer.Controls.Add(lblField);
         }
 
-        Panel pnlFieldContainer = new Panel { CssClass = "formField width75pc" };
+        Panel pnlFieldContainer = new() { CssClass = "formField width75pc" };
         pnlRow.Controls.Add(pnlFieldContainer);
 
         pnlFieldContainer.Controls.Add(fieldControl);

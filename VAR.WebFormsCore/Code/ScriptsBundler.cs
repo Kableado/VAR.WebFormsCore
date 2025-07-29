@@ -8,7 +8,7 @@ public class ScriptsBundler : IHttpHandler
 
     public void ProcessRequest(IWebContext context)
     {
-        Bundler bundler = new Bundler(
+        Bundler bundler = new(
             assembly: Assembly.GetExecutingAssembly(),
             assemblyNamespace: "Scripts",
             absolutePath: ServerHelpers.MapContentPath("Scripts")
