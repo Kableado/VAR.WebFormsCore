@@ -1,3 +1,4 @@
+using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Controls;
 using VAR.WebFormsCore.Pages;
 using VAR.WebFormsCore.Tests.Fakes;
@@ -94,7 +95,7 @@ public class CTextBoxTests
         page0.ProcessRequest(fakeWebContext0);
 
         FakeWebContext fakeWebContext1 = new(requestMethod: "POST");
-        fakeWebContext1.RequestForm.Add(cTextBox0.TxtContent.ClientID, changedValue);
+        fakeWebContext1.RequestForm.SafeSet(cTextBox0.TxtContent.ClientID, changedValue);
         Page page1 = new();
         CTextBox cTextBox1 = new() { Text = text };
         page1.Controls.Add(cTextBox1);
@@ -188,7 +189,7 @@ public class CTextBoxTests
         };
         page.Controls.Add(button);
 
-        fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");
+        fakeWebContext.RequestForm.SafeSet(button.ClientID, "Clicked");
         page.ProcessRequest(fakeWebContext);
         int? resultHeight = cTextBox.GetClientsideHeight();
 
@@ -222,7 +223,7 @@ public class CTextBoxTests
         button.Click += (_, _) => { cTextBox.SetClientsideHeight(null); };
         page.Controls.Add(button);
 
-        fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");
+        fakeWebContext.RequestForm.SafeSet(button.ClientID, "Clicked");
         page.ProcessRequest(fakeWebContext);
         int? resultHeight = cTextBox.GetClientsideHeight();
 
@@ -259,7 +260,7 @@ public class CTextBoxTests
         };
         page.Controls.Add(button);
 
-        fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");
+        fakeWebContext.RequestForm.SafeSet(button.ClientID, "Clicked");
         page.ProcessRequest(fakeWebContext);
         int? resultHeight = cTextBox.GetClientsideHeight();
 
@@ -286,7 +287,7 @@ public class CTextBoxTests
         };
         page.Controls.Add(button);
 
-        fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");
+        fakeWebContext.RequestForm.SafeSet(button.ClientID, "Clicked");
         page.ProcessRequest(fakeWebContext);
         int? resultHeight = cTextBox.GetClientsideHeight();
 

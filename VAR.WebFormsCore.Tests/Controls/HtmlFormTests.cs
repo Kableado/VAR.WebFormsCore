@@ -1,3 +1,4 @@
+using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Controls;
 using VAR.WebFormsCore.Pages;
 using VAR.WebFormsCore.Tests.Fakes;
@@ -27,7 +28,7 @@ public class HtmlFormTests
     public void MustRenderCorrectly__WithQueryParameters()
     {
         FakeWebContext fakeWebContext = new();
-        fakeWebContext.RequestQuery.Add("test", "value");
+        fakeWebContext.RequestQuery.SafeSet("test", "value");
         Page page = new();
         HtmlForm htmlForm = new();
         page.Controls.Add(htmlForm);

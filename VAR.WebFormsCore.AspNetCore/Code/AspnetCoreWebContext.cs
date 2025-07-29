@@ -34,16 +34,16 @@ public class AspnetCoreWebContext : IWebContext
     }
 
 
-    private Dictionary<string, string>? _requestCookies;
+    private Dictionary<string, string?>? _requestCookies;
 
-    public Dictionary<string, string> RequestCookies
+    public Dictionary<string, string?> RequestCookies
     {
         get
         {
             if (_requestCookies == null)
             {
                 _requestCookies = _context.Request.Cookies
-                    .ToDictionary(p => p.Key, p => p.Value);
+                    .ToDictionary(p => p.Key, p => (string?)p.Value);
             }
 
             return _requestCookies;

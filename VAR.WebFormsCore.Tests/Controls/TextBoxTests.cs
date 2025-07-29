@@ -1,3 +1,4 @@
+using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Controls;
 using VAR.WebFormsCore.Pages;
 using VAR.WebFormsCore.Tests.Fakes;
@@ -138,7 +139,7 @@ public class TextBoxTests
         TextBox textBox = new() { Text = text };
         page.Controls.Add(textBox);
 
-        fakeWebContext.RequestForm.Add(textBox.ClientID, changedValue);
+        fakeWebContext.RequestForm.SafeSet(textBox.ClientID, changedValue);
         page.ProcessRequest(fakeWebContext);
 
         Assert.Equal(changedValue, textBox.Text);

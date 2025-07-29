@@ -1,3 +1,4 @@
+using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Controls;
 using VAR.WebFormsCore.Pages;
 using VAR.WebFormsCore.Tests.Fakes;
@@ -56,7 +57,7 @@ public class ButtonTests
         button.Click += (o, _) => { result = (o as Button)?.CommandArgument; };
         page.Controls.Add(button);
 
-        fakeWebContext.RequestForm.Add(button.ClientID, "Clicked");
+        fakeWebContext.RequestForm.SafeSet(button.ClientID, "Clicked");
         page.ProcessRequest(fakeWebContext);
 
         Assert.Equal(commandArgument, result);

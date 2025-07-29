@@ -1,3 +1,4 @@
+using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Pages;
 using VAR.WebFormsCore.Tests.Fakes;
 using Xunit;
@@ -31,7 +32,7 @@ public class FrmEchoTests
     public void ProcessRequest__OneQueryParameterGet__FormData()
     {
         FakeWebContext fakeWebContext = new();
-        fakeWebContext.RequestQuery.Add("Test", "Value");
+        fakeWebContext.RequestQuery.SafeSet("Test", "Value");
         FrmEcho frmEcho = new();
 
         frmEcho.ProcessRequest(fakeWebContext);
@@ -53,7 +54,7 @@ public class FrmEchoTests
     public void ProcessRequest__OneFormParameterPost__FormData()
     {
         FakeWebContext fakeWebContext = new(requestMethod: "POST");
-        fakeWebContext.RequestForm.Add("Test", "Value");
+        fakeWebContext.RequestForm.SafeSet("Test", "Value");
         FrmEcho frmEcho = new();
 
         frmEcho.ProcessRequest(fakeWebContext);

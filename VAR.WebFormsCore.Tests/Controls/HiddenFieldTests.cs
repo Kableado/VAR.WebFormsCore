@@ -1,3 +1,4 @@
+using VAR.WebFormsCore.Code;
 using VAR.WebFormsCore.Controls;
 using VAR.WebFormsCore.Pages;
 using VAR.WebFormsCore.Tests.Fakes;
@@ -51,7 +52,7 @@ public class HiddenFieldTests
         HiddenField hiddenField = new() { Value = value };
         page.Controls.Add(hiddenField);
 
-        fakeWebContext.RequestForm.Add(hiddenField.ClientID, changedValue);
+        fakeWebContext.RequestForm.SafeSet(hiddenField.ClientID, changedValue);
         page.ProcessRequest(fakeWebContext);
 
         Assert.Equal(changedValue, hiddenField.Value);

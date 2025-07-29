@@ -38,7 +38,7 @@ public class ExtensionMethodsTests
         FakeWebContext fakeWebContext = new();
         string key = "Key";
         string value = "Value";
-        fakeWebContext.RequestQuery.Add(key, value);
+        fakeWebContext.RequestQuery.SafeSet(key, value);
 
         string result = fakeWebContext.GetRequestParameter(key);
 
@@ -52,7 +52,7 @@ public class ExtensionMethodsTests
         FakeWebContext fakeWebContext = new(requestMethod: "POST");
         string key = "Key";
         string value = "Value";
-        fakeWebContext.RequestForm.Add(key, value);
+        fakeWebContext.RequestForm.SafeSet(key, value);
 
         string result = fakeWebContext.GetRequestParameter(key);
 
@@ -67,7 +67,7 @@ public class ExtensionMethodsTests
         string keyInvalid = "KeyInvalid";
         string key = "Key";
         string value = "Value";
-        fakeWebContext.RequestQuery.Add(keyInvalid, value);
+        fakeWebContext.RequestQuery.SafeSet(keyInvalid, value);
 
         string result = fakeWebContext.GetRequestParameter(key);
 
@@ -82,7 +82,7 @@ public class ExtensionMethodsTests
         string keyInvalid = "KeyInvalid";
         string key = "Key";
         string value = "Value";
-        fakeWebContext.RequestForm.Add(keyInvalid, value);
+        fakeWebContext.RequestForm.SafeSet(keyInvalid, value);
 
         string result = fakeWebContext.GetRequestParameter(key);
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using VAR.Json;
 
@@ -11,23 +12,17 @@ public static class ExtensionMethods
     {
         if (context.RequestMethod == "POST")
         {
-            foreach (string key in context.RequestForm.Keys)
+            if (context.RequestForm.ContainsKey(parameter))
             {
-                if (string.IsNullOrEmpty(key) == false && key == parameter)
-                {
-                    return context.RequestForm[key] ?? string.Empty;
-                }
+                return context.RequestForm.SafeGet(parameter, null) ?? string.Empty;
             }
         }
-
-        foreach (string key in context.RequestQuery.Keys)
+        
+        if (context.RequestQuery.ContainsKey(parameter))
         {
-            if (string.IsNullOrEmpty(key) == false && key == parameter)
-            {
-                return context.RequestQuery[key] ?? string.Empty;
-            }
+            return context.RequestQuery.SafeGet(parameter, null) ?? string.Empty;
         }
-
+        
         return string.Empty;
     }
 
@@ -42,4 +37,23 @@ public static class ExtensionMethods
     }
 
     #endregion IWebContext
+    
+    #region Dictionary
+
+    public static TValue? SafeGet<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+    {
+        return dictionary.TryGetValue(key, out TValue? value) ? value : defaultValue;
+    }
+
+    public static void SafeSet<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
+    {
+        dictionary[key] = value;
+    }
+
+    public static void SafeRemove<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+    {
+        dictionary.Remove(key);
+    }
+    
+    #endregion Dictionary
 }

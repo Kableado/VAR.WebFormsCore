@@ -7,8 +7,9 @@ public interface IWebContext
 {
     string RequestPath { get; }
     string RequestMethod { get; }
+    
     Dictionary<string, string?> RequestHeader { get; }
-    Dictionary<string, string> RequestCookies { get; }
+    Dictionary<string, string?> RequestCookies { get; }
     Dictionary<string, string?> RequestQuery { get; }
     Dictionary<string, string?> RequestForm { get; }
     

@@ -55,7 +55,7 @@ public class PageCommonTests
         (GlobalConfig.Get() as FakeGlobalConfig)?.FakeSetLoginHandler(loginHandler);
         (GlobalConfig.Get() as FakeGlobalConfig)?.FakeSetAuthenticated(true);
         FakeWebContext fakeWebContext = new(requestMethod: "POST");
-        fakeWebContext.RequestForm.Add("ctl00_ctl02_btnLogout", "Logout");
+        fakeWebContext.RequestForm.SafeSet("ctl00_ctl02_btnLogout", "Logout");
         TestEmptyForm testEmptyForm = new(mustBeAuthenticated: true);
 
         testEmptyForm.ProcessRequest(fakeWebContext);

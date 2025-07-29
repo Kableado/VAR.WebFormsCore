@@ -22,7 +22,7 @@ public class FakeWebContext : IWebContext
 
     public Dictionary<string, string?> RequestHeader { get; } = new();
 
-    public Dictionary<string, string> RequestCookies { get; } = new();
+    public Dictionary<string, string?> RequestCookies { get; } = new();
 
     public Dictionary<string, string?> RequestQuery { get; } = new();
 
@@ -32,7 +32,7 @@ public class FakeWebContext : IWebContext
     
     public long? RequestContentLength { get; }
 
-    public byte[]? RequestReadBin()
+    public byte[] RequestReadBin()
     {
         throw new NotImplementedException();
     }
