@@ -26,7 +26,7 @@ public static class ExtensionMethods
         return string.Empty;
     }
 
-    public static void ResponseObject(this IWebContext context, object obj, string contentType = "text/json")
+    public static void ResponseObject(this IWebContext context, object obj, string contentType = "application/json")
     {
         context.ResponseContentType = contentType;
         string strObject = JsonWriter.WriteObject(obj);
