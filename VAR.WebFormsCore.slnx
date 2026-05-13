@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Misc/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="AGENTS.md" />
+    <File Path="LICENSE.txt" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="VAR.WebFormsCore.AspNetCore/VAR.WebFormsCore.AspNetCore.csproj" />
+  <Project Path="VAR.WebFormsCore.Tests/VAR.WebFormsCore.Tests.csproj" />
+  <Project Path="VAR.WebFormsCore.TestWebApp/VAR.WebFormsCore.TestWebApp.csproj" />
+  <Project Path="VAR.WebFormsCore/VAR.WebFormsCore.csproj" />
+</Solution>

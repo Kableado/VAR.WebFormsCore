@@ -31,8 +31,20 @@ Currently, there are two libraries:
 And one test web-application:
 * `VAR.WebFormsCore.TestWebApp`: A simple example web-application using WebFormsCore.
 
+## Architecture
+VAR.WebFormsCore is designed to be host-agnostic. It uses `IWebContext` to abstract away the underlying HTTP framework.
+
+### Execution Pipeline
+1. **Middleware/Adapter**: Receives the HTTP request (e.g., `GlobalRouterMiddleware` in AspNetCore).
+2. **Context**: Wraps the request in `IWebContext`.
+3. **Router**: `GlobalRouter` finds the appropriate `IHttpHandler` (usually a `Page`).
+4. **Handler**: `ProcessRequest` is called to generate the output.
+
+### Asset Bundling
+The framework automatically bundles CSS and JS files from both embedded resources in the core library and physical files in the application's `Styles/` and `Scripts/` folders using `StylesBundler` and `ScriptsBundler`.
+
 ## Building
-An SLN solution is provided, for usage on Visual Studio, Rider or any editor with Omnisharp.
+An SLNX solution is provided, for usage on Visual Studio, Rider or any editor with Omnisharp.
 
 ## Contributing
 1. Fork it!
