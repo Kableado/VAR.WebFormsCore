@@ -1,0 +1,3 @@
+[submodule "VAR.DesignSystem"]
+	path = VAR.DesignSystem
+	url = https://datacube.duckdns.org/git/VAR/VAR.DesignSystem.git
